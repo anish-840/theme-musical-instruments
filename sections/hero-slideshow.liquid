@@ -1,12 +1,6 @@
 {% comment %}
   Hero Slideshow — 4 slide types
-  Each slide has separate image pickers for desktop and mobile.
-  Uses <picture> + srcset to serve correct image per breakpoint.
-  Type 1 (slide_basic):    Full-bg image, flexible content position
-  Type 2 (slide_split):    Left image panel + right solid-color panel + product card
-  Type 3 (slide_feature):  Full-bg image, content bottom-left, inline italic heading
-  Type 4 (slide_promo):    Full-bg image bleeds right, content left
-  Navigator: back arrow + next-slide preview tile with left→right timer bar
+  Inherits "Stringer Music" Brand Guidelines: Cream/Ink/Rust palette, Playfair/DM Sans typography.
 {% endcomment %}
 
 {%- assign all_blocks  = section.blocks -%}
@@ -14,7 +8,7 @@
 {%- assign duration    = section.settings.slide_duration | times: 1000 -%}
 
 {%- if slide_count == 0 -%}
-  <div style="padding:60px;text-align:center;color:#888;">Add a slide block in the Theme Editor.</div>
+  <div style="padding:60px;text-align:center;color:#1A1710;background:#F5F0E8;font-family:sans-serif;">Add a slide block in the Theme Editor.</div>
 {%- else -%}
 
 <section
@@ -50,7 +44,7 @@
       ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━{%- endcomment -%}
       {%- when 'slide_basic' -%}
 
-        <div class="hs__bg" style="background:{{ s.bg_color | default: '#f5f0e8' }};">
+        <div class="hs__bg" style="background:{{ s.bg_color | default: '#F5F0E8' }};">
           {%- if desk_img != blank -%}
             <picture>
               {%- if s.mobile_image != blank -%}
@@ -104,7 +98,7 @@
       {%- when 'slide_split' -%}
 
         <div class="hs__split">
-          <div class="hs__split-img-panel" style="background:{{ s.img_panel_bg | default: '#e8dfd0' }};">
+          <div class="hs__split-img-panel" style="background:{{ s.img_panel_bg | default: '#EDEBE2' }};">
             {%- if desk_img != blank -%}
               <picture>
                 {%- if s.mobile_image != blank -%}
@@ -127,7 +121,7 @@
             {%- endif -%}
           </div>
 
-          <div class="hs__split-content" style="background:{{ s.content_bg | default: '#eef2ec' }};">
+          <div class="hs__split-content" style="background:{{ s.content_bg | default: '#F5F0E8' }};">
             {%- if s.eyebrow != blank -%}<p class="hs__eyebrow">{{ s.eyebrow }}</p>{%- endif -%}
             {%- if s.heading != blank -%}
               <h2 class="hs__heading hs__heading--split">
@@ -173,7 +167,7 @@
       ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━{%- endcomment -%}
       {%- when 'slide_feature' -%}
 
-        <div class="hs__bg" style="background:{{ s.bg_color | default: '#e8ede4' }};">
+        <div class="hs__bg" style="background:{{ s.bg_color | default: '#F5F0E8' }};">
           {%- if desk_img != blank -%}
             <picture>
               {%- if s.mobile_image != blank -%}
@@ -221,7 +215,7 @@
       ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━{%- endcomment -%}
       {%- when 'slide_promo' -%}
 
-        <div class="hs__bg hs__bg--promo" style="background:{{ s.bg_color | default: '#e8ede4' }};">
+        <div class="hs__bg hs__bg--promo" style="background:{{ s.bg_color | default: '#F5F0E8' }};">
           {%- if desk_img != blank -%}
             <picture>
               {%- if s.mobile_image != blank -%}
@@ -270,7 +264,6 @@
   {%- endfor -%}
   </div>
 
-  <!-- NAVIGATOR -->
   {%- if slide_count > 1 -%}
   <div class="hs__nav" aria-label="Slideshow controls">
     <button class="hs__nav-back" aria-label="Previous slide" data-hs-prev>
@@ -287,7 +280,7 @@
             {%- if pimg != blank -%}
               {{- pimg | image_url: width: 300 | image_tag: loading: 'lazy', widths: '150,200,300', sizes: '120px', alt: '' -}}
             {%- else -%}
-              <div style="width:100%;height:100%;background:{{ ps.bg_color | default: '#e0d8ce' }};"></div>
+              <div style="width:100%;height:100%;background:{{ ps.bg_color | default: '#EDEBE2' }};"></div>
             {%- endif -%}
           </div>
         {%- endfor -%}
@@ -309,6 +302,22 @@
 
 {% stylesheet %}
   /* ════════════════════════════════════════════
+     STRINGER MUSIC BRAND VARIABLES
+  ════════════════════════════════════════════ */
+  .hs {
+    --brand-cream: #F5F0E8;
+    --brand-ink: #1A1710;
+    --brand-ink-rgb: 26, 23, 16;
+    --brand-rust: #C8420A;
+    --brand-rust-hover: #A83008;
+    --brand-parchment: #EDEBE2;
+    --brand-white: #FFFFFF;
+    
+    --font-heading: var(--type_header_font, 'Playfair Display', serif);
+    --font-body: var(--type_body_font, 'DM Sans', sans-serif);
+  }
+
+  /* ════════════════════════════════════════════
      BASE SHELL
   ════════════════════════════════════════════ */
   .hs {
@@ -316,7 +325,9 @@
     width: 100%;
     height: var(--hs-height, 90vh);
     overflow: hidden;
-    background: #f5f0e8;
+    background: var(--brand-cream);
+    color: var(--brand-ink);
+    font-family: var(--font-body);
     isolation: isolate;
   }
 
@@ -338,7 +349,6 @@
   ════════════════════════════════════════════ */
   .hs__bg { position: absolute; inset: 0; }
 
-  /* picture fills bg div fully */
   .hs__bg picture {
     display: block;
     width: 100%;
@@ -351,57 +361,91 @@
     display: block;
   }
 
+  /* Subheading - Eyebrow mapping (DM Sans, 500, 11px, 0.16em tracking) */
   .hs__eyebrow {
-    font-size: 0.72rem;
+    font-family: var(--font-body);
+    font-size: 11px;
     letter-spacing: 0.16em;
     text-transform: uppercase;
-    opacity: 0.6;
+    color: var(--brand-ink);
     margin: 0 0 14px;
     font-weight: 500;
+    line-height: 1.0;
   }
 
+  /* Heading - Hero Display mapping (Playfair Display, 900, -0.025em tracking) */
   .hs__heading {
+    font-family: var(--font-heading);
     margin: 0 0 20px;
-    font-size: clamp(2.2rem, 4.5vw, 4rem);
+    font-size: clamp(32px, 4.5vw, 88px);
     line-height: 1.08;
-    font-weight: 400;
+    font-weight: 900;
+    color: var(--brand-ink);
     letter-spacing: -0.025em;
   }
 
   .hs__heading span { display: block; font-style: normal; }
-  .hs__heading em   { display: block; font-style: italic; font-weight: 300; }
+  
+  /* Accent typography - Italic Rust word */
+  .hs__heading em { 
+    display: block; 
+    font-style: italic; 
+    font-weight: 700; 
+    color: var(--brand-rust);
+  }
 
-  /* Inline italic spacing — for split/promo/feature where em is inline */
   .hs__heading--split em,
   .hs__heading--promo em,
   .hs__heading--feature em {
     margin-inline: 0.18em;
   }
 
+  /* Body copy mapping (DM Sans, 300 light, 15-16px, 1.75 leading) */
   .hs__sub {
-    font-size: 0.95rem;
-    opacity: 0.7;
+    font-family: var(--font-body);
+    font-weight: 300;
+    font-size: 16px;
+    color: var(--brand-ink);
     margin: 0 0 32px;
     max-width: 440px;
-    line-height: 1.65;
+    line-height: 1.75;
   }
 
   .hs__btns { display: flex; gap: 12px; flex-wrap: wrap; }
 
+  /* Buttons Base (DM Sans, 500 medium, UI tracking/leading) */
   .hs__btn {
     display: inline-flex; align-items: center;
     padding: 13px 28px;
-    border-radius: 50px;
-    font-size: 0.88rem; font-weight: 500;
-    text-decoration: none; letter-spacing: 0.02em;
+    font-family: var(--font-body);
+    font-size: 14px; font-weight: 500; line-height: 1.4;
+    text-decoration: none; letter-spacing: 0;
     transition: background 0.2s, color 0.2s, border-color 0.2s;
     white-space: nowrap;
   }
 
-  .hs__btn--outline { border: 1.5px solid currentColor; background: transparent; }
-  .hs__btn--outline:hover { background: var(--color-foreground); color: var(--color-background); }
-  .hs__btn--solid { background: var(--color-foreground); color: var(--color-background); border: 1.5px solid var(--color-foreground); }
-  .hs__btn--solid:hover { background: transparent; color: var(--color-foreground); }
+  /* SECONDARY BUTTON - Transparent, Ink text, semi-transparent border */
+  .hs__btn--outline { 
+    border: 1px solid rgba(var(--brand-ink-rgb), 0.12); 
+    background: transparent; 
+    color: var(--brand-ink);
+  }
+  .hs__btn--outline:hover { 
+    background: rgba(var(--brand-ink-rgb), 0.05); 
+    border-color: rgba(var(--brand-ink-rgb), 0.20); 
+    color: var(--brand-ink);
+  }
+
+  /* PRIMARY BUTTON - Rust bg, White text, no border */
+  .hs__btn--solid { 
+    background: var(--brand-rust); 
+    color: var(--brand-white); 
+    border: none; 
+  }
+  .hs__btn--solid:hover { 
+    background: var(--brand-rust-hover); 
+    color: var(--brand-white); 
+  }
 
   /* ════════════════════════════════════════════
      TYPE 1 — BASIC
@@ -432,9 +476,8 @@
     grid-template-columns: 57% 43%;
   }
 
-  .hs__split-img-panel { position: relative; overflow: hidden; }
+  .hs__split-img-panel { position: relative; overflow: hidden; background: var(--brand-parchment); }
 
-  /* picture inside split panel */
   .hs__split-img-panel picture {
     display: block;
     width: 100%;
@@ -453,20 +496,31 @@
     display: flex; flex-direction: column; justify-content: center;
     padding: 48px 7% 48px 6%;
     overflow-y: auto;
+    background: var(--brand-cream);
   }
 
-  .hs__heading--split { font-size: clamp(1.9rem, 3.5vw, 3.2rem); margin-bottom: 24px; }
-  .hs__heading--split em   { display: inline; font-style: italic; font-weight: 300; }
-  .hs__heading--split span { display: inline; font-style: normal; }
+  .hs__heading--split { font-size: clamp(32px, 3.5vw, 64px); margin-bottom: 24px; }
+  .hs__heading--split em   { display: inline; }
+  .hs__heading--split span { display: inline; }
 
-  .hs__product-card { margin-top: 32px; padding-top: 28px; border-top: 1px solid rgb(var(--color-foreground-rgb, 34 34 34) / 0.12); }
-  .hs__product-eyebrow { font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; opacity: 0.55; margin: 0 0 12px; }
-  .hs__product-inner { display: flex; align-items: center; gap: 16px; background: #fff; border-radius: 12px; padding: 14px 16px; max-width: 280px; }
-  .hs__product-img-wrap { flex-shrink: 0; width: 56px; height: 56px; border-radius: 8px; overflow: hidden; background: #f2ede8; }
+  .hs__product-card { 
+    margin-top: 32px; padding-top: 28px; 
+    border-top: 1px solid rgba(var(--brand-ink-rgb), 0.12); 
+    transition: box-shadow 0.2s ease;
+  }
+  .hs__product-card:hover {
+    box-shadow: 0 4px 12px rgba(var(--brand-ink-rgb), 0.08); /* Brand shadow logic */
+  }
+
+  .hs__product-eyebrow { font-family: var(--font-body); font-weight: 500; font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--brand-ink); margin: 0 0 12px; line-height: 1.0; }
+  .hs__product-inner { display: flex; align-items: center; gap: 16px; background: #fff; border: 1px solid rgba(var(--brand-ink-rgb), 0.12); padding: 14px 16px; max-width: 280px; }
+  .hs__product-img-wrap { flex-shrink: 0; width: 56px; height: 56px; overflow: hidden; background: var(--brand-parchment); }
   .hs__product-img { width: 100%; height: 100%; object-fit: cover; display: block; }
   .hs__product-info { flex: 1; min-width: 0; }
-  .hs__product-name { font-size: 0.9rem; font-weight: 600; margin: 0 0 4px; line-height: 1.3; color: var(--color-foreground); }
-  .hs__product-price { font-size: 0.82rem; opacity: 0.6; margin: 0; color: var(--color-foreground); }
+  
+  /* Card Brand/Name Mapping (DM Sans, 400 or 500, 13px) */
+  .hs__product-name { font-family: var(--font-body); font-size: 13px; font-weight: 500; margin: 0 0 4px; line-height: 1.3; color: var(--brand-ink); letter-spacing: 0.08em; }
+  .hs__product-price { font-family: var(--font-body); font-size: 13px; font-weight: 400; margin: 0; color: var(--brand-ink); }
 
   /* ════════════════════════════════════════════
      TYPE 3 — FEATURE (bottom-left, inline italic)
@@ -480,8 +534,8 @@
     z-index: 2;
   }
 
-  .hs__heading--feature { font-size: clamp(2.4rem, 4.8vw, 4.2rem); line-height: 1.05; margin-bottom: 20px; font-weight: 400; }
-  .hs__heading--feature em   { font-style: italic; font-weight: 300; display: inline; }
+  .hs__heading--feature { font-size: clamp(36px, 4.8vw, 72px); margin-bottom: 20px; }
+  .hs__heading--feature em   { display: inline; }
   .hs__heading--feature span { display: none; }
 
   /* ════════════════════════════════════════════
@@ -500,9 +554,9 @@
     z-index: 2;
   }
 
-  .hs__heading--promo { font-size: clamp(2.5rem, 5vw, 4.5rem); line-height: 1.08; margin-bottom: 16px; }
+  .hs__heading--promo { font-size: clamp(38px, 5vw, 80px); margin-bottom: 16px; }
   .hs__heading--promo span { display: inline; }
-  .hs__heading--promo em   { display: inline; font-style: italic; font-weight: 300; }
+  .hs__heading--promo em   { display: inline; }
   .hs__sub--promo { max-width: 360px; }
 
   /* ════════════════════════════════════════════
@@ -511,28 +565,27 @@
   .hs__nav {
     position: absolute; bottom: 32px; right: 32px; z-index: 2;
     display: flex; align-items: stretch;
-    border-radius: 12px; overflow: hidden;
-    box-shadow: 0 4px 24px rgb(0 0 0 / 0.2);
+    border: 1px solid rgba(var(--brand-ink-rgb), 0.12);
+    background: var(--brand-cream);
+    box-shadow: 0 4px 12px rgba(var(--brand-ink-rgb), 0.08);
   }
 
   .hs__nav-back {
     position: relative;
     display: flex; align-items: center; justify-content: center;
     width: 52px;
-    background: rgb(0 0 0 / 0.72);
-    color: #fff; border: none; cursor: pointer;
+    background: var(--brand-ink);
+    color: var(--brand-white); border: none; cursor: pointer;
     transition: background 0.15s;
     flex-shrink: 0;
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
   }
 
-  .hs__nav-back:hover { background: rgb(0 0 0 / 0.9); }
+  .hs__nav-back:hover { background: rgba(var(--brand-ink-rgb), 0.85); }
 
   .hs__nav-back::after {
     content: '';
     position: absolute; right: 0; top: 20%; height: 60%;
-    width: 1px; background: rgb(255 255 255 / 0.18);
+    width: 1px; background: rgba(255, 255, 255, 0.18);
   }
 
   .hs__nav-next {
@@ -546,14 +599,14 @@
   .hs__nav-preview-img img, .hs__nav-preview-img > div { width: 100%; height: 100%; object-fit: cover; display: block; }
   .hs__nav-preview-img--visible { opacity: 1; }
 
-  .hs__timer { position: absolute; bottom: 0; left: 0; right: 0; height: 4px; background: rgb(255 255 255 / 0.25); z-index: 2; }
-  .hs__timer-bar { height: 100%; width: 0%; background: #fff; transition: width linear; }
+  .hs__timer { position: absolute; bottom: 0; left: 0; right: 0; height: 4px; background: rgba(255, 255, 255, 0.25); z-index: 2; }
+  .hs__timer-bar { height: 100%; width: 0%; background: var(--brand-rust); transition: width linear; }
 
   .hs__nav-next-icon {
     position: absolute; inset: 0;
     display: flex; align-items: center; justify-content: center;
-    color: #fff; z-index: 3;
-    background: rgb(0 0 0 / 0.22);
+    color: var(--brand-white); z-index: 3;
+    background: rgba(var(--brand-ink-rgb), 0.4);
     opacity: 0; transition: opacity 0.2s;
   }
 
@@ -567,8 +620,8 @@
     .hs__split { grid-template-columns: 1fr; grid-template-rows: 55% 45%; }
     .hs__content--right { left: 0; }
     .hs__content--feature { padding-bottom: 40px; }
-    .hs__heading { font-size: clamp(1.8rem, 7vw, 2.8rem); }
-    .hs__heading--feature { font-size: clamp(2rem, 8vw, 3rem); }
+    .hs__heading { font-size: clamp(28px, 7vw, 48px); }
+    .hs__heading--feature { font-size: clamp(32px, 8vw, 56px); }
     .hs__nav { bottom: 16px; right: 16px; }
     .hs__nav-next { width: 88px; height: 56px; }
     .hs__nav-back { width: 44px; }
@@ -585,7 +638,7 @@
     }
 
     .hs__sub--promo { max-width: 100%; }
-    .hs__heading--promo { font-size: clamp(1.9rem, 7vw, 2.8rem); }
+    .hs__heading--promo { font-size: clamp(30px, 7vw, 48px); }
   }
 {% endstylesheet %}
 
@@ -744,7 +797,7 @@
         },
         { "type": "header",   "content": "Content" },
         { "type": "text",     "id": "eyebrow",    "label": "Eyebrow",    "placeholder": "UP TO 50% OFF" },
-        { "type": "textarea", "id": "heading",    "label": "Heading",    "info": "Use | to split into two lines. Second line renders italic.", "placeholder": "Mastering the|art of skin care." },
+        { "type": "textarea", "id": "heading",    "label": "Heading",    "info": "Use | to split into two lines. Second line renders Rust/Italic.", "placeholder": "Mastering the|art of skin care." },
         { "type": "text",     "id": "subheading", "label": "Subheading" },
         { "type": "header",   "content": "Buttons" },
         { "type": "text",     "id": "btn1_label", "label": "Button 1 label", "placeholder": "New Arrival" },
@@ -761,11 +814,11 @@
         { "type": "image_picker", "id": "image",        "label": "Desktop image" },
         { "type": "header",       "content": "Mobile image" },
         { "type": "image_picker", "id": "mobile_image", "label": "Mobile image", "info": "If not set, desktop image is used on mobile" },
-        { "type": "color",        "id": "img_panel_bg",  "label": "Image panel background", "default": "#E8DFD0" },
+        { "type": "color",        "id": "img_panel_bg",  "label": "Image panel background", "default": "#EDEBE2" },
         { "type": "header",       "content": "Right content panel" },
-        { "type": "color",        "id": "content_bg",    "label": "Content panel background", "default": "#EEF2EC" },
+        { "type": "color",        "id": "content_bg",    "label": "Content panel background", "default": "#F5F0E8" },
         { "type": "text",         "id": "eyebrow",       "label": "Eyebrow" },
-        { "type": "textarea",     "id": "heading",       "label": "Heading", "info": "Use | to split italic|normal.", "placeholder": "Natural|Radiance Savings." },
+        { "type": "textarea",     "id": "heading",       "label": "Heading", "info": "Use | to split Rust Italic|Normal.", "placeholder": "Natural|Radiance Savings." },
         { "type": "text",         "id": "btn1_label",    "label": "Button label", "placeholder": "Discover Now" },
         { "type": "url",          "id": "btn1_url",      "label": "Button URL" },
         { "type": "header",       "content": "Product card" },
@@ -784,10 +837,10 @@
         { "type": "image_picker", "id": "image",        "label": "Desktop image" },
         { "type": "header",       "content": "Mobile image" },
         { "type": "image_picker", "id": "mobile_image", "label": "Mobile image", "info": "If not set, desktop image is used on mobile" },
-        { "type": "color",        "id": "bg_color",     "label": "Background colour", "default": "#E8EDE4" },
+        { "type": "color",        "id": "bg_color",     "label": "Background colour", "default": "#F5F0E8" },
         { "type": "header",       "content": "Content" },
         { "type": "text",         "id": "eyebrow",      "label": "Eyebrow",    "placeholder": "BFCM 25 – GIFT MORE, GET MORE" },
-        { "type": "textarea",     "id": "heading",      "label": "Heading",    "info": "Use | — first part italic, rest normal.", "placeholder": "Cyber week|70% off" },
+        { "type": "textarea",     "id": "heading",      "label": "Heading",    "info": "Use | — first part Rust Italic, rest normal.", "placeholder": "Cyber week|70% off" },
         { "type": "text",         "id": "subheading",   "label": "Subheading" },
         { "type": "text",         "id": "btn1_label",   "label": "Button label", "placeholder": "Claim the deals" },
         { "type": "url",          "id": "btn1_url",     "label": "Button URL" }
@@ -801,10 +854,10 @@
         { "type": "image_picker", "id": "image",        "label": "Desktop image" },
         { "type": "header",       "content": "Mobile image" },
         { "type": "image_picker", "id": "mobile_image", "label": "Mobile image", "info": "If not set, desktop image is used on mobile" },
-        { "type": "color",        "id": "bg_color",     "label": "Background colour", "default": "#E8EDE4" },
+        { "type": "color",        "id": "bg_color",     "label": "Background colour", "default": "#F5F0E8" },
         { "type": "header",       "content": "Content" },
         { "type": "text",         "id": "eyebrow",      "label": "Eyebrow",    "placeholder": "UP TO 50% OFF" },
-        { "type": "textarea",     "id": "heading",      "label": "Heading",    "info": "Use | — second part renders italic inline.", "placeholder": "Mastering the|art of skin care." },
+        { "type": "textarea",     "id": "heading",      "label": "Heading",    "info": "Use | — second part renders Rust Italic inline.", "placeholder": "Mastering the|art of skin care." },
         { "type": "text",         "id": "subheading",   "label": "Subheading" },
         { "type": "text",         "id": "btn1_label",   "label": "Button label", "placeholder": "Shop All" },
         { "type": "url",          "id": "btn1_url",     "label": "Button URL" }
