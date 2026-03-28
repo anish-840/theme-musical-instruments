@@ -226,7 +226,7 @@
           "type": "slide_basic",
           "settings": {
             "image": "shopify://shop_images/Untitled_design_1.png",
-            "bg_color": "#F5F0E8",
+            "bg_color": "#f5f0e8",
             "content_position": "right",
             "vertical_align": "middle",
             "eyebrow": "",
@@ -246,6 +246,70 @@
       "settings": {
         "slide_duration": 5,
         "section_height": "90vh"
+      }
+    },
+    "category_grid_zekk6j": {
+      "type": "category-grid",
+      "blocks": {
+        "category_rwhV6Y": {
+          "type": "category",
+          "settings": {
+            "image": "shopify://shop_images/gi.webp",
+            "title": "Guitars and Basses",
+            "link": ""
+          }
+        },
+        "category_7BJVgQ": {
+          "type": "category",
+          "settings": {
+            "title": "Drums and Percussion",
+            "link": ""
+          }
+        },
+        "category_VwcH6A": {
+          "type": "category",
+          "settings": {
+            "title": "Keys",
+            "link": ""
+          }
+        },
+        "category_bMkzP7": {
+          "type": "category",
+          "settings": {
+            "title": "Studio and Recording",
+            "link": ""
+          }
+        },
+        "category_Q8nzEQ": {
+          "type": "category",
+          "settings": {
+            "title": "Software",
+            "link": ""
+          }
+        },
+        "category_rqbjAW": {
+          "type": "category",
+          "settings": {
+            "title": "PA Equipment",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "category_rwhV6Y",
+        "category_7BJVgQ",
+        "category_VwcH6A",
+        "category_bMkzP7",
+        "category_Q8nzEQ",
+        "category_rqbjAW"
+      ],
+      "name": "Category Grid",
+      "settings": {
+        "heading": "Our Categories",
+        "bg_color": "#F5F0E8",
+        "desktop_columns": 3,
+        "mobile_columns": "1",
+        "image_style": "transparent"
       }
     },
     "product_list_EDUBdR": {
@@ -784,6 +848,7 @@
   "order": [
     "hero_iLBwPd",
     "hero_slideshow_7Re4mF",
+    "category_grid_zekk6j",
     "product_list_EDUBdR",
     "media_with_content_LfPdEJ",
     "collection_list_xpBxCm"
