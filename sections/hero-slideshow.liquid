@@ -1,0 +1,826 @@
+{% comment %}
+  Hero Slideshow — 4 slide types
+  Each slide has separate image pickers for desktop and mobile.
+  Uses <picture> + srcset to serve correct image per breakpoint.
+  Type 1 (slide_basic):    Full-bg image, flexible content position
+  Type 2 (slide_split):    Left image panel + right solid-color panel + product card
+  Type 3 (slide_feature):  Full-bg image, content bottom-left, inline italic heading
+  Type 4 (slide_promo):    Full-bg image bleeds right, content left
+  Navigator: back arrow + next-slide preview tile with left→right timer bar
+{% endcomment %}
+
+{%- assign all_blocks  = section.blocks -%}
+{%- assign slide_count = all_blocks | size -%}
+{%- assign duration    = section.settings.slide_duration | times: 1000 -%}
+
+{%- if slide_count == 0 -%}
+  <div style="padding:60px;text-align:center;color:#888;">Add a slide block in the Theme Editor.</div>
+{%- else -%}
+
+<section
+  class="hs"
+  id="hs-{{ section.id }}"
+  data-hs-duration="{{ duration }}"
+  style="--hs-height:{{ section.settings.section_height }};"
+  aria-label="Hero slideshow"
+>
+
+  <div class="hs__track" aria-live="polite">
+  {%- for block in all_blocks -%}
+    {%- assign idx = forloop.index0 -%}
+    {%- assign s   = block.settings -%}
+
+    {%- comment -%} Determine images — fall back desktop→mobile if one is missing {%- endcomment -%}
+    {%- assign desk_img   = s.image -%}
+    {%- assign mob_img    = s.mobile_image -%}
+    {%- if mob_img == blank -%}{%- assign mob_img = desk_img -%}{%- endif -%}
+    {%- if desk_img == blank -%}{%- assign desk_img = mob_img -%}{%- endif -%}
+
+    <div
+      class="hs__slide hs__slide--{{ block.type }}{% if forloop.first %} hs__slide--active{% endif %}"
+      data-hs-slide="{{ idx }}"
+      {{ block.shopify_attributes }}
+      aria-hidden="{% if forloop.first %}false{% else %}true{% endif %}"
+    >
+
+      {%- case block.type -%}
+
+      {%- comment -%}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        TYPE 1 — Basic: full-bg image, flexible content position
+      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━{%- endcomment -%}
+      {%- when 'slide_basic' -%}
+
+        <div class="hs__bg" style="background:{{ s.bg_color | default: '#f5f0e8' }};">
+          {%- if desk_img != blank -%}
+            <picture>
+              {%- if s.mobile_image != blank -%}
+                <source
+                  media="(max-width: 749px)"
+                  srcset="{{ mob_img | image_url: width: 750 }} 750w, {{ mob_img | image_url: width: 1100 }} 1100w"
+                  sizes="100vw"
+                >
+              {%- endif -%}
+              <source
+                media="(min-width: 750px)"
+                srcset="{{ desk_img | image_url: width: 1200 }} 1200w, {{ desk_img | image_url: width: 1600 }} 1600w, {{ desk_img | image_url: width: 2000 }} 2000w, {{ desk_img | image_url: width: 2400 }} 2400w"
+                sizes="100vw"
+              >
+              {{- desk_img | image_url: width: 2400 | image_tag:
+                  class: 'hs__bg-img',
+                  loading: forloop.first | ternary: 'eager', 'lazy',
+                  fetchpriority: forloop.first | ternary: 'high', 'auto',
+                  alt: s.heading -}}
+            </picture>
+          {%- endif -%}
+        </div>
+
+        <div class="hs__content hs__content--{{ s.content_position | default: 'right' }} hs__content--valign-{{ s.vertical_align | default: 'middle' }}">
+          {%- if s.eyebrow != blank -%}<p class="hs__eyebrow">{{ s.eyebrow }}</p>{%- endif -%}
+          {%- if s.heading != blank -%}
+            <h2 class="hs__heading">
+              {%- assign parts = s.heading | split: '|' -%}
+              {%- for part in parts -%}
+                {%- if forloop.index == 2 -%}<em>{{ part | strip }}</em>
+                {%- else -%}<span>{{ part | strip }}</span>{%- endif -%}
+              {%- endfor -%}
+            </h2>
+          {%- endif -%}
+          {%- if s.subheading != blank -%}<p class="hs__sub">{{ s.subheading }}</p>{%- endif -%}
+          {%- if s.btn1_label != blank or s.btn2_label != blank -%}
+            <div class="hs__btns">
+              {%- if s.btn1_label != blank -%}
+                <a href="{{ s.btn1_url | default: '#' }}" class="hs__btn hs__btn--outline">{{ s.btn1_label }}</a>
+              {%- endif -%}
+              {%- if s.btn2_label != blank -%}
+                <a href="{{ s.btn2_url | default: '#' }}" class="hs__btn hs__btn--solid">{{ s.btn2_label }}</a>
+              {%- endif -%}
+            </div>
+          {%- endif -%}
+        </div>
+
+      {%- comment -%}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        TYPE 2 — Split: image left | solid-color right + product card
+      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━{%- endcomment -%}
+      {%- when 'slide_split' -%}
+
+        <div class="hs__split">
+          <div class="hs__split-img-panel" style="background:{{ s.img_panel_bg | default: '#e8dfd0' }};">
+            {%- if desk_img != blank -%}
+              <picture>
+                {%- if s.mobile_image != blank -%}
+                  <source
+                    media="(max-width: 749px)"
+                    srcset="{{ mob_img | image_url: width: 750 }} 750w, {{ mob_img | image_url: width: 1100 }} 1100w"
+                    sizes="100vw"
+                  >
+                {%- endif -%}
+                <source
+                  media="(min-width: 750px)"
+                  srcset="{{ desk_img | image_url: width: 800 }} 800w, {{ desk_img | image_url: width: 1200 }} 1200w, {{ desk_img | image_url: width: 1600 }} 1600w"
+                  sizes="55vw"
+                >
+                {{- desk_img | image_url: width: 1600 | image_tag:
+                    class: 'hs__split-img',
+                    loading: forloop.first | ternary: 'eager', 'lazy',
+                    alt: s.heading -}}
+              </picture>
+            {%- endif -%}
+          </div>
+
+          <div class="hs__split-content" style="background:{{ s.content_bg | default: '#eef2ec' }};">
+            {%- if s.eyebrow != blank -%}<p class="hs__eyebrow">{{ s.eyebrow }}</p>{%- endif -%}
+            {%- if s.heading != blank -%}
+              <h2 class="hs__heading hs__heading--split">
+                {%- assign parts = s.heading | split: '|' -%}
+                {%- for part in parts -%}
+                  {%- if forloop.index == 1 -%}<em>{{ part | strip }}</em>
+                  {%- else -%}<span>{{ part | strip }}</span>{%- endif -%}
+                {%- endfor -%}
+              </h2>
+            {%- endif -%}
+            {%- if s.btn1_label != blank -%}
+              <div class="hs__btns"><a href="{{ s.btn1_url | default: '#' }}" class="hs__btn hs__btn--solid">{{ s.btn1_label }}</a></div>
+            {%- endif -%}
+            {%- if s.product_label != blank or s.product != blank -%}
+              {%- assign product_obj = s.product -%}
+              <div class="hs__product-card">
+                {%- if s.product_label_small != blank -%}
+                  <p class="hs__product-eyebrow">{{ s.product_label_small }}</p>
+                {%- endif -%}
+                <div class="hs__product-inner">
+                  <div class="hs__product-img-wrap">
+                    {%- if s.product_image != blank -%}
+                      {{- s.product_image | image_url: width: 120 | image_tag: class: 'hs__product-img', loading: 'lazy', widths: '80,120', sizes: '56px', alt: s.product_label -}}
+                    {%- elsif product_obj != blank and product_obj.featured_image != blank -%}
+                      {{- product_obj.featured_image | image_url: width: 120 | image_tag: class: 'hs__product-img', loading: 'lazy', widths: '80,120', sizes: '56px', alt: product_obj.title -}}
+                    {%- endif -%}
+                  </div>
+                  <div class="hs__product-info">
+                    <p class="hs__product-name">{%- if product_obj != blank -%}{{ product_obj.title }}{%- else -%}{{ s.product_label }}{%- endif -%}</p>
+                    <p class="hs__product-price">
+                      {%- if product_obj != blank -%}From {{ product_obj.price_min | money }}
+                      {%- elsif s.product_price != blank -%}{{ s.product_price }}{%- endif -%}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            {%- endif -%}
+          </div>
+        </div>
+
+      {%- comment -%}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        TYPE 3 — Feature: full-bg, content bottom-left, inline italic
+      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━{%- endcomment -%}
+      {%- when 'slide_feature' -%}
+
+        <div class="hs__bg" style="background:{{ s.bg_color | default: '#e8ede4' }};">
+          {%- if desk_img != blank -%}
+            <picture>
+              {%- if s.mobile_image != blank -%}
+                <source
+                  media="(max-width: 749px)"
+                  srcset="{{ mob_img | image_url: width: 750 }} 750w, {{ mob_img | image_url: width: 1100 }} 1100w"
+                  sizes="100vw"
+                >
+              {%- endif -%}
+              <source
+                media="(min-width: 750px)"
+                srcset="{{ desk_img | image_url: width: 1200 }} 1200w, {{ desk_img | image_url: width: 1600 }} 1600w, {{ desk_img | image_url: width: 2000 }} 2000w, {{ desk_img | image_url: width: 2400 }} 2400w"
+                sizes="100vw"
+              >
+              {{- desk_img | image_url: width: 2400 | image_tag:
+                  class: 'hs__bg-img',
+                  loading: forloop.first | ternary: 'eager', 'lazy',
+                  fetchpriority: forloop.first | ternary: 'high', 'auto',
+                  alt: s.heading -}}
+            </picture>
+          {%- endif -%}
+        </div>
+
+        <div class="hs__content hs__content--feature">
+          {%- if s.eyebrow != blank -%}<p class="hs__eyebrow">{{ s.eyebrow }}</p>{%- endif -%}
+          {%- if s.heading != blank -%}
+            <h2 class="hs__heading hs__heading--feature">
+              {%- assign parts = s.heading | split: '|' -%}
+              {%- for part in parts -%}
+                {%- if forloop.index == 1 -%}<em>{{ part | strip }}</em>
+                {%- else -%}{{ part | strip }}{%- endif -%}
+              {%- endfor -%}
+            </h2>
+          {%- endif -%}
+          {%- if s.subheading != blank -%}<p class="hs__sub">{{ s.subheading }}</p>{%- endif -%}
+          {%- if s.btn1_label != blank -%}
+            <div class="hs__btns">
+              <a href="{{ s.btn1_url | default: '#' }}" class="hs__btn hs__btn--solid">{{ s.btn1_label }}</a>
+            </div>
+          {%- endif -%}
+        </div>
+
+      {%- comment -%}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        TYPE 4 — Promo: image bleeds from right, content left side
+      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━{%- endcomment -%}
+      {%- when 'slide_promo' -%}
+
+        <div class="hs__bg hs__bg--promo" style="background:{{ s.bg_color | default: '#e8ede4' }};">
+          {%- if desk_img != blank -%}
+            <picture>
+              {%- if s.mobile_image != blank -%}
+                <source
+                  media="(max-width: 749px)"
+                  srcset="{{ mob_img | image_url: width: 750 }} 750w, {{ mob_img | image_url: width: 1100 }} 1100w"
+                  sizes="100vw"
+                >
+              {%- endif -%}
+              <source
+                media="(min-width: 750px)"
+                srcset="{{ desk_img | image_url: width: 1200 }} 1200w, {{ desk_img | image_url: width: 1600 }} 1600w, {{ desk_img | image_url: width: 2000 }} 2000w, {{ desk_img | image_url: width: 2400 }} 2400w"
+                sizes="100vw"
+              >
+              {{- desk_img | image_url: width: 2400 | image_tag:
+                  class: 'hs__bg-img hs__bg-img--promo',
+                  loading: forloop.first | ternary: 'eager', 'lazy',
+                  fetchpriority: forloop.first | ternary: 'high', 'auto',
+                  alt: s.heading -}}
+            </picture>
+          {%- endif -%}
+        </div>
+
+        <div class="hs__content hs__content--promo">
+          {%- if s.eyebrow != blank -%}<p class="hs__eyebrow">{{ s.eyebrow }}</p>{%- endif -%}
+          {%- if s.heading != blank -%}
+            <h2 class="hs__heading hs__heading--promo">
+              {%- assign parts = s.heading | split: '|' -%}
+              {%- for part in parts -%}
+                {%- if forloop.index == 2 -%} <em>{{ part | strip }}</em>
+                {%- else -%}<span>{{ part | strip }}</span>{%- endif -%}
+              {%- endfor -%}
+            </h2>
+          {%- endif -%}
+          {%- if s.subheading != blank -%}<p class="hs__sub hs__sub--promo">{{ s.subheading }}</p>{%- endif -%}
+          {%- if s.btn1_label != blank -%}
+            <div class="hs__btns">
+              <a href="{{ s.btn1_url | default: '#' }}" class="hs__btn hs__btn--solid">{{ s.btn1_label }}</a>
+            </div>
+          {%- endif -%}
+        </div>
+
+      {%- endcase -%}
+
+    </div>
+  {%- endfor -%}
+  </div>
+
+  <!-- NAVIGATOR -->
+  {%- if slide_count > 1 -%}
+  <div class="hs__nav" aria-label="Slideshow controls">
+    <button class="hs__nav-back" aria-label="Previous slide" data-hs-prev>
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+        <polyline points="12,4 6,10 12,16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+    <button class="hs__nav-next" aria-label="Next slide" data-hs-next>
+      <div class="hs__nav-preview" aria-hidden="true">
+        {%- for block in all_blocks -%}
+          <div class="hs__nav-preview-img" data-hs-preview="{{ forloop.index0 }}">
+            {%- assign ps = block.settings -%}
+            {%- assign pimg = ps.image -%}
+            {%- if pimg != blank -%}
+              {{- pimg | image_url: width: 300 | image_tag: loading: 'lazy', widths: '150,200,300', sizes: '120px', alt: '' -}}
+            {%- else -%}
+              <div style="width:100%;height:100%;background:{{ ps.bg_color | default: '#e0d8ce' }};"></div>
+            {%- endif -%}
+          </div>
+        {%- endfor -%}
+      </div>
+      <div class="hs__timer" aria-hidden="true">
+        <div class="hs__timer-bar" data-hs-timer></div>
+      </div>
+      <span class="hs__nav-next-icon">
+        <svg width="16" height="16" viewBox="0 0 20 20" fill="none">
+          <polyline points="8,4 14,10 8,16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </span>
+    </button>
+  </div>
+  {%- endif -%}
+
+</section>
+{%- endif -%}
+
+{% stylesheet %}
+  /* ════════════════════════════════════════════
+     BASE SHELL
+  ════════════════════════════════════════════ */
+  .hs {
+    position: relative;
+    width: 100%;
+    height: var(--hs-height, 90vh);
+    overflow: hidden;
+    background: #f5f0e8;
+    isolation: isolate;
+  }
+
+  .hs__track { position: absolute; inset: 0; }
+
+  .hs__slide {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 0.75s cubic-bezier(0.4,0,0.2,1);
+    pointer-events: none;
+  }
+
+  .hs__slide--active  { opacity: 1; pointer-events: auto; z-index: 1; }
+  .hs__slide--leaving { opacity: 0; z-index: 2; }
+
+  /* ════════════════════════════════════════════
+     SHARED PRIMITIVES
+  ════════════════════════════════════════════ */
+  .hs__bg { position: absolute; inset: 0; }
+
+  /* picture fills bg div fully */
+  .hs__bg picture {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  .hs__bg-img {
+    width: 100%; height: 100%;
+    object-fit: cover; object-position: center;
+    display: block;
+  }
+
+  .hs__eyebrow {
+    font-size: 0.72rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    opacity: 0.6;
+    margin: 0 0 14px;
+    font-weight: 500;
+  }
+
+  .hs__heading {
+    margin: 0 0 20px;
+    font-size: clamp(2.2rem, 4.5vw, 4rem);
+    line-height: 1.08;
+    font-weight: 400;
+    letter-spacing: -0.025em;
+  }
+
+  .hs__heading span { display: block; font-style: normal; }
+  .hs__heading em   { display: block; font-style: italic; font-weight: 300; }
+
+  /* Inline italic spacing — for split/promo/feature where em is inline */
+  .hs__heading--split em,
+  .hs__heading--promo em,
+  .hs__heading--feature em {
+    margin-inline: 0.18em;
+  }
+
+  .hs__sub {
+    font-size: 0.95rem;
+    opacity: 0.7;
+    margin: 0 0 32px;
+    max-width: 440px;
+    line-height: 1.65;
+  }
+
+  .hs__btns { display: flex; gap: 12px; flex-wrap: wrap; }
+
+  .hs__btn {
+    display: inline-flex; align-items: center;
+    padding: 13px 28px;
+    border-radius: 50px;
+    font-size: 0.88rem; font-weight: 500;
+    text-decoration: none; letter-spacing: 0.02em;
+    transition: background 0.2s, color 0.2s, border-color 0.2s;
+    white-space: nowrap;
+  }
+
+  .hs__btn--outline { border: 1.5px solid currentColor; background: transparent; }
+  .hs__btn--outline:hover { background: var(--color-foreground); color: var(--color-background); }
+  .hs__btn--solid { background: var(--color-foreground); color: var(--color-background); border: 1.5px solid var(--color-foreground); }
+  .hs__btn--solid:hover { background: transparent; color: var(--color-foreground); }
+
+  /* ════════════════════════════════════════════
+     TYPE 1 — BASIC
+  ════════════════════════════════════════════ */
+  .hs__content {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column; justify-content: center;
+    padding: 60px 7%; z-index: 2;
+    max-width: 560px;
+  }
+
+  .hs__content--left   { left: 0; right: auto; align-items: flex-start; }
+  .hs__content--right  { left: auto; right: 0; align-items: flex-start; }
+  .hs__content--center { left: 0; right: 0; max-width: 100%; align-items: center; text-align: center; padding-inline: 10%; }
+
+  .hs__content--valign-top    { justify-content: flex-start; padding-top: 80px; }
+  .hs__content--valign-bottom { justify-content: flex-end; padding-bottom: 80px; }
+  .hs__content--valign-middle { justify-content: center; }
+
+  /* ════════════════════════════════════════════
+     TYPE 2 — SPLIT
+  ════════════════════════════════════════════ */
+  .hs__slide--slide_split { display: flex; }
+
+  .hs__split {
+    position: absolute; inset: 0;
+    display: grid;
+    grid-template-columns: 57% 43%;
+  }
+
+  .hs__split-img-panel { position: relative; overflow: hidden; }
+
+  /* picture inside split panel */
+  .hs__split-img-panel picture {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  .hs__split-img {
+    width: 100%; height: 100%;
+    object-fit: cover; display: block;
+    transition: transform 0.6s ease;
+  }
+
+  .hs__slide--active .hs__split-img { transform: scale(1.02); }
+
+  .hs__split-content {
+    display: flex; flex-direction: column; justify-content: center;
+    padding: 48px 7% 48px 6%;
+    overflow-y: auto;
+  }
+
+  .hs__heading--split { font-size: clamp(1.9rem, 3.5vw, 3.2rem); margin-bottom: 24px; }
+  .hs__heading--split em   { display: inline; font-style: italic; font-weight: 300; }
+  .hs__heading--split span { display: inline; font-style: normal; }
+
+  .hs__product-card { margin-top: 32px; padding-top: 28px; border-top: 1px solid rgb(var(--color-foreground-rgb, 34 34 34) / 0.12); }
+  .hs__product-eyebrow { font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; opacity: 0.55; margin: 0 0 12px; }
+  .hs__product-inner { display: flex; align-items: center; gap: 16px; background: #fff; border-radius: 12px; padding: 14px 16px; max-width: 280px; }
+  .hs__product-img-wrap { flex-shrink: 0; width: 56px; height: 56px; border-radius: 8px; overflow: hidden; background: #f2ede8; }
+  .hs__product-img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .hs__product-info { flex: 1; min-width: 0; }
+  .hs__product-name { font-size: 0.9rem; font-weight: 600; margin: 0 0 4px; line-height: 1.3; color: var(--color-foreground); }
+  .hs__product-price { font-size: 0.82rem; opacity: 0.6; margin: 0; color: var(--color-foreground); }
+
+  /* ════════════════════════════════════════════
+     TYPE 3 — FEATURE (bottom-left, inline italic)
+  ════════════════════════════════════════════ */
+  .hs__content--feature {
+    position: absolute;
+    left: 0; right: auto; bottom: 0; top: auto;
+    max-width: 600px;
+    padding: 0 7% 72px;
+    display: flex; flex-direction: column; align-items: flex-start;
+    z-index: 2;
+  }
+
+  .hs__heading--feature { font-size: clamp(2.4rem, 4.8vw, 4.2rem); line-height: 1.05; margin-bottom: 20px; font-weight: 400; }
+  .hs__heading--feature em   { font-style: italic; font-weight: 300; display: inline; }
+  .hs__heading--feature span { display: none; }
+
+  /* ════════════════════════════════════════════
+     TYPE 4 — PROMO (image bleeds right, content left)
+  ════════════════════════════════════════════ */
+  .hs__bg--promo { position: absolute; inset: 0; }
+  .hs__bg-img--promo { object-position: right center; }
+
+  .hs__content--promo {
+    position: absolute;
+    left: 0; right: auto; top: 0; bottom: 0;
+    width: 48%;
+    padding: 0 0 0 7%;
+    display: flex; flex-direction: column; justify-content: center;
+    align-items: flex-start;
+    z-index: 2;
+  }
+
+  .hs__heading--promo { font-size: clamp(2.5rem, 5vw, 4.5rem); line-height: 1.08; margin-bottom: 16px; }
+  .hs__heading--promo span { display: inline; }
+  .hs__heading--promo em   { display: inline; font-style: italic; font-weight: 300; }
+  .hs__sub--promo { max-width: 360px; }
+
+  /* ════════════════════════════════════════════
+     NAVIGATOR
+  ════════════════════════════════════════════ */
+  .hs__nav {
+    position: absolute; bottom: 32px; right: 32px; z-index: 2;
+    display: flex; align-items: stretch;
+    border-radius: 12px; overflow: hidden;
+    box-shadow: 0 4px 24px rgb(0 0 0 / 0.2);
+  }
+
+  .hs__nav-back {
+    position: relative;
+    display: flex; align-items: center; justify-content: center;
+    width: 52px;
+    background: rgb(0 0 0 / 0.72);
+    color: #fff; border: none; cursor: pointer;
+    transition: background 0.15s;
+    flex-shrink: 0;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+
+  .hs__nav-back:hover { background: rgb(0 0 0 / 0.9); }
+
+  .hs__nav-back::after {
+    content: '';
+    position: absolute; right: 0; top: 20%; height: 60%;
+    width: 1px; background: rgb(255 255 255 / 0.18);
+  }
+
+  .hs__nav-next {
+    position: relative; width: 120px; height: 72px;
+    overflow: hidden; border: none; cursor: pointer;
+    padding: 0; display: block; flex-shrink: 0;
+  }
+
+  .hs__nav-preview { position: absolute; inset: 0; }
+  .hs__nav-preview-img { position: absolute; inset: 0; opacity: 0; transition: opacity 0.4s ease; }
+  .hs__nav-preview-img img, .hs__nav-preview-img > div { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .hs__nav-preview-img--visible { opacity: 1; }
+
+  .hs__timer { position: absolute; bottom: 0; left: 0; right: 0; height: 4px; background: rgb(255 255 255 / 0.25); z-index: 2; }
+  .hs__timer-bar { height: 100%; width: 0%; background: #fff; transition: width linear; }
+
+  .hs__nav-next-icon {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    color: #fff; z-index: 3;
+    background: rgb(0 0 0 / 0.22);
+    opacity: 0; transition: opacity 0.2s;
+  }
+
+  .hs__nav-next:hover .hs__nav-next-icon { opacity: 1; }
+
+  /* ════════════════════════════════════════════
+     RESPONSIVE
+  ════════════════════════════════════════════ */
+  @media screen and (max-width: 749px) {
+    .hs { height: 70vh; }
+    .hs__split { grid-template-columns: 1fr; grid-template-rows: 55% 45%; }
+    .hs__content--right { left: 0; }
+    .hs__content--feature { padding-bottom: 40px; }
+    .hs__heading { font-size: clamp(1.8rem, 7vw, 2.8rem); }
+    .hs__heading--feature { font-size: clamp(2rem, 8vw, 3rem); }
+    .hs__nav { bottom: 16px; right: 16px; }
+    .hs__nav-next { width: 88px; height: 56px; }
+    .hs__nav-back { width: 44px; }
+
+    /* Promo — mobile: full width, pinned to bottom, no overlay */
+    .hs__content--promo {
+      width: 100%;
+      top: auto;
+      bottom: 0;
+      left: 0;
+      padding: 0 6% 36px;
+      justify-content: flex-end;
+      background: none;
+    }
+
+    .hs__sub--promo { max-width: 100%; }
+    .hs__heading--promo { font-size: clamp(1.9rem, 7vw, 2.8rem); }
+  }
+{% endstylesheet %}
+
+<script>
+(function () {
+  document.querySelectorAll('.hs').forEach(initSlideshow);
+  document.addEventListener('shopify:section:load', function (e) {
+    var s = e.target.querySelector('.hs');
+    if (s) initSlideshow(s);
+  });
+
+  function initSlideshow(section) {
+    if (section.dataset.hsInit) return;
+    section.dataset.hsInit = '1';
+
+    var slides   = Array.from(section.querySelectorAll('.hs__slide'));
+    var previews = Array.from(section.querySelectorAll('.hs__nav-preview-img'));
+    var timerBar = section.querySelector('[data-hs-timer]');
+    var prevBtn  = section.querySelector('[data-hs-prev]');
+    var nextBtn  = section.querySelector('[data-hs-next]');
+    var duration = parseInt(section.dataset.hsDuration, 10) || 5000;
+    var current  = 0;
+    var total    = slides.length;
+    var timer    = null;
+
+    if (total <= 1) return;
+
+    function getNext(i) { return (i + 1) % total; }
+    function getPrev(i) { return (i - 1 + total) % total; }
+
+    function showPreview(idx) {
+      previews.forEach(function (p, i) {
+        p.classList.toggle('hs__nav-preview-img--visible', i === idx);
+      });
+    }
+
+    function goTo(next) {
+      if (next === current) return;
+      var leaving  = slides[current];
+      var entering = slides[next];
+      leaving.classList.add('hs__slide--leaving');
+      leaving.classList.remove('hs__slide--active');
+      leaving.setAttribute('aria-hidden', 'true');
+      entering.classList.add('hs__slide--active');
+      entering.setAttribute('aria-hidden', 'false');
+      setTimeout(function () { leaving.classList.remove('hs__slide--leaving'); }, 800);
+      current = next;
+      showPreview(getNext(current));
+      startTimer();
+    }
+
+    function startTimer() {
+      clearTimeout(timer);
+      if (timerBar) {
+        timerBar.style.transition = 'none';
+        timerBar.style.width = '0%';
+        timerBar.offsetWidth;
+        timerBar.style.transition = 'width ' + duration + 'ms linear';
+        timerBar.style.width = '100%';
+      }
+      timer = setTimeout(function () { goTo(getNext(current)); }, duration);
+    }
+
+    function pause() {
+      clearTimeout(timer);
+      if (timerBar) {
+        var w = parseFloat(getComputedStyle(timerBar).width);
+        var pw = timerBar.parentElement.offsetWidth;
+        timerBar.style.transition = 'none';
+        timerBar.style.width = (w / pw * 100) + '%';
+      }
+    }
+
+    function resume() { startTimer(); }
+
+    if (prevBtn) prevBtn.addEventListener('click', function () { goTo(getPrev(current)); });
+    if (nextBtn) nextBtn.addEventListener('click', function () { goTo(getNext(current)); });
+
+    section.addEventListener('mouseenter', pause);
+    section.addEventListener('mouseleave', resume);
+    section.addEventListener('keydown', function (e) {
+      if (e.key === 'ArrowLeft')  goTo(getPrev(current));
+      if (e.key === 'ArrowRight') goTo(getNext(current));
+    });
+
+    var tx = 0;
+    section.addEventListener('touchstart', function (e) { tx = e.touches[0].clientX; }, { passive: true });
+    section.addEventListener('touchend', function (e) {
+      var d = tx - e.changedTouches[0].clientX;
+      if (Math.abs(d) > 50) goTo(d > 0 ? getNext(current) : getPrev(current));
+    }, { passive: true });
+
+    document.addEventListener('visibilitychange', function () {
+      document.hidden ? pause() : resume();
+    });
+
+    showPreview(getNext(0));
+    startTimer();
+  }
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Hero Slideshow",
+  "tag": "div",
+  "class": "hero-slideshow-section",
+  "settings": [
+    {
+      "type": "range",
+      "id": "slide_duration",
+      "label": "Slide duration (seconds)",
+      "min": 2, "max": 12, "step": 1, "default": 5
+    },
+    {
+      "type": "select",
+      "id": "section_height",
+      "label": "Slideshow height",
+      "options": [
+        { "value": "60vh",  "label": "Small (60vh)" },
+        { "value": "75vh",  "label": "Medium (75vh)" },
+        { "value": "90vh",  "label": "Large (90vh)" },
+        { "value": "100vh", "label": "Full screen" }
+      ],
+      "default": "90vh"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "slide_basic",
+      "name": "Basic (full image)",
+      "settings": [
+        { "type": "header",       "content": "Desktop image" },
+        { "type": "image_picker", "id": "image",        "label": "Desktop image" },
+        { "type": "header",       "content": "Mobile image" },
+        { "type": "image_picker", "id": "mobile_image", "label": "Mobile image", "info": "If not set, desktop image is used on mobile" },
+        { "type": "color",        "id": "bg_color",     "label": "Background colour", "default": "#F5F0E8" },
+        { "type": "header",       "content": "Layout" },
+        {
+          "type": "select", "id": "content_position", "label": "Horizontal position",
+          "options": [
+            { "value": "left",   "label": "Left" },
+            { "value": "right",  "label": "Right" },
+            { "value": "center", "label": "Centre" }
+          ],
+          "default": "right"
+        },
+        {
+          "type": "select", "id": "vertical_align", "label": "Vertical position",
+          "options": [
+            { "value": "top",    "label": "Top" },
+            { "value": "middle", "label": "Middle" },
+            { "value": "bottom", "label": "Bottom" }
+          ],
+          "default": "middle"
+        },
+        { "type": "header",   "content": "Content" },
+        { "type": "text",     "id": "eyebrow",    "label": "Eyebrow",    "placeholder": "UP TO 50% OFF" },
+        { "type": "textarea", "id": "heading",    "label": "Heading",    "info": "Use | to split into two lines. Second line renders italic.", "placeholder": "Mastering the|art of skin care." },
+        { "type": "text",     "id": "subheading", "label": "Subheading" },
+        { "type": "header",   "content": "Buttons" },
+        { "type": "text",     "id": "btn1_label", "label": "Button 1 label", "placeholder": "New Arrival" },
+        { "type": "url",      "id": "btn1_url",   "label": "Button 1 URL" },
+        { "type": "text",     "id": "btn2_label", "label": "Button 2 label", "placeholder": "Shop All" },
+        { "type": "url",      "id": "btn2_url",   "label": "Button 2 URL" }
+      ]
+    },
+    {
+      "type": "slide_split",
+      "name": "Split (image + card)",
+      "settings": [
+        { "type": "header",       "content": "Desktop image" },
+        { "type": "image_picker", "id": "image",        "label": "Desktop image" },
+        { "type": "header",       "content": "Mobile image" },
+        { "type": "image_picker", "id": "mobile_image", "label": "Mobile image", "info": "If not set, desktop image is used on mobile" },
+        { "type": "color",        "id": "img_panel_bg",  "label": "Image panel background", "default": "#E8DFD0" },
+        { "type": "header",       "content": "Right content panel" },
+        { "type": "color",        "id": "content_bg",    "label": "Content panel background", "default": "#EEF2EC" },
+        { "type": "text",         "id": "eyebrow",       "label": "Eyebrow" },
+        { "type": "textarea",     "id": "heading",       "label": "Heading", "info": "Use | to split italic|normal.", "placeholder": "Natural|Radiance Savings." },
+        { "type": "text",         "id": "btn1_label",    "label": "Button label", "placeholder": "Discover Now" },
+        { "type": "url",          "id": "btn1_url",      "label": "Button URL" },
+        { "type": "header",       "content": "Product card" },
+        { "type": "text",         "id": "product_label_small", "label": "Card eyebrow", "placeholder": "Check out our products:" },
+        { "type": "product",      "id": "product",       "label": "Product (auto-fills name & price)" },
+        { "type": "text",         "id": "product_label", "label": "Product name override" },
+        { "type": "text",         "id": "product_price", "label": "Price override", "placeholder": "From $90.00" },
+        { "type": "image_picker", "id": "product_image", "label": "Product image override" }
+      ]
+    },
+    {
+      "type": "slide_feature",
+      "name": "Feature (bottom-left)",
+      "settings": [
+        { "type": "header",       "content": "Desktop image" },
+        { "type": "image_picker", "id": "image",        "label": "Desktop image" },
+        { "type": "header",       "content": "Mobile image" },
+        { "type": "image_picker", "id": "mobile_image", "label": "Mobile image", "info": "If not set, desktop image is used on mobile" },
+        { "type": "color",        "id": "bg_color",     "label": "Background colour", "default": "#E8EDE4" },
+        { "type": "header",       "content": "Content" },
+        { "type": "text",         "id": "eyebrow",      "label": "Eyebrow",    "placeholder": "BFCM 25 – GIFT MORE, GET MORE" },
+        { "type": "textarea",     "id": "heading",      "label": "Heading",    "info": "Use | — first part italic, rest normal.", "placeholder": "Cyber week|70% off" },
+        { "type": "text",         "id": "subheading",   "label": "Subheading" },
+        { "type": "text",         "id": "btn1_label",   "label": "Button label", "placeholder": "Claim the deals" },
+        { "type": "url",          "id": "btn1_url",     "label": "Button URL" }
+      ]
+    },
+    {
+      "type": "slide_promo",
+      "name": "Promo (content left)",
+      "settings": [
+        { "type": "header",       "content": "Desktop image" },
+        { "type": "image_picker", "id": "image",        "label": "Desktop image" },
+        { "type": "header",       "content": "Mobile image" },
+        { "type": "image_picker", "id": "mobile_image", "label": "Mobile image", "info": "If not set, desktop image is used on mobile" },
+        { "type": "color",        "id": "bg_color",     "label": "Background colour", "default": "#E8EDE4" },
+        { "type": "header",       "content": "Content" },
+        { "type": "text",         "id": "eyebrow",      "label": "Eyebrow",    "placeholder": "UP TO 50% OFF" },
+        { "type": "textarea",     "id": "heading",      "label": "Heading",    "info": "Use | — second part renders italic inline.", "placeholder": "Mastering the|art of skin care." },
+        { "type": "text",         "id": "subheading",   "label": "Subheading" },
+        { "type": "text",         "id": "btn1_label",   "label": "Button label", "placeholder": "Shop All" },
+        { "type": "url",          "id": "btn1_url",     "label": "Button URL" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hero Slideshow",
+      "blocks": [
+        { "type": "slide_basic",   "settings": { "eyebrow": "UP TO 50% OFF", "heading": "Mastering the|art of skin care.", "btn1_label": "New Arrival", "btn2_label": "Shop All", "content_position": "right" } },
+        { "type": "slide_split",   "settings": { "heading": "Natural|Radiance Savings.", "btn1_label": "Discover Now", "product_label_small": "Check out our products:" } },
+        { "type": "slide_feature", "settings": { "eyebrow": "BFCM 25 – GIFT MORE, GET MORE", "heading": "Cyber week|70% off", "subheading": "Enjoy a complimentary 2-piece gift with your $100+ order.", "btn1_label": "Claim the deals" } },
+        { "type": "slide_promo",   "settings": { "eyebrow": "UP TO 50% OFF", "heading": "Mastering the|art of skin care.", "btn1_label": "Shop All" } }
+      ]
+    }
+  ]
+}
+{% endschema %}
