@@ -447,6 +447,7 @@
         "slide_LCra6R",
         "slide_4tiJCL"
       ],
+      "disabled": true,
       "name": "t:names.slideshow_full_frame",
       "settings": {
         "display_mode": "full_frame",
