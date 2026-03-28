@@ -237,50 +237,10 @@
             "btn2_label": "",
             "btn2_url": ""
           }
-        },
-        "slide_split_Kg9KPb": {
-          "type": "slide_split",
-          "settings": {
-            "img_panel_bg": "#E8DFD0",
-            "content_bg": "#EEF2EC",
-            "eyebrow": "",
-            "heading": "Natural|Radiance Savings.",
-            "btn1_label": "Discover Now",
-            "btn1_url": "",
-            "product_label_small": "Check out our products:",
-            "product": "",
-            "product_label": "",
-            "product_price": ""
-          }
-        },
-        "slide_feature_rPhe7d": {
-          "type": "slide_feature",
-          "settings": {
-            "bg_color": "#E8EDE4",
-            "eyebrow": "BFCM 25 – GIFT MORE, GET MORE",
-            "heading": "Cyber week|70% off",
-            "subheading": "Enjoy a complimentary 2-piece gift with your $100+ order.",
-            "btn1_label": "Claim the deals",
-            "btn1_url": ""
-          }
-        },
-        "slide_promo_N4hDpM": {
-          "type": "slide_promo",
-          "settings": {
-            "bg_color": "#E8EDE4",
-            "eyebrow": "UP TO 50% OFF",
-            "heading": "Mastering the|art of skin care.",
-            "subheading": "",
-            "btn1_label": "Shop All",
-            "btn1_url": ""
-          }
         }
       },
       "block_order": [
-        "slide_basic_jYmVA4",
-        "slide_split_Kg9KPb",
-        "slide_feature_rPhe7d",
-        "slide_promo_N4hDpM"
+        "slide_basic_jYmVA4"
       ],
       "name": "Hero Slideshow",
       "settings": {
