@@ -1,0 +1,208 @@
+{%- comment -%}
+  Stringer Music - Brand Ethos Parallax
+  A full-bleed cinematic image with a fixed background to create a parallax scroll effect.
+{%- endcomment -%}
+
+{%- style -%}
+  #be-{{ section.id }} .be-background {
+    {%- if section.settings.image != blank -%}
+      background-image: url('{{ section.settings.image | image_url: width: 2400 }}');
+    {%- else -%}
+      background-color: #1A1710; /* Fallback Ink Color */
+    {%- endif -%}
+  }
+  
+  #be-{{ section.id }} .be-overlay {
+    background-color: {{ section.settings.overlay_color }};
+    opacity: {{ section.settings.overlay_opacity | divided_by: 100.0 }};
+  }
+
+  #be-{{ section.id }} .be-content * {
+    color: {{ section.settings.text_color }};
+  }
+{%- endstyle -%}
+
+<section class="brand-ethos-section" id="be-{{ section.id }}">
+  
+  {%- comment -%} BACKGROUND & OVERLAY {%- endcomment -%}
+  <div class="be-background">
+    {%- if section.settings.image == blank -%}
+      {{ 'lifestyle-1' | placeholder_svg_tag: 'be-placeholder' }}
+    {%- endif -%}
+  </div>
+  <div class="be-overlay"></div>
+
+  {%- comment -%} TEXT CONTENT {%- endcomment -%}
+  <div class="be-content">
+    {%- if section.settings.quote != blank -%}
+      <h2 class="be-quote">
+        {%- assign parts = section.settings.quote | split: '|' -%}
+        {%- for part in parts -%}
+          {%- if forloop.index == 2 -%}<em style="color: {{ section.settings.accent_color }};">{{ part }}</em>{%- else -%}{{ part }}{%- endif -%}
+        {%- endfor -%}
+      </h2>
+    {%- endif -%}
+
+    {%- if section.settings.author != blank -%}
+      <p class="be-author">{{ section.settings.author }}</p>
+    {%- endif -%}
+  </div>
+
+</section>
+
+{% stylesheet %}
+  /* ════════════════════════════════════════════
+     BASE STYLING
+  ════════════════════════════════════════════ */
+  .brand-ethos-section {
+    position: relative;
+    min-height: 75vh; /* Takes up 75% of the screen height */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  /* ════════════════════════════════════════════
+     PARALLAX BACKGROUND
+  ════════════════════════════════════════════ */
+  .be-background {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background-size: cover;
+    background-position: center center;
+    /* THIS IS THE PARALLAX MAGIC */
+    background-attachment: fixed; 
+    z-index: 1;
+  }
+
+  .be-placeholder {
+    width: 100%; height: 100%;
+    fill: rgba(255,255,255,0.1);
+    object-fit: cover;
+  }
+
+  .be-overlay {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: 2;
+  }
+
+  /* ════════════════════════════════════════════
+     TYPOGRAPHY
+  ════════════════════════════════════════════ */
+  .be-content {
+    position: relative;
+    z-index: 3;
+    text-align: center;
+    padding: 0 5%;
+    max-width: 1200px;
+    /* A subtle drop shadow to ensure text pops off any image */
+    text-shadow: 0 4px 24px rgba(0,0,0,0.4);
+  }
+
+  .be-quote {
+    font-family: var(--type_header_font, 'Playfair Display', serif);
+    font-size: clamp(40px, 6vw, 90px);
+    font-weight: 900;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    margin: 0 0 32px 0;
+  }
+
+  .be-quote em {
+    font-style: italic;
+    font-weight: 700;
+  }
+
+  .be-author {
+    font-family: var(--type_body_font, 'DM Sans', sans-serif);
+    font-size: 14px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    font-weight: 700;
+    margin: 0;
+  }
+
+  /* ════════════════════════════════════════════
+     RESPONSIVE (MOBILE FIXES)
+  ════════════════════════════════════════════ */
+  @media screen and (max-width: 749px) {
+    .brand-ethos-section { min-height: 60vh; }
+    .be-quote { font-size: 36px; margin-bottom: 24px; }
+  }
+
+  /* Safari iOS struggles with background-attachment: fixed. 
+     This media query safely disables the parallax on touch devices 
+     while keeping it looking beautiful. */
+  @media (hover: none) and (pointer: coarse) {
+    .be-background { background-attachment: scroll; }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Brand Ethos Parallax",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Background Image",
+      "info": "Upload a high-resolution image (e.g., 2400px wide). Darker, atmospheric images work best."
+    },
+    {
+      "type": "color",
+      "id": "overlay_color",
+      "label": "Overlay Color",
+      "default": "#1A1710"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "label": "Overlay Opacity",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 40,
+      "info": "Increase this if your text is hard to read against the image."
+    },
+    {
+      "type": "header",
+      "content": "Text Content"
+    },
+    {
+      "type": "textarea",
+      "id": "quote",
+      "label": "Quote / Heading",
+      "default": "Tools for the |Modern| Soundscape.",
+      "info": "Use | to wrap a word in your accent color and italics."
+    },
+    {
+      "type": "text",
+      "id": "author",
+      "label": "Subtext / Author",
+      "default": "STRINGER MUSIC CO."
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#F5F0E8"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent Color (Italics)",
+      "default": "#C8420A"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Brand Ethos Parallax"
+    }
+  ]
+}
+{% endschema %}
