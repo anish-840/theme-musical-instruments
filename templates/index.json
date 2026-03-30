@@ -328,7 +328,7 @@
       "name": "Product Highlights Stringer",
       "settings": {
         "heading": "Product Highlights",
-        "bg_color": "#f5f0e8",
+        "bg_color": "#ffffff",
         "show_nav": true,
         "tab_1_label": "Trends",
         "collection_1": "trends",
