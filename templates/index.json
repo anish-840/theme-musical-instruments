@@ -437,8 +437,25 @@
       "name": "Trust & Perks Banner",
       "settings": {
         "bg_color": "#ffffff",
-        "text_color": "#1A1710",
-        "icon_color": "#C8420A"
+        "text_color": "#1a1710",
+        "icon_color": "#c8420a"
+      }
+    },
+    "featured_video_split_LKtnFF": {
+      "type": "featured-video-split",
+      "name": "Featured Video Split",
+      "settings": {
+        "bg_color": "#FFFFFF",
+        "media_position": "right",
+        "video_url": "https://www.youtube.com/watch?v=kKet51wxG90",
+        "autoplay": true,
+        "loop": true,
+        "controls": false,
+        "eyebrow": "HEAR THE DIFFERENCE",
+        "heading": "The Sound of |Perfection|",
+        "text": "<p>Experience the rich resonance and immaculate build quality of our flagship series. Watch our master builders take you through the details.</p>",
+        "button_label": "Shop The Collection",
+        "button_link": ""
       }
     },
     "product_list_EDUBdR": {
@@ -984,6 +1001,7 @@
     "product_highlights_PxTtXB",
     "top_brands_zJNmPf",
     "trust_perks_biA49t",
+    "featured_video_split_LKtnFF",
     "product_list_EDUBdR",
     "media_with_content_LfPdEJ",
     "collection_list_xpBxCm"
