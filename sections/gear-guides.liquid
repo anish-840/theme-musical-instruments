@@ -57,11 +57,12 @@
 
       {%- else -%}
         
-        {%- comment -%} ONBOARDING PLACEHOLDERS {%- endcomment -%}
+        {%- comment -%} ONBOARDING PLACEHOLDERS FIXED {%- endcomment -%}
         {%- for i in (1..section.settings.post_limit) -%}
           <div class="gg-card gg-card--placeholder">
             <div class="gg-image-wrapper">
-              {{ 'lifestyle-' | append: i | placeholder_svg_tag: 'gg-placeholder' }}
+              {%- capture current -%}{% cycle 1, 2, 3, 4 %}{%- endcapture -%}
+              {{ 'collection-' | append: current | placeholder_svg_tag: 'gg-placeholder' }}
             </div>
             <div class="gg-content">
               <span class="gg-date">Today</span>
@@ -170,7 +171,6 @@
     display: inline-flex; align-items: center; position: relative;
   }
 
-  /* The little animated line under "Read Article" */
   .gg-read-more::after {
     content: ''; position: absolute; bottom: -2px; left: 0; width: 0%; height: 2px;
     background-color: var(--brand-rust); transition: width 0.3s ease;
@@ -194,11 +194,10 @@
 
   @media screen and (max-width: 749px) {
     .gg-section { padding: 60px 5%; }
-    /* Converts grid to horizontal swipe on mobile */
     .gg-grid { 
       display: flex; overflow-x: auto; scroll-snap-type: x mandatory;
       gap: 16px; padding-bottom: 20px; scrollbar-width: none;
-      margin: 0 -5%; padding-left: 5%; padding-right: 5%; /* Full bleed scroll */
+      margin: 0 -5%; padding-left: 5%; padding-right: 5%;
     }
     .gg-grid::-webkit-scrollbar { display: none; }
     .gg-card { flex: 0 0 calc(85% - 16px); scroll-snap-align: start; }

@@ -445,7 +445,7 @@
       "type": "featured-video-split",
       "name": "Featured Video Split",
       "settings": {
-        "bg_color": "#FFFFFF",
+        "bg_color": "#ffffff",
         "media_position": "right",
         "video_url": "https://www.youtube.com/watch?v=kKet51wxG90",
         "autoplay": true,
@@ -456,6 +456,18 @@
         "text": "<p>Experience the rich resonance and immaculate build quality of our flagship series. Watch our master builders take you through the details.</p>",
         "button_label": "Shop The Collection",
         "button_link": ""
+      }
+    },
+    "gear_guides_tLPfPr": {
+      "type": "gear-guides",
+      "name": "Gear Guides Grid",
+      "settings": {
+        "bg_color": "#F5F0E8",
+        "eyebrow": "EDITORIAL & GUIDES",
+        "heading": "Read the |Manual|",
+        "blog": "",
+        "post_limit": 3,
+        "show_view_all": true
       }
     },
     "product_list_EDUBdR": {
@@ -1002,6 +1014,7 @@
     "top_brands_zJNmPf",
     "trust_perks_biA49t",
     "featured_video_split_LKtnFF",
+    "gear_guides_tLPfPr",
     "product_list_EDUBdR",
     "media_with_content_LfPdEJ",
     "collection_list_xpBxCm"
