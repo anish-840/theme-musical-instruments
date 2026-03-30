@@ -392,6 +392,55 @@
         "mobile_columns": "2"
       }
     },
+    "trust_perks_biA49t": {
+      "type": "trust-perks",
+      "blocks": {
+        "perk_tdX64e": {
+          "type": "perk",
+          "settings": {
+            "icon": "shipping",
+            "title": "Free Shipping",
+            "subtext": "On all orders over $100"
+          }
+        },
+        "perk_xwab4R": {
+          "type": "perk",
+          "settings": {
+            "icon": "shield",
+            "title": "2-Year Warranty",
+            "subtext": "Guaranteed quality and care"
+          }
+        },
+        "perk_abD3Np": {
+          "type": "perk",
+          "settings": {
+            "icon": "chat",
+            "title": "Pro Advice",
+            "subtext": "Talk to working musicians"
+          }
+        },
+        "perk_JQiAtT": {
+          "type": "perk",
+          "settings": {
+            "icon": "return",
+            "title": "30-Day Returns",
+            "subtext": "Hassle-free exchanges"
+          }
+        }
+      },
+      "block_order": [
+        "perk_tdX64e",
+        "perk_xwab4R",
+        "perk_abD3Np",
+        "perk_JQiAtT"
+      ],
+      "name": "Trust & Perks Banner",
+      "settings": {
+        "bg_color": "#ffffff",
+        "text_color": "#1A1710",
+        "icon_color": "#C8420A"
+      }
+    },
     "product_list_EDUBdR": {
       "type": "product-list",
       "blocks": {
@@ -934,6 +983,7 @@
     "category_grid_zekk6j",
     "product_highlights_PxTtXB",
     "top_brands_zJNmPf",
+    "trust_perks_biA49t",
     "product_list_EDUBdR",
     "media_with_content_LfPdEJ",
     "collection_list_xpBxCm"
