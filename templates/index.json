@@ -306,7 +306,7 @@
       "name": "Category Grid",
       "settings": {
         "heading": "Our Categories",
-        "bg_color": "#F5F0E8",
+        "bg_color": "#f5f0e8",
         "desktop_columns": 3,
         "mobile_columns": "1",
         "image_style": "transparent"
