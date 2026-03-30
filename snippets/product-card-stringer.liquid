@@ -1,13 +1,11 @@
 {% comment %}
   Stringer Music - Custom Product Card
-  Matches the screenshot: Gray BG, Bold Playfair Headings. (No Ratings)
-  Center-aligned text for better visual balance.
+  Gray BG, Bold Playfair Headings, Tight Spacing, Center Aligned.
 {% endcomment %}
 
 <div class="product-card-stringer">
   <a href="{{ product.url }}" class="pcs__link">
     
-    {% comment %} Image Wrapper with Gray Background {% endcomment %}
     <div class="pcs__image-wrapper">
       {%- if product.featured_media -%}
         {{ product.featured_media | image_url: width: 600 | image_tag: 
@@ -21,10 +19,8 @@
       {%- endif -%}
     </div>
 
-    {% comment %} Content Area {% endcomment %}
     <div class="pcs__info">
       <h3 class="pcs__title">{{ product.title }}</h3>
-      
       <div class="pcs__price">
         {{ product.price | money_without_trailing_zeros }}
       </div>
@@ -33,19 +29,10 @@
 </div>
 
 <style>
-  .product-card-stringer {
-    width: 100%;
-    transition: transform 0.3s ease;
-  }
-
-  .pcs__link {
-    text-decoration: none;
-    color: inherit;
-    display: block;
-  }
-
+  .product-card-stringer { width: 100%; transition: transform 0.3s ease; flex: 0 0 auto; }
+  .pcs__link { text-decoration: none; color: inherit; display: block; }
   .pcs__image-wrapper {
-    background-color: #F1F1F1; /* The gray from your screenshot */
+    background-color: #F1F1F1;
     aspect-ratio: 1 / 1;
     display: flex;
     align-items: center;
@@ -54,33 +41,22 @@
     overflow: hidden;
     margin-bottom: 12px;
   }
-
-  .pcs__image {
-    max-width: 100%;
-    height: auto;
-    object-fit: contain;
-    transition: transform 0.5s ease;
-  }
-
-  .pcs__info {
-    text-align: center; /* Center-align the entire content area */
-  }
-
+  .pcs__image { max-width: 100%; height: auto; object-fit: contain; transition: transform 0.5s ease; }
+  .pcs__info { text-align: center; padding: 0 10px; }
   .pcs__title {
     font-family: var(--type_header_font, 'Playfair Display', serif);
     font-size: 15px;
     font-weight: 400;
     line-height: 1.2;
     color: #1A1710;
-    margin: 4px 0 0; /* Zero margin at the bottom */
+    margin: 4px 0 0;
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
-    min-height: 20px; /* Reduced further to pull price up */
+    min-height: 20px;
     text-align: center;
   }
-
   .pcs__price {
     font-family: var(--type_header_font, 'Playfair Display', serif);
     font-size: 22px;
@@ -88,14 +64,8 @@
     color: #1A1710;
     letter-spacing: -0.02em;
     text-align: center;
-    margin-top: -2px; /* Pulls the price up slightly into the title's area */
+    margin-top: -2px;
   }
-
-  /* Hover Effects */
-  .product-card-stringer:hover .pcs__image {
-    transform: scale(1.08);
-  }
-  .product-card-stringer:hover .pcs__title {
-    color: #C8420A; /* Stringer Rust Color */
-  }
+  .product-card-stringer:hover .pcs__image { transform: scale(1.08); }
+  .product-card-stringer:hover .pcs__title { color: #C8420A; }
 </style>
