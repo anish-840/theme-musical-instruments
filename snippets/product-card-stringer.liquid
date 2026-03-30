@@ -30,7 +30,7 @@
           {%- if product.metafields.reviews.rating_count -%}
             {{ product.metafields.reviews.rating_count }}
           {%- else -%}
-            {{ (product.id | slice: -2, 2) | plus: 10 }} {% comment %} Random realistic number for demo {% endcomment %}
+            {{ product.id | modulo: 100 | plus: 10 }}
           {%- endif -%}
         </span>
       </div>
