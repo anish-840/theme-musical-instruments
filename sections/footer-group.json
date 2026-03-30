@@ -69,9 +69,9 @@
                 "width": "fill",
                 "custom_width": 100,
                 "inherit_color_scheme": true,
+                "color_scheme": "scheme-4",
                 "heading": "",
                 "heading_preset": "h3",
-                "color_scheme": "scheme-4",
                 "border_style": "all",
                 "border_width": 0,
                 "border_radius": 100,
@@ -102,7 +102,7 @@
         "media_height": "auto",
         "section_width": "full-width",
         "extend_media": true,
-        "color_scheme": "scheme-e1e09ff5-6396-47cd-ad7a-c05470cf2a2e",
+        "color_scheme": "scheme-1",
         "padding-block-start": 0,
         "padding-block-end": 0
       }
