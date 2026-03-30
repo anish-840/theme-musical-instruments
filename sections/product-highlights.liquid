@@ -143,8 +143,11 @@
   @media screen and (max-width: 1100px) {
     .ph-grid-carousel > * { flex: 0 0 calc(33.33% - 20px); }
   }
+  
+  /* Update for Mobile to show 2 products */
   @media screen and (max-width: 749px) {
-    .ph-grid-carousel > * { flex: 0 0 80%; }
+    .ph-grid-carousel { gap: 15px; } /* Slightly tighter gap on mobile */
+    .ph-grid-carousel > * { flex: 0 0 calc(50% - 20px); } /* Shows exactly 2 products */
     .ph-arrow { display: none; } /* Hide arrows on mobile, users will naturally swipe */
     .ph-tabs { gap: 20px; }
   }
