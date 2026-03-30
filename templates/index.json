@@ -337,6 +337,61 @@
         "products_to_show": 4
       }
     },
+    "top_brands_zJNmPf": {
+      "type": "top-brands",
+      "blocks": {
+        "brand_CKhqxR": {
+          "type": "brand",
+          "settings": {
+            "title": "Yamaha",
+            "link": ""
+          }
+        },
+        "brand_W3GjHp": {
+          "type": "brand",
+          "settings": {
+            "title": "Fender",
+            "link": ""
+          }
+        },
+        "brand_wnyhkd": {
+          "type": "brand",
+          "settings": {
+            "title": "Roland",
+            "link": ""
+          }
+        },
+        "brand_6QkFXb": {
+          "type": "brand",
+          "settings": {
+            "title": "Gibson",
+            "link": ""
+          }
+        },
+        "brand_MEKNTX": {
+          "type": "brand",
+          "settings": {
+            "title": "Shure",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "brand_CKhqxR",
+        "brand_W3GjHp",
+        "brand_wnyhkd",
+        "brand_6QkFXb",
+        "brand_MEKNTX"
+      ],
+      "name": "Top Brands Grid",
+      "settings": {
+        "bg_color": "#FFFFFF",
+        "heading": "Top Brands",
+        "show_underline": true,
+        "desktop_columns": 5,
+        "mobile_columns": "2"
+      }
+    },
     "product_list_EDUBdR": {
       "type": "product-list",
       "blocks": {
@@ -875,6 +930,7 @@
     "hero_slideshow_7Re4mF",
     "category_grid_zekk6j",
     "product_highlights_PxTtXB",
+    "top_brands_zJNmPf",
     "product_list_EDUBdR",
     "media_with_content_LfPdEJ",
     "collection_list_xpBxCm"
