@@ -50,7 +50,7 @@
           
           <div class="cg-card__icon">
             {%- if card_image != blank -%}
-              {{ card_image | image_url: width: 100 | image_tag: 
+              {{ card_image | image_url: width: 200 | image_tag: 
                 loading: 'lazy', 
                 alt: card_title 
               }}
@@ -165,9 +165,9 @@
   }
 
   .cg-card__icon {
-    width: 44px;
-    height: 44px;
-    margin-bottom: 40px;
+    width: 80px; /* Increased from 44px */
+    height: 80px; /* Increased from 44px */
+    margin-bottom: 32px;
     display: flex;
     align-items: flex-end;
   }
@@ -214,7 +214,7 @@
     border-color: var(--brand-rust);
     transform: translateY(-4px);
     box-shadow: 0 8px 24px rgba(var(--brand-ink-rgb), 0.06);
-    background-color: #FFFFFF;
+    /* White background shift removed to keep it transparent */
   }
 
   /* ════════════════════════════════════════════
@@ -232,7 +232,7 @@
       gap: 16px;
     }
     .cg-card { padding: 24px 16px; }
-    .cg-card__icon { margin-bottom: 24px; width: 36px; height: 36px; }
+    .cg-card__icon { margin-bottom: 24px; width: 60px; height: 60px; } /* Scaled up for mobile too */
     .cg-card__title { font-size: 18px; }
   }
 {% endstylesheet %}
