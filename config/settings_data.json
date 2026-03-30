@@ -36,7 +36,7 @@
     "color_schemes": {
       "scheme-1": {
         "settings": {
-          "background": "#f5f0e8",
+          "background": "#ffffff",
           "foreground_heading": "#1a1710",
           "foreground": "#1a1710",
           "primary": "#c8420a",
@@ -49,7 +49,7 @@
           "primary_button_hover_background": "#a83008",
           "primary_button_hover_text": "#ffffff",
           "primary_button_hover_border": "#000000",
-          "secondary_button_background": "#00000000",
+          "secondary_button_background": "rgba(0,0,0,0)",
           "secondary_button_text": "#1a1710",
           "secondary_button_border": "#1a17101f",
           "secondary_button_hover_background": "#1a17100d",
