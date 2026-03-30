@@ -1,0 +1,265 @@
+{%- comment -%}
+  Stringer Music - Trust & Perks Banner
+  A sleek, horizontal conversion bar to highlight shop policies.
+{%- endcomment -%}
+
+<section 
+  class="trust-perks-section" 
+  id="tp-{{ section.id }}"
+  style="
+    background-color: {{ section.settings.bg_color }};
+    --text-color: {{ section.settings.text_color }};
+    --icon-color: {{ section.settings.icon_color }};
+  "
+>
+  <div class="tp-container">
+    <div class="tp-grid">
+      
+      {%- for block in section.blocks -%}
+        <div class="tp-item" {{ block.shopify_attributes }}>
+          
+          <div class="tp-icon-wrapper">
+            {%- if block.settings.custom_image != blank -%}
+              {{ block.settings.custom_image | image_url: width: 80 | image_tag: 
+                loading: 'lazy', 
+                class: 'tp-icon-img',
+                alt: block.settings.title 
+              }}
+            {%- else -%}
+              {%- comment -%} Built-in Vector Icons {%- endcomment -%}
+              {%- case block.settings.icon -%}
+                {%- when 'shipping' -%}
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 00-3.213-9.193 2.056 2.056 0 00-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 00-10.026 0 1.106 1.106 0 00-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12" /></svg>
+                {%- when 'shield' -%}
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" /></svg>
+                {%- when 'chat' -%}
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M20.25 8.511c.884.284 1.5 1.128 1.5 2.097v4.286c0 1.136-.84 2.1-1.98 2.193-.34.027-.68.052-1.02.072v3.091l-3-3c-1.354 0-2.694-.055-4.02-.163a2.115 2.115 0 01-.825-.242m9.345-8.334a2.126 2.126 0 00-.476-.095 48.64 48.64 0 00-8.048 0c-1.131.094-1.976 1.057-1.976 2.192v4.286c0 .837.46 1.58 1.155 1.951m9.345-8.334V6.637c0-1.221-1.15-2.136-2.343-2.261-2.462-.26-4.957-.39-7.48-.39s-5.018.13-7.48.39c-1.192.125-2.343 1.04-2.343 2.261v8.143c0 1.136.84 2.1 1.98 2.193.34.027.68.052 1.02.072v3.091l3-3c1.354 0 2.694-.055 4.02-.163" /></svg>
+                {%- when 'return' -%}
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" /></svg>
+              {%- endcase -%}
+            {%- endif -%}
+          </div>
+
+          <div class="tp-text-wrapper">
+            <h4 class="tp-heading">{{ block.settings.title }}</h4>
+            {%- if block.settings.subtext != blank -%}
+              <p class="tp-subtext">{{ block.settings.subtext }}</p>
+            {%- endif -%}
+          </div>
+
+        </div>
+      {%- endfor -%}
+      
+    </div>
+  </div>
+</section>
+
+{% stylesheet %}
+  /* ════════════════════════════════════════════
+     BASE STYLING & VARIABLES
+  ════════════════════════════════════════════ */
+  .trust-perks-section {
+    --font-body: var(--type_body_font, 'DM Sans', sans-serif);
+    padding: 36px 5%;
+    border-top: 1px solid rgba(26,23,16,0.06);
+    border-bottom: 1px solid rgba(26,23,16,0.06);
+  }
+
+  .tp-container {
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  /* ════════════════════════════════════════════
+     GRID LAYOUT
+  ════════════════════════════════════════════ */
+  .tp-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+    align-items: center;
+  }
+
+  /* ════════════════════════════════════════════
+     PERK ITEMS
+  ════════════════════════════════════════════ */
+  .tp-item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 8px;
+  }
+
+  .tp-icon-wrapper {
+    flex-shrink: 0;
+    width: 36px;
+    height: 36px;
+    color: var(--icon-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Target the built-in SVG code */
+  .tp-icon-wrapper svg {
+    width: 100%;
+    height: 100%;
+    stroke: currentColor;
+  }
+
+  /* Target custom uploaded images */
+  .tp-icon-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  .tp-text-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .tp-heading {
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: 15px;
+    line-height: 1.2;
+    margin: 0 0 4px 0;
+    color: var(--text-color);
+  }
+
+  .tp-subtext {
+    font-family: var(--font-body);
+    font-size: 13px;
+    line-height: 1.4;
+    margin: 0;
+    color: var(--text-color);
+    opacity: 0.7; /* Gives the subtext a softer hierarchy */
+  }
+
+  /* ════════════════════════════════════════════
+     RESPONSIVE DESIGN
+  ════════════════════════════════════════════ */
+  @media screen and (max-width: 990px) {
+    .tp-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 32px 24px;
+    }
+  }
+
+  @media screen and (max-width: 550px) {
+    .trust-perks-section { padding: 32px 5%; }
+    /* Keeping it 2 columns on mobile so it doesn't get overwhelmingly tall */
+    .tp-grid { 
+      grid-template-columns: repeat(2, 1fr); 
+      gap: 24px 16px;
+    }
+    .tp-item { flex-direction: column; text-align: center; gap: 12px; }
+    .tp-icon-wrapper { width: 32px; height: 32px; }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Trust & Perks Banner",
+  "max_blocks": 4,
+  "settings": [
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#F5F0E8"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#1A1710"
+    },
+    {
+      "type": "color",
+      "id": "icon_color",
+      "label": "Icon Color",
+      "default": "#C8420A"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "perk",
+      "name": "Perk",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Choose Icon",
+          "options": [
+            { "value": "shipping", "label": "Shipping Truck" },
+            { "value": "shield", "label": "Warranty Shield" },
+            { "value": "chat", "label": "Support Chat" },
+            { "value": "return", "label": "Return Arrows" }
+          ],
+          "default": "shipping"
+        },
+        {
+          "type": "image_picker",
+          "id": "custom_image",
+          "label": "Custom Icon Image",
+          "info": "Upload your own icon to override the dropdown selection."
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading",
+          "default": "Free Shipping"
+        },
+        {
+          "type": "text",
+          "id": "subtext",
+          "label": "Subtext",
+          "default": "On all orders over $100."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Trust & Perks Banner",
+      "blocks": [
+        {
+          "type": "perk",
+          "settings": {
+            "icon": "shipping",
+            "title": "Free Shipping",
+            "subtext": "On all orders over $100"
+          }
+        },
+        {
+          "type": "perk",
+          "settings": {
+            "icon": "shield",
+            "title": "2-Year Warranty",
+            "subtext": "Guaranteed quality and care"
+          }
+        },
+        {
+          "type": "perk",
+          "settings": {
+            "icon": "chat",
+            "title": "Pro Advice",
+            "subtext": "Talk to working musicians"
+          }
+        },
+        {
+          "type": "perk",
+          "settings": {
+            "icon": "return",
+            "title": "30-Day Returns",
+            "subtext": "Hassle-free exchanges"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
