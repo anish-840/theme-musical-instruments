@@ -263,9 +263,7 @@
   document.addEventListener('DOMContentLoaded', () => {
     const section = document.querySelector('#ph-{{ section.id }}');
     
-    // ════════════════════════════════════════════
-    // TAB & ARROW LOGIC (Unchanged)
-    // ════════════════════════════════════════════
+    // Tab Logic
     section.querySelectorAll('.ph-tab-btn').forEach(tab => {
       tab.addEventListener('click', () => {
         const target = tab.getAttribute('data-tab');
@@ -276,6 +274,7 @@
       });
     });
 
+    // Arrow Logic
     const nextBtn = section.querySelector('.ph-arrow.next');
     const prevBtn = section.querySelector('.ph-arrow.prev');
 
@@ -299,69 +298,57 @@
         const rect = dialog.getBoundingClientRect();
         const isInDialog = (rect.top <= e.clientY && e.clientY <= rect.top + rect.height &&
                             rect.left <= e.clientX && e.clientX <= rect.left + rect.width);
-        if (!isInDialog) { dialog.close(); }
+        if (!isInDialog) {
+          dialog.close();
+        }
       });
     });
 
-    // ════════════════════════════════════════════
-    // SUPERCHARGED AJAX ADD TO CART
-    // ════════════════════════════════════════════
+    // AJAX Add to Cart Logic
     const ajaxForms = section.querySelectorAll('.ajax-cart-form');
     
     ajaxForms.forEach(form => {
       form.addEventListener('submit', function(e) {
-        e.preventDefault(); // Stop page redirect
+        e.preventDefault(); // Stop the page from redirecting
         
         const submitBtn = this.querySelector('button[type="submit"]');
         const btnTextSpan = submitBtn.querySelector('span');
         const originalText = btnTextSpan.innerText;
         
-        // 1. OPTIMISTIC UI: Change text instantly before server even responds
+        // Show loading state
         btnTextSpan.innerText = 'Adding...';
         submitBtn.disabled = true;
         
         const formData = new FormData(this);
         
-        // 2. THE SPEED HACK: Ask Shopify for the Cart Drawer HTML in the same trip
-        formData.append('sections', 'cart-drawer,cart-icon-bubble');
-        formData.append('sections_url', window.location.pathname);
-        
+        // Send data to Shopify's Cart API
         fetch(window.Shopify.routes.root + 'cart/add.js', {
           method: 'POST',
-          body: formData,
-          headers: { 'X-Requested-With': 'XMLHttpRequest' }
+          body: formData
         })
-        .then(response => response.json())
         .then(response => {
-          // Instantly show success on the button
+          if (!response.ok) throw new Error('Network error');
+          return response.json();
+        })
+        .then(cart => {
+          // Success! Show added message
           btnTextSpan.innerText = 'Added ✓';
           
-          // 3. INSTANT CART RENDER: Hook into modern Shopify theme engines (Dawn, etc.)
-          const cartDrawer = document.querySelector('cart-drawer');
-          if (cartDrawer && typeof cartDrawer.renderContents === 'function') {
-            // This forces the drawer to update its HTML and pop open immediately
-            cartDrawer.renderContents(response);
-          } else {
-            // Fallback for custom/older themes
-            document.documentElement.dispatchEvent(new CustomEvent('cart:updated', { bubbles: true }));
-            document.documentElement.dispatchEvent(new CustomEvent('cart:build', { bubbles: true }));
-          }
+          // Dispatch events to let the theme know the cart updated 
+          // (This helps slide-out carts open automatically on many modern themes)
+          document.documentElement.dispatchEvent(new CustomEvent('cart:updated', { bubbles: true }));
+          document.documentElement.dispatchEvent(new CustomEvent('cart:build', { bubbles: true }));
           
-          // Close Quick View modal if it's open, so they can see the cart
-          const openModal = this.closest('dialog');
-          if (openModal) {
-            setTimeout(() => { openModal.close(); }, 400); // Slight delay so they see the "Added ✓" text
-          }
-          
-          // Reset button back to normal
+          // Reset button after 2 seconds
           setTimeout(() => {
             btnTextSpan.innerText = originalText;
             submitBtn.disabled = false;
-          }, 1500);
+          }, 2000);
         })
         .catch(error => {
           console.error('Error adding to cart:', error);
           btnTextSpan.innerText = 'Error';
+          
           setTimeout(() => {
             btnTextSpan.innerText = originalText;
             submitBtn.disabled = false;
