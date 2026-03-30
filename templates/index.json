@@ -256,6 +256,7 @@
           "settings": {
             "image": "shopify://shop_images/gi.webp",
             "title": "Guitars and Basses",
+            "subtitle": "1,240 items",
             "link": ""
           }
         },
@@ -263,6 +264,7 @@
           "type": "category",
           "settings": {
             "title": "Drums and Percussion",
+            "subtitle": "1,240 items",
             "link": ""
           }
         },
@@ -270,6 +272,7 @@
           "type": "category",
           "settings": {
             "title": "Keys",
+            "subtitle": "1,240 items",
             "link": ""
           }
         },
@@ -277,6 +280,7 @@
           "type": "category",
           "settings": {
             "title": "Studio and Recording",
+            "subtitle": "1,240 items",
             "link": ""
           }
         },
@@ -284,6 +288,7 @@
           "type": "category",
           "settings": {
             "title": "Software",
+            "subtitle": "1,240 items",
             "link": ""
           }
         },
@@ -291,6 +296,7 @@
           "type": "category",
           "settings": {
             "title": "PA Equipment",
+            "subtitle": "1,240 items",
             "link": ""
           }
         }
@@ -305,11 +311,11 @@
       ],
       "name": "Category Grid",
       "settings": {
-        "heading": "Our Categories",
         "bg_color": "#f5f0e8",
+        "eyebrow": "BROWSE BY INSTRUMENT",
+        "heading": "What do you |play?|",
         "desktop_columns": 3,
-        "mobile_columns": "1",
-        "image_style": "transparent"
+        "mobile_columns": "1"
       }
     },
     "product_highlights_PxTtXB": {
@@ -318,12 +324,12 @@
       "settings": {
         "heading": "Product Highlights",
         "bg_color": "#f5f0e8",
+        "show_nav": true,
         "tab_1_label": "Trends",
         "collection_1": "trends",
         "tab_2_label": "Top Sellers",
         "collection_2": "trends",
-        "products_to_show": 4,
-        "cols_desktop": 4
+        "products_to_show": 4
       }
     },
     "product_list_EDUBdR": {
