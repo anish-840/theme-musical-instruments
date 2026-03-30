@@ -465,7 +465,7 @@
         "bg_color": "#ffffff",
         "eyebrow": "EDITORIAL & GUIDES",
         "heading": "Read the |Manual|",
-        "blog": "",
+        "blog": "blogs",
         "post_limit": 3,
         "show_view_all": true
       }
