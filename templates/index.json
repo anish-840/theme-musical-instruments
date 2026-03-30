@@ -510,9 +510,9 @@
         "hotspot_dLtzVr": {
           "type": "hotspot",
           "settings": {
-            "product": "",
-            "pos_x": 30,
-            "pos_y": 40
+            "product": "acoustic-guitar",
+            "pos_x": 10,
+            "pos_y": 63
           }
         },
         "hotspot_UdBVCP": {
