@@ -316,7 +316,7 @@
       ],
       "name": "Category Grid",
       "settings": {
-        "bg_color": "#f5f0e8",
+        "bg_color": "#ffffff",
         "eyebrow": "BROWSE BY INSTRUMENT",
         "heading": "What do you |play?|",
         "desktop_columns": 3,
