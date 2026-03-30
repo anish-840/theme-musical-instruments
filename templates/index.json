@@ -462,7 +462,7 @@
       "type": "gear-guides",
       "name": "Gear Guides Grid",
       "settings": {
-        "bg_color": "#F5F0E8",
+        "bg_color": "#ffffff",
         "eyebrow": "EDITORIAL & GUIDES",
         "heading": "Read the |Manual|",
         "blog": "",
