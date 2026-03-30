@@ -1,0 +1,279 @@
+{%- comment -%}
+  Stringer Music - Top Brands Grid
+  Matches screenshot layout: Boxed logos with grayscale-to-color hover states.
+{%- endcomment -%}
+
+<section 
+  class="top-brands-section" 
+  id="tb-{{ section.id }}"
+  style="
+    --grid-cols-desktop: {{ section.settings.desktop_columns }};
+    --grid-cols-mobile: {{ section.settings.mobile_columns }};
+    background-color: {{ section.settings.bg_color | default: '#FFFFFF' }};
+  "
+>
+  <div class="tb-container">
+    
+    {%- if section.settings.heading != blank -%}
+      <div class="tb-header">
+        <h2 class="tb-heading">
+          {%- assign parts = section.settings.heading | split: '|' -%}
+          {%- for part in parts -%}
+            {%- if forloop.index == 2 -%}<em>{{ part }}</em>{%- else -%}{{ part }}{%- endif -%}
+          {%- endfor -%}
+        </h2>
+        {%- if section.settings.show_underline -%}
+          <div class="tb-heading-underline"></div>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    <div class="tb-grid">
+      {%- for block in section.blocks -%}
+        {%- assign s = block.settings -%}
+        
+        <a href="{{ s.link | default: '#' }}" class="tb-card" {{ block.shopify_attributes }} aria-label="{{ s.title | default: 'Brand link' }}">
+          {%- if s.image != blank -%}
+            {{ s.image | image_url: width: 300 | image_tag: 
+              loading: 'lazy', 
+              class: 'tb-logo',
+              alt: s.title 
+            }}
+          {%- else -%}
+            <div class="tb-placeholder-logo">
+              {{ 'image' | placeholder_svg_tag: 'tb-placeholder-svg' }}
+              <span class="tb-placeholder-text">{{ s.title | default: 'Brand' }}</span>
+            </div>
+          {%- endif -%}
+        </a>
+      {%- endfor -%}
+    </div>
+    
+  </div>
+</section>
+
+{% stylesheet %}
+  /* ════════════════════════════════════════════
+     BRAND VARIABLES & BASE
+  ════════════════════════════════════════════ */
+  .top-brands-section {
+    --brand-ink: #1A1710;
+    --brand-ink-rgb: 26, 23, 16;
+    --brand-rust: #C8420A;
+    --font-heading: var(--type_header_font, 'Playfair Display', serif);
+    --font-body: var(--type_body_font, 'DM Sans', sans-serif);
+    padding: 80px 5%;
+  }
+
+  .tb-container {
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  /* ════════════════════════════════════════════
+     HEADER & TYPOGRAPHY
+  ════════════════════════════════════════════ */
+  .tb-header {
+    text-align: center;
+    margin-bottom: 48px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .tb-heading {
+    font-family: var(--font-heading);
+    color: var(--brand-ink);
+    font-size: clamp(32px, 4vw, 48px);
+    font-weight: 900;
+    margin: 0;
+    letter-spacing: -0.025em;
+    line-height: 1.1;
+  }
+
+  .tb-heading em {
+    font-style: italic;
+    font-weight: 700;
+    color: var(--brand-rust);
+  }
+
+  .tb-heading-underline {
+    width: 60px;
+    height: 4px;
+    background-color: var(--brand-rust);
+    margin-top: 12px;
+    border-radius: 2px;
+  }
+
+  /* ════════════════════════════════════════════
+     GRID LAYOUT & CARDS
+  ════════════════════════════════════════════ */
+  .tb-grid {
+    display: grid;
+    grid-template-columns: repeat(var(--grid-cols-desktop, 5), 1fr);
+    gap: 20px;
+  }
+
+  .tb-card {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    background-color: #FFFFFF;
+    border: 1px solid rgba(var(--brand-ink-rgb), 0.12);
+    border-radius: 4px;
+    text-decoration: none;
+    aspect-ratio: 16 / 9;
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    overflow: hidden;
+  }
+
+  .tb-logo {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    transition: transform 0.4s ease;
+    filter: grayscale(100%) opacity(0.8);
+  }
+
+  .tb-placeholder-logo {
+    display: flex; flex-direction: column; align-items: center; gap: 8px; opacity: 0.4;
+  }
+  .tb-placeholder-svg { width: 40px; height: 40px; }
+  .tb-placeholder-text { font-family: var(--font-body); font-size: 14px; font-weight: 600; color: var(--brand-ink); }
+
+  /* ════════════════════════════════════════════
+     HOVER STATES
+  ════════════════════════════════════════════ */
+  .tb-card:hover {
+    border-color: var(--brand-rust);
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(var(--brand-ink-rgb), 0.08);
+  }
+
+  .tb-card:hover .tb-logo {
+    transform: scale(1.05);
+    filter: grayscale(0%) opacity(1);
+  }
+
+  /* ════════════════════════════════════════════
+     RESPONSIVE DESIGN
+  ════════════════════════════════════════════ */
+  @media screen and (max-width: 1024px) {
+    .tb-grid { grid-template-columns: repeat(4, 1fr); }
+  }
+
+  @media screen and (max-width: 749px) {
+    .top-brands-section { padding: 50px 5%; }
+    .tb-header { margin-bottom: 32px; }
+    
+    .tb-grid { 
+      display: flex;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      gap: 12px;
+      padding-bottom: 20px;
+      -ms-overflow-style: none; scrollbar-width: none;
+    }
+    .tb-grid::-webkit-scrollbar { display: none; }
+    
+    .tb-card {
+      /* Uses the new mobile_columns setting to dictate width */
+      flex: 0 0 calc((100% / var(--grid-cols-mobile, 2)) - 12px); 
+      scroll-snap-align: start;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Top Brands Grid",
+  "settings": [
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "header",
+      "content": "Text Content"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Top Brands",
+      "info": "Use | to wrap a word in Rust/Italics. e.g. 'Top |Brands|'"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_underline",
+      "label": "Show Rust Accent Underline",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Layout Settings"
+    },
+    {
+      "type": "range",
+      "id": "desktop_columns",
+      "label": "Columns on Desktop",
+      "min": 3,
+      "max": 8,
+      "step": 1,
+      "default": 5
+    },
+    {
+      "type": "select",
+      "id": "mobile_columns",
+      "label": "Cards visible on Mobile",
+      "options": [
+        { "value": "1", "label": "1 Card" },
+        { "value": "2", "label": "2 Cards" },
+        { "value": "3", "label": "3 Cards" }
+      ],
+      "default": "2"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "brand",
+      "name": "Brand Logo",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Brand Logo",
+          "info": "Upload a transparent PNG or SVG."
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Brand Name",
+          "info": "Used for accessibility and if image fails to load."
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Brand Link",
+          "info": "Link to the brand's filtered collection page."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Top Brands Grid",
+      "blocks": [
+        { "type": "brand", "settings": { "title": "Yamaha" } },
+        { "type": "brand", "settings": { "title": "Fender" } },
+        { "type": "brand", "settings": { "title": "Roland" } },
+        { "type": "brand", "settings": { "title": "Gibson" } },
+        { "type": "brand", "settings": { "title": "Shure" } }
+      ]
+    }
+  ]
+}
+{% endschema %}
