@@ -1,6 +1,7 @@
 {%- comment -%}
   Stringer Music - Product Highlights Carousel
-  Clean tabbed interface with hover-state floating arrows.
+  Clean tabbed interface with hover-state floating arrows, 
+  built-in Add to Cart, and Quick View Modals.
 {%- endcomment -%}
 
 <section class="ph-section" id="ph-{{ section.id }}" style="--bg-color: {{ section.settings.bg_color }};">
@@ -21,7 +22,7 @@
       </div>
     </header>
 
-    {%- comment -%} CAROUSEL WRAPPER (Handles Hover Arrows) {%- endcomment -%}
+    {%- comment -%} CAROUSEL WRAPPER {%- endcomment -%}
     <div class="ph-carousel-wrapper">
       
       {%- if section.settings.show_nav -%}
@@ -34,7 +35,69 @@
         <div class="ph-grid-carousel">
           {%- if section.settings.collection_1 != blank -%}
             {%- for product in section.settings.collection_1.products limit: section.settings.products_to_show -%}
-               {% render 'product-card-stringer', product: product %}
+               
+               {%- comment -%} INLINE PRODUCT CARD {%- endcomment -%}
+               <div class="pcs-card">
+                  <div class="pcs-image-wrapper">
+                    <a href="{{ product.url }}" class="pcs-image-link" aria-label="View {{ product.title }}">
+                      {%- if product.featured_image -%}
+                        {{ product.featured_image | image_url: width: 600 | image_tag: loading: 'lazy', class: 'pcs-image', alt: product.title }}
+                      {%- else -%}
+                        {{ 'product-1' | placeholder_svg_tag: 'pcs-image pcs-placeholder' }}
+                      {%- endif -%}
+                    </a>
+                    
+                    <div class="pcs-actions">
+                      <button class="pcs-action-btn" onclick="document.getElementById('qv-trend-{{ section.id }}-{{ product.id }}').showModal()">Quick View</button>
+                      {%- form 'product', product, class: 'pcs-form' -%}
+                        <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+                        <button type="submit" class="pcs-action-btn pcs-action-btn--primary" {% unless product.available %}disabled{% endunless %}>
+                          {% if product.available %}Add to Cart{% else %}Sold Out{% endif %}
+                        </button>
+                      {%- endform -%}
+                    </div>
+                  </div>
+
+                  <div class="pcs-info">
+                    <h3 class="pcs-title"><a href="{{ product.url }}">{{ product.title }}</a></h3>
+                    <p class="pcs-price">{{ product.price | money }}</p>
+                  </div>
+
+                  {%- comment -%} QUICK VIEW MODAL {%- endcomment -%}
+                  <dialog id="qv-trend-{{ section.id }}-{{ product.id }}" class="pcs-quickview-modal">
+                    <div class="pcs-modal-inner">
+                      <button class="pcs-modal-close" onclick="this.closest('dialog').close()" aria-label="Close">✕</button>
+                      <div class="pcs-modal-grid">
+                        <div class="pcs-modal-media">
+                          {%- if product.featured_image -%}
+                            {{ product.featured_image | image_url: width: 800 | image_tag: loading: 'lazy' }}
+                          {%- else -%}
+                             {{ 'product-1' | placeholder_svg_tag }}
+                          {%- endif -%}
+                        </div>
+                        <div class="pcs-modal-details">
+                          <h2 class="pcs-modal-title">{{ product.title }}</h2>
+                          <p class="pcs-modal-price">{{ product.price | money }}</p>
+                          <div class="pcs-modal-desc">
+                            {%- if product.description != blank -%}
+                              {{ product.description | strip_html | truncatewords: 40 }}
+                            {%- else -%}
+                              Experience the unmatched quality and tone of this incredible instrument.
+                            {%- endif -%}
+                          </div>
+                          {%- form 'product', product -%}
+                            <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+                            <button type="submit" class="pcs-modal-atc" {% unless product.available %}disabled{% endunless %}>
+                               {% if product.available %}Add to Cart — {{ product.price | money }}{% else %}Out of Stock{% endif %}
+                            </button>
+                          {%- endform -%}
+                          <a href="{{ product.url }}" class="pcs-modal-link">View Full Details</a>
+                        </div>
+                      </div>
+                    </div>
+                  </dialog>
+               </div>
+               
             {%- endfor -%}
           {%- endif -%}
         </div>
@@ -45,111 +108,154 @@
         <div class="ph-grid-carousel">
           {%- if section.settings.collection_2 != blank -%}
             {%- for product in section.settings.collection_2.products limit: section.settings.products_to_show -%}
-               {% render 'product-card-stringer', product: product %}
+               
+               {%- comment -%} INLINE PRODUCT CARD (Duplicate for Tab 2 to prevent ID conflicts) {%- endcomment -%}
+               <div class="pcs-card">
+                  <div class="pcs-image-wrapper">
+                    <a href="{{ product.url }}" class="pcs-image-link" aria-label="View {{ product.title }}">
+                      {%- if product.featured_image -%}
+                        {{ product.featured_image | image_url: width: 600 | image_tag: loading: 'lazy', class: 'pcs-image', alt: product.title }}
+                      {%- else -%}
+                        {{ 'product-2' | placeholder_svg_tag: 'pcs-image pcs-placeholder' }}
+                      {%- endif -%}
+                    </a>
+                    
+                    <div class="pcs-actions">
+                      <button class="pcs-action-btn" onclick="document.getElementById('qv-top-{{ section.id }}-{{ product.id }}').showModal()">Quick View</button>
+                      {%- form 'product', product, class: 'pcs-form' -%}
+                        <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+                        <button type="submit" class="pcs-action-btn pcs-action-btn--primary" {% unless product.available %}disabled{% endunless %}>
+                          {% if product.available %}Add to Cart{% else %}Sold Out{% endif %}
+                        </button>
+                      {%- endform -%}
+                    </div>
+                  </div>
+
+                  <div class="pcs-info">
+                    <h3 class="pcs-title"><a href="{{ product.url }}">{{ product.title }}</a></h3>
+                    <p class="pcs-price">{{ product.price | money }}</p>
+                  </div>
+
+                  <dialog id="qv-top-{{ section.id }}-{{ product.id }}" class="pcs-quickview-modal">
+                    <div class="pcs-modal-inner">
+                      <button class="pcs-modal-close" onclick="this.closest('dialog').close()" aria-label="Close">✕</button>
+                      <div class="pcs-modal-grid">
+                        <div class="pcs-modal-media">
+                          {%- if product.featured_image -%}
+                            {{ product.featured_image | image_url: width: 800 | image_tag: loading: 'lazy' }}
+                          {%- else -%}
+                             {{ 'product-2' | placeholder_svg_tag }}
+                          {%- endif -%}
+                        </div>
+                        <div class="pcs-modal-details">
+                          <h2 class="pcs-modal-title">{{ product.title }}</h2>
+                          <p class="pcs-modal-price">{{ product.price | money }}</p>
+                          <div class="pcs-modal-desc">
+                            {%- if product.description != blank -%}
+                              {{ product.description | strip_html | truncatewords: 40 }}
+                            {%- else -%}
+                              Experience the unmatched quality and tone of this incredible instrument.
+                            {%- endif -%}
+                          </div>
+                          {%- form 'product', product -%}
+                            <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+                            <button type="submit" class="pcs-modal-atc" {% unless product.available %}disabled{% endunless %}>
+                               {% if product.available %}Add to Cart — {{ product.price | money }}{% else %}Out of Stock{% endif %}
+                            </button>
+                          {%- endform -%}
+                          <a href="{{ product.url }}" class="pcs-modal-link">View Full Details</a>
+                        </div>
+                      </div>
+                    </div>
+                  </dialog>
+               </div>
+               
             {%- endfor -%}
           {%- endif -%}
         </div>
       </div>
 
-    </div> {%- comment -%} End Carousel Wrapper {%- endcomment -%}
-
+    </div>
   </div>
 </section>
 
 <style>
+  /* ════════════════════════════════════════════
+     SECTION & CAROUSEL LAYOUT
+  ════════════════════════════════════════════ */
   .ph-section { background-color: var(--bg-color); padding: 80px 0; --brand-ink: #1A1710; --brand-rust: #C8420A; overflow: hidden; }
   .ph-container { max-width: 1400px; margin: 0 auto; padding: 0 5%; position: relative; }
   
   .ph-header { text-align: center; margin-bottom: 30px; }
-  .ph-main-heading {
-    font-family: var(--type_header_font, 'Playfair Display', serif);
-    font-size: clamp(32px, 4vw, 44px);
-    font-weight: 900;
-    color: var(--brand-ink);
-    margin: 0 0 20px 0;
-  }
-
+  .ph-main-heading { font-family: var(--type_header_font, 'Playfair Display', serif); font-size: clamp(32px, 4vw, 44px); font-weight: 900; color: var(--brand-ink); margin: 0 0 20px 0; }
+  
   .ph-controls-row { display: flex; justify-content: center; align-items: center; margin-bottom: 20px; }
   .ph-tabs { display: inline-flex; gap: 40px; }
-  
-  .ph-tab-btn {
-    background: none; border: none; font-family: var(--type_body_font, 'DM Sans', sans-serif);
-    font-size: 18px; font-weight: 500; color: var(--brand-ink);
-    cursor: pointer; padding: 8px 0; transition: all 0.3s ease; opacity: 0.4; position: relative;
-  }
+  .ph-tab-btn { background: none; border: none; font-family: var(--type_body_font, 'DM Sans', sans-serif); font-size: 18px; font-weight: 500; color: var(--brand-ink); cursor: pointer; padding: 8px 0; transition: all 0.3s ease; opacity: 0.4; position: relative; }
   .ph-tab-btn.active { opacity: 1; color: var(--brand-rust); }
-  .ph-tab-btn.active::after {
-    content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 2px; background-color: var(--brand-rust);
-  }
+  .ph-tab-btn.active::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 2px; background-color: var(--brand-rust); }
 
-  /* ════════════════════════════════════════════
-     CAROUSEL & HOVER ARROWS
-  ════════════════════════════════════════════ */
-  .ph-carousel-wrapper {
-    position: relative;
-    /* Negative margin slightly to allow arrow shadows to not get clipped */
-    margin: 0 -15px; 
-    padding: 0 15px;
-  }
-
-  .ph-arrow {
-    position: absolute;
-    top: 40%; /* Visually centers the arrow over the product image */
-    transform: translateY(-50%);
-    background: #fff; 
-    color: var(--brand-ink);
-    border: 1px solid rgba(26,23,16,0.12); 
-    width: 44px; height: 44px;
-    border-radius: 50%; 
-    cursor: pointer; 
-    display: flex; align-items: center; justify-content: center;
-    transition: all 0.3s ease;
-    opacity: 0; /* Hidden by default */
-    pointer-events: none; /* Can't be clicked when invisible */
-    z-index: 10;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-  }
-
-  /* Show arrows on hover */
-  .ph-carousel-wrapper:hover .ph-arrow {
-    opacity: 1;
-    pointer-events: auto;
-  }
-
-  .ph-arrow.prev { left: 0px; }
-  .ph-arrow.next { right: 0px; }
-  
+  .ph-carousel-wrapper { position: relative; margin: 0 -15px; padding: 0 15px; }
+  .ph-arrow { position: absolute; top: 35%; transform: translateY(-50%); background: #fff; color: var(--brand-ink); border: 1px solid rgba(26,23,16,0.12); width: 44px; height: 44px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.3s ease; opacity: 0; pointer-events: none; z-index: 10; box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+  .ph-carousel-wrapper:hover .ph-arrow { opacity: 1; pointer-events: auto; }
+  .ph-arrow.prev { left: 0px; } .ph-arrow.next { right: 0px; }
   .ph-arrow:hover { background: var(--brand-ink); color: #fff; border-color: var(--brand-ink); }
 
-  .ph-tab-panel { display: none; }
-  .ph-tab-panel.active { display: block; }
-  
-  .ph-grid-carousel {
-    display: flex;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    scroll-behavior: smooth;
-    gap: 30px;
-    padding-bottom: 20px;
-    -ms-overflow-style: none; scrollbar-width: none;
-  }
+  .ph-tab-panel { display: none; } .ph-tab-panel.active { display: block; }
+  .ph-grid-carousel { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scroll-behavior: smooth; gap: 30px; padding-bottom: 20px; scrollbar-width: none; }
   .ph-grid-carousel::-webkit-scrollbar { display: none; }
+  .ph-grid-carousel > * { flex: 0 0 calc(25% - 22.5px); scroll-snap-align: start; }
 
-  .ph-grid-carousel > * {
-    flex: 0 0 calc(25% - 22.5px); /* 4 items per row */
-    scroll-snap-align: start;
-  }
+  @media screen and (max-width: 1100px) { .ph-grid-carousel > * { flex: 0 0 calc(33.33% - 20px); } }
+  @media screen and (max-width: 749px) { .ph-grid-carousel { gap: 15px; } .ph-grid-carousel > * { flex: 0 0 calc(50% - 20px); } .ph-arrow { display: none; } .ph-tabs { gap: 20px; } }
 
-  @media screen and (max-width: 1100px) {
-    .ph-grid-carousel > * { flex: 0 0 calc(33.33% - 20px); }
+  /* ════════════════════════════════════════════
+     PRODUCT CARD & QUICK VIEW
+  ════════════════════════════════════════════ */
+  .pcs-card { display: flex; flex-direction: column; position: relative; height: 100%; }
+  .pcs-image-wrapper { position: relative; background-color: #FFFFFF; aspect-ratio: 1 / 1; display: flex; align-items: center; justify-content: center; border-radius: 4px; overflow: hidden; margin-bottom: 16px; border: 1px solid rgba(26,23,16,0.05); }
+  .pcs-image-link { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; }
+  .pcs-image { width: 100%; height: 100%; object-fit: contain; padding: 24px; transition: transform 0.4s ease; }
+  .pcs-placeholder { fill: rgba(26,23,16,0.1); width: 100%; height: 100%; padding: 30px; }
+  .pcs-card:hover .pcs-image { transform: scale(1.05); }
+
+  .pcs-actions { position: absolute; bottom: 0; left: 0; width: 100%; display: flex; gap: 8px; padding: 12px; background: linear-gradient(to top, rgba(26,23,16,0.1), transparent); transform: translateY(100%); opacity: 0; transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+  .pcs-card:hover .pcs-actions { transform: translateY(0); opacity: 1; }
+  .pcs-form { flex: 1; margin: 0; display: flex; }
+  .pcs-action-btn { flex: 1; padding: 12px 0; border: none; border-radius: 4px; font-family: var(--type_body_font, 'DM Sans', sans-serif); font-size: 12px; font-weight: 700; cursor: pointer; text-align: center; text-transform: uppercase; letter-spacing: 0.05em; background-color: #FFFFFF; color: #1A1710; transition: all 0.2s ease; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+  .pcs-action-btn:hover { background-color: #F5F0E8; }
+  .pcs-action-btn--primary { background-color: #C8420A; color: #FFFFFF; }
+  .pcs-action-btn--primary:hover { background-color: #1A1710; color: #FFFFFF; }
+  .pcs-action-btn:disabled { background-color: #e0e0e0; color: #888; cursor: not-allowed; }
+
+  .pcs-info { text-align: center; margin-top: auto; }
+  .pcs-title { margin: 0 0 6px; font-family: var(--type_header_font, 'Playfair Display', serif); font-size: 18px; line-height: 1.2; font-weight: 700; }
+  .pcs-title a { color: #1A1710; text-decoration: none; transition: color 0.2s; } .pcs-title a:hover { color: #C8420A; }
+  .pcs-price { margin: 0; font-family: var(--type_body_font, 'DM Sans', sans-serif); font-size: 15px; font-weight: 500; color: rgba(26,23,16,0.7); }
+
+  .pcs-quickview-modal { padding: 0; border: none; border-radius: 8px; max-width: 900px; width: 95%; margin: auto; background: #FFFFFF; box-shadow: 0 24px 48px rgba(0,0,0,0.2); z-index: 100;}
+  .pcs-quickview-modal::backdrop { background: rgba(26,23,16,0.7); backdrop-filter: blur(4px); }
+  .pcs-modal-inner { position: relative; padding: 40px; }
+  .pcs-modal-close { position: absolute; top: 16px; right: 16px; background: none; border: none; font-size: 24px; cursor: pointer; color: rgba(26,23,16,0.4); transition: color 0.2s; padding: 8px; line-height: 1; }
+  .pcs-modal-close:hover { color: #C8420A; }
+  .pcs-modal-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; }
+  .pcs-modal-media { background: #FFFFFF; border-radius: 4px; padding: 20px; display: flex; justify-content: center; }
+  .pcs-modal-media img, .pcs-modal-media svg { width: 100%; height: auto; max-height: 400px; object-fit: contain; }
+  .pcs-modal-title { font-family: var(--type_header_font, 'Playfair Display', serif); font-size: 32px; color: #1A1710; margin: 0 0 12px; line-height: 1.1; }
+  .pcs-modal-price { font-family: var(--type_body_font, 'DM Sans', sans-serif); font-size: 20px; color: #C8420A; font-weight: 700; margin: 0 0 24px; }
+  .pcs-modal-desc { font-family: var(--type_body_font, 'DM Sans', sans-serif); font-size: 15px; line-height: 1.6; color: rgba(26,23,16,0.7); margin-bottom: 32px; }
+  .pcs-modal-atc { width: 100%; padding: 16px; background-color: #1A1710; color: #FFFFFF; font-family: var(--type_body_font, 'DM Sans', sans-serif); font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; border: none; border-radius: 4px; cursor: pointer; transition: background 0.3s; margin-bottom: 16px; }
+  .pcs-modal-atc:hover { background-color: #C8420A; }
+  .pcs-modal-atc:disabled { background-color: #ccc; cursor: not-allowed; }
+  .pcs-modal-link { display: block; text-align: center; font-family: var(--type_body_font, 'DM Sans', sans-serif); font-size: 13px; font-weight: 700; color: #1A1710; text-decoration: underline; text-underline-offset: 4px; }
+  .pcs-modal-link:hover { color: #C8420A; }
+
+  @media (max-width: 990px) {
+    .pcs-actions { transform: translateY(0); opacity: 1; background: none; position: static; flex-direction: column; padding: 12px 0 0; gap: 8px; }
+    .pcs-action-btn { box-shadow: none; border: 1px solid rgba(26,23,16,0.1); }
   }
-  
-  /* Update for Mobile to show 2 products */
-  @media screen and (max-width: 749px) {
-    .ph-grid-carousel { gap: 15px; } /* Slightly tighter gap on mobile */
-    .ph-grid-carousel > * { flex: 0 0 calc(50% - 20px); } /* Shows exactly 2 products */
-    .ph-arrow { display: none; } /* Hide arrows on mobile, users will naturally swipe */
-    .ph-tabs { gap: 20px; }
+  @media (max-width: 749px) {
+    .pcs-modal-grid { grid-template-columns: 1fr; gap: 24px; text-align: center; } .pcs-modal-inner { padding: 32px 24px; } .pcs-modal-title { font-size: 26px; }
   }
 </style>
 
@@ -175,7 +281,6 @@
     if(nextBtn && prevBtn) {
       nextBtn.addEventListener('click', () => {
         const activeGrid = section.querySelector('.ph-tab-panel.active .ph-grid-carousel');
-        // Scroll by the width of exactly one item + the gap (30px)
         const itemWidth = activeGrid.firstElementChild ? activeGrid.firstElementChild.offsetWidth : 300;
         activeGrid.scrollBy({ left: itemWidth + 30, behavior: 'smooth' });
       });
@@ -185,6 +290,19 @@
         activeGrid.scrollBy({ left: -(itemWidth + 30), behavior: 'smooth' });
       });
     }
+
+    // Modal click-outside-to-close logic
+    const dialogs = section.querySelectorAll('.pcs-quickview-modal');
+    dialogs.forEach(dialog => {
+      dialog.addEventListener('click', (e) => {
+        const rect = dialog.getBoundingClientRect();
+        const isInDialog = (rect.top <= e.clientY && e.clientY <= rect.top + rect.height &&
+                            rect.left <= e.clientX && e.clientX <= rect.left + rect.width);
+        if (!isInDialog) {
+          dialog.close();
+        }
+      });
+    });
   });
 </script>
 
