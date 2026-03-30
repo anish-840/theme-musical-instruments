@@ -1,6 +1,6 @@
 {%- comment -%}
   Stringer Music - Product Highlights Carousel
-  Clean tabbed interface with smooth horizontal scrolling.
+  Clean tabbed interface with hover-state floating arrows.
 {%- endcomment -%}
 
 <section class="ph-section" id="ph-{{ section.id }}" style="--bg-color: {{ section.settings.bg_color }};">
@@ -18,37 +18,40 @@
             {{ section.settings.tab_2_label }}
           </button>
         </div>
-
-        {%- if section.settings.show_nav -%}
-          <div class="ph-nav-arrows">
-            <button class="ph-arrow prev" aria-label="Slide Left">❮</button>
-            <button class="ph-arrow next" aria-label="Slide Right">❯</button>
-          </div>
-        {%- endif -%}
       </div>
     </header>
 
-    {%- comment -%} TAB 1: TRENDS {%- endcomment -%}
-    <div id="trends-{{ section.id }}" class="ph-tab-panel active" role="tabpanel">
-      <div class="ph-grid-carousel">
-        {%- if section.settings.collection_1 != blank -%}
-          {%- for product in section.settings.collection_1.products limit: section.settings.products_to_show -%}
-             {% render 'product-card-stringer', product: product %}
-          {%- endfor -%}
-        {%- endif -%}
-      </div>
-    </div>
+    {%- comment -%} CAROUSEL WRAPPER (Handles Hover Arrows) {%- endcomment -%}
+    <div class="ph-carousel-wrapper">
+      
+      {%- if section.settings.show_nav -%}
+        <button class="ph-arrow prev" aria-label="Slide Left">❮</button>
+        <button class="ph-arrow next" aria-label="Slide Right">❯</button>
+      {%- endif -%}
 
-    {%- comment -%} TAB 2: TOP SELLERS {%- endcomment -%}
-    <div id="top-sellers-{{ section.id }}" class="ph-tab-panel" role="tabpanel">
-      <div class="ph-grid-carousel">
-        {%- if section.settings.collection_2 != blank -%}
-          {%- for product in section.settings.collection_2.products limit: section.settings.products_to_show -%}
-             {% render 'product-card-stringer', product: product %}
-          {%- endfor -%}
-        {%- endif -%}
+      {%- comment -%} TAB 1: TRENDS {%- endcomment -%}
+      <div id="trends-{{ section.id }}" class="ph-tab-panel active" role="tabpanel">
+        <div class="ph-grid-carousel">
+          {%- if section.settings.collection_1 != blank -%}
+            {%- for product in section.settings.collection_1.products limit: section.settings.products_to_show -%}
+               {% render 'product-card-stringer', product: product %}
+            {%- endfor -%}
+          {%- endif -%}
+        </div>
       </div>
-    </div>
+
+      {%- comment -%} TAB 2: TOP SELLERS {%- endcomment -%}
+      <div id="top-sellers-{{ section.id }}" class="ph-tab-panel" role="tabpanel">
+        <div class="ph-grid-carousel">
+          {%- if section.settings.collection_2 != blank -%}
+            {%- for product in section.settings.collection_2.products limit: section.settings.products_to_show -%}
+               {% render 'product-card-stringer', product: product %}
+            {%- endfor -%}
+          {%- endif -%}
+        </div>
+      </div>
+
+    </div> {%- comment -%} End Carousel Wrapper {%- endcomment -%}
 
   </div>
 </section>
@@ -56,24 +59,19 @@
 <style>
   .ph-section { background-color: var(--bg-color); padding: 80px 0; --brand-ink: #1A1710; --brand-rust: #C8420A; overflow: hidden; }
   .ph-container { max-width: 1400px; margin: 0 auto; padding: 0 5%; position: relative; }
-  .ph-header { text-align: center; margin-bottom: 40px; }
+  
+  .ph-header { text-align: center; margin-bottom: 30px; }
   .ph-main-heading {
     font-family: var(--type_header_font, 'Playfair Display', serif);
     font-size: clamp(32px, 4vw, 44px);
     font-weight: 900;
     color: var(--brand-ink);
-    margin: 0 0 30px 0;
+    margin: 0 0 20px 0;
   }
 
-  .ph-controls-row {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-    margin-bottom: 20px;
-  }
-
+  .ph-controls-row { display: flex; justify-content: center; align-items: center; margin-bottom: 20px; }
   .ph-tabs { display: inline-flex; gap: 40px; }
+  
   .ph-tab-btn {
     background: none; border: none; font-family: var(--type_body_font, 'DM Sans', sans-serif);
     font-size: 18px; font-weight: 500; color: var(--brand-ink);
@@ -84,15 +82,45 @@
     content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 2px; background-color: var(--brand-rust);
   }
 
-  .ph-nav-arrows { position: absolute; right: 0; display: flex; gap: 10px; }
-  .ph-arrow {
-    background: #fff; border: 1px solid rgba(26,23,16,0.12); width: 40px; height: 40px;
-    border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center;
-    transition: all 0.2s;
+  /* ════════════════════════════════════════════
+     CAROUSEL & HOVER ARROWS
+  ════════════════════════════════════════════ */
+  .ph-carousel-wrapper {
+    position: relative;
+    /* Negative margin slightly to allow arrow shadows to not get clipped */
+    margin: 0 -15px; 
+    padding: 0 15px;
   }
-  .ph-arrow:hover { background: var(--brand-ink); color: #fff; }
 
-  /* CAROUSEL GRID */
+  .ph-arrow {
+    position: absolute;
+    top: 40%; /* Visually centers the arrow over the product image */
+    transform: translateY(-50%);
+    background: #fff; 
+    color: var(--brand-ink);
+    border: 1px solid rgba(26,23,16,0.12); 
+    width: 44px; height: 44px;
+    border-radius: 50%; 
+    cursor: pointer; 
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.3s ease;
+    opacity: 0; /* Hidden by default */
+    pointer-events: none; /* Can't be clicked when invisible */
+    z-index: 10;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  }
+
+  /* Show arrows on hover */
+  .ph-carousel-wrapper:hover .ph-arrow {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .ph-arrow.prev { left: 0px; }
+  .ph-arrow.next { right: 0px; }
+  
+  .ph-arrow:hover { background: var(--brand-ink); color: #fff; border-color: var(--brand-ink); }
+
   .ph-tab-panel { display: none; }
   .ph-tab-panel.active { display: block; }
   
@@ -102,7 +130,7 @@
     scroll-snap-type: x mandatory;
     scroll-behavior: smooth;
     gap: 30px;
-    padding-bottom: 10px;
+    padding-bottom: 20px;
     -ms-overflow-style: none; scrollbar-width: none;
   }
   .ph-grid-carousel::-webkit-scrollbar { display: none; }
@@ -117,7 +145,7 @@
   }
   @media screen and (max-width: 749px) {
     .ph-grid-carousel > * { flex: 0 0 80%; }
-    .ph-nav-arrows { display: none; } /* Use touch swipe on mobile */
+    .ph-arrow { display: none; } /* Hide arrows on mobile, users will naturally swipe */
     .ph-tabs { gap: 20px; }
   }
 </style>
@@ -144,11 +172,14 @@
     if(nextBtn && prevBtn) {
       nextBtn.addEventListener('click', () => {
         const activeGrid = section.querySelector('.ph-tab-panel.active .ph-grid-carousel');
-        activeGrid.scrollBy({ left: activeGrid.offsetWidth, behavior: 'smooth' });
+        // Scroll by the width of exactly one item + the gap (30px)
+        const itemWidth = activeGrid.firstElementChild ? activeGrid.firstElementChild.offsetWidth : 300;
+        activeGrid.scrollBy({ left: itemWidth + 30, behavior: 'smooth' });
       });
       prevBtn.addEventListener('click', () => {
         const activeGrid = section.querySelector('.ph-tab-panel.active .ph-grid-carousel');
-        activeGrid.scrollBy({ left: -activeGrid.offsetWidth, behavior: 'smooth' });
+        const itemWidth = activeGrid.firstElementChild ? activeGrid.firstElementChild.offsetWidth : 300;
+        activeGrid.scrollBy({ left: -(itemWidth + 30), behavior: 'smooth' });
       });
     }
   });
@@ -156,11 +187,11 @@
 
 {% schema %}
 {
-  "name": "Product Highlights",
+  "name": "Product Highlights String",
   "settings": [
     { "type": "text", "id": "heading", "label": "Heading", "default": "Product Highlights" },
     { "type": "color", "id": "bg_color", "label": "Background", "default": "#F5F0E8" },
-    { "type": "checkbox", "id": "show_nav", "label": "Show Desktop Arrows", "default": true },
+    { "type": "checkbox", "id": "show_nav", "label": "Show Hover Arrows (Desktop)", "default": true },
     { "type": "header", "content": "Collections" },
     { "type": "text", "id": "tab_1_label", "label": "Tab 1 Name", "default": "Trends" },
     { "type": "collection", "id": "collection_1", "label": "Collection 1" },
@@ -168,6 +199,6 @@
     { "type": "collection", "id": "collection_2", "label": "Collection 2" },
     { "type": "range", "id": "products_to_show", "label": "Max Products", "min": 4, "max": 20, "default": 8 }
   ],
-  "presets": [{ "name": "Product Highlights" }]
+  "presets": [{ "name": "Product Highlights Stringer" }]
 }
 {% endschema %}
