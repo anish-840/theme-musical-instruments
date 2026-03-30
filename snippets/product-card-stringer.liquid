@@ -1,6 +1,6 @@
 {% comment %}
   Stringer Music - Custom Product Card
-  Matches the screenshot: Gray BG, Star Ratings, Bold Playfair Headings.
+  Matches the screenshot: Gray BG, Bold Playfair Headings. (No Ratings)
 {% endcomment %}
 
 <div class="product-card-stringer">
@@ -22,19 +22,6 @@
 
     {% comment %} Content Area {% endcomment %}
     <div class="pcs__info">
-      
-      {% comment %} Star Rating Placeholder (Standard Shopify Reviews logic) {% endcomment %}
-      <div class="pcs__rating">
-        <span class="pcs__stars">★★★★★</span>
-        <span class="pcs__rating-count">
-          {%- if product.metafields.reviews.rating_count -%}
-            {{ product.metafields.reviews.rating_count }}
-          {%- else -%}
-            {{ product.id | modulo: 100 | plus: 10 }}
-          {%- endif -%}
-        </span>
-      </div>
-
       <h3 class="pcs__title">{{ product.title }}</h3>
       
       <div class="pcs__price">
@@ -94,24 +81,6 @@
     font-weight: 900;
     color: #1A1710;
     letter-spacing: -0.02em;
-  }
-
-  /* Star Ratings Styling */
-  .pcs__rating {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    margin-top: 10px;
-  }
-  .pcs__stars {
-    color: #000;
-    font-size: 14px;
-    letter-spacing: 2px;
-  }
-  .pcs__rating-count {
-    font-family: var(--type_body_font, 'DM Sans', sans-serif);
-    font-size: 13px;
-    color: #888;
   }
 
   /* Hover Effects */
