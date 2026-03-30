@@ -1,194 +1,217 @@
+{%- comment -%}
+  Stringer Music - Scrolling Marquee
+  A pure CSS infinite scrolling ticker for brands or announcements.
+{%- endcomment -%}
 
-
-<script
-  src="{{ 'marquee.js' | asset_url }}"
-  type="module"
-  fetchpriority="low"
-></script>
-
-{% assign gap_between_elements = section.settings.gap_between_elements %}
-
-<div class="section-background color-{{ section.settings.color_scheme }}"></div>
-<marquee-component
-  class="section spacing-style gap-style color-{{ section.settings.color_scheme }}"
+<section 
+  class="sm-section" 
+  id="sm-{{ section.id }}"
   style="
-    {%- render 'spacing-style', settings: section.settings %};
-    {% render 'gap-style', value: gap_between_elements, name: 'marquee-gap' %}
-    --marquee-direction: {{ section.settings.movement_direction }};
+    background-color: {{ section.settings.bg_color }};
+    --text-color: {{ section.settings.text_color }};
+    --accent-color: {{ section.settings.accent_color }};
+    --scroll-speed: {{ section.settings.speed }}s;
+    --scroll-direction: {{ section.settings.direction }};
   "
-  data-speed-factor="25"
-  data-movement-direction="{{ section.settings.movement_direction }}"
 >
-  <div
-    class="marquee__wrapper"
-    ref="wrapper"
-  >
-    <div
-      class="marquee__content"
-      ref="content"
-    >
-      <div
-        class="marquee__repeated-items"
-        ref="marqueeItems[]"
-      >
-        {% content_for 'blocks' %}
-      </div>
+  <div class="sm-wrapper">
+    
+    {%- comment -%} 
+      We duplicate the inner track so the animation can loop seamlessly.
+      The aria-hidden true on the second one prevents screen readers from reading it twice.
+    {%- endcomment -%}
+    
+    <div class="sm-track">
+      {%- for i in (1..3) -%} {%- comment -%} Repeat the block list to ensure it fills the screen {%- endcomment -%}
+        {%- for block in section.blocks -%}
+          <div class="sm-item" {{ block.shopify_attributes }}>
+            <span class="sm-text">{{ block.settings.text }}</span>
+            <span class="sm-divider">◆</span>
+          </div>
+        {%- endfor -%}
+      {%- endfor -%}
     </div>
+    
+    <div class="sm-track" aria-hidden="true">
+      {%- for i in (1..3) -%}
+        {%- for block in section.blocks -%}
+          <div class="sm-item">
+            <span class="sm-text">{{ block.settings.text }}</span>
+            <span class="sm-divider">◆</span>
+          </div>
+        {%- endfor -%}
+      {%- endfor -%}
+    </div>
+
   </div>
-</marquee-component>
+</section>
 
 {% stylesheet %}
-  marquee-component {
-    display: block;
-    width: 100%;
+  /* ════════════════════════════════════════════
+     BASE STYLING & VARIABLES
+  ════════════════════════════════════════════ */
+  .sm-section {
+    --font-heading: var(--type_header_font, 'Playfair Display', serif);
+    padding: 16px 0;
     overflow: hidden;
+    position: relative;
+    border-top: 1px solid rgba(245, 240, 232, 0.1);
+    border-bottom: 1px solid rgba(245, 240, 232, 0.1);
   }
 
-  .marquee__wrapper {
+  .sm-wrapper {
     display: flex;
-    gap: var(--marquee-gap);
     width: fit-content;
     white-space: nowrap;
+    /* CSS Animation for the scroll */
+    animation: sm-scroll var(--scroll-speed) linear infinite var(--scroll-direction);
   }
 
-  .marquee__content {
-    min-width: max-content;
+  /* Pause the animation if the user hovers over it (optional, but good UX) */
+  .sm-section:hover .sm-wrapper {
+    animation-play-state: paused;
+  }
+
+  /* ════════════════════════════════════════════
+     TRACK & ITEMS
+  ════════════════════════════════════════════ */
+  .sm-track {
     display: flex;
-    gap: var(--marquee-gap);
-  }
-
-  .marquee__content :is(p, h1, h2, h3, h4, h5, h6) {
-    white-space: nowrap;
-  }
-
-  .marquee__content .marquee__repeated-items * {
-    max-width: none;
-  }
-
-  .marquee__repeated-items {
     min-width: max-content;
+  }
+
+  .sm-item {
     display: flex;
-    gap: var(--marquee-gap);
     align-items: center;
-    justify-content: center;
+    padding: 0 40px; /* Space between each word */
   }
 
-  .marquee__repeated-items > * {
-    align-content: center;
+  .sm-text {
+    font-family: var(--font-heading);
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-color);
   }
 
-  @media (prefers-reduced-motion: no-preference) {
-    marquee-component:not([data-disabled]) .marquee__wrapper {
-      animation: marquee-motion var(--marquee-speed) linear infinite var(--marquee-direction);
+  /* The little diamond divider */
+  .sm-divider {
+    font-size: 10px;
+    color: var(--accent-color);
+    margin-left: 80px; /* Adds gap after the text before the diamond */
+  }
+
+  /* ════════════════════════════════════════════
+     KEYFRAMES FOR SCROLLING
+  ════════════════════════════════════════════ */
+  @keyframes sm-scroll {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      /* Translates exactly half of the wrapper (one full track length) to loop perfectly */
+      transform: translateX(-50%); 
     }
   }
 
-  @keyframes marquee-motion {
-    to {
-      transform: translate3d(calc(-50% - (var(--marquee-gap) / 2)), 0, 0);
+  /* Respect user preferences for reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    .sm-wrapper {
+      animation: none;
+      flex-wrap: wrap;
+      justify-content: center;
     }
+    .sm-track:nth-child(2) {
+      display: none; /* Hide the duplicate track if not animating */
+    }
+  }
+  
+  /* Make the text slightly smaller on phones */
+  @media screen and (max-width: 749px) {
+    .sm-text { font-size: 12px; }
+    .sm-item { padding: 0 24px; }
+    .sm-divider { margin-left: 48px; }
   }
 {% endstylesheet %}
 
 {% schema %}
 {
-  "name": "t:names.marquee",
-  "disabled_on": {
-    "groups": ["header", "footer"]
-  },
-  "blocks": [
-    {
-      "type": "text"
-    },
-    {
-      "type": "icon"
-    },
-    {
-      "type": "logo"
-    },
-    {
-      "type": "_divider"
-    }
-  ],
+  "name": "Scrolling Marquee",
   "settings": [
     {
-      "type": "select",
-      "id": "movement_direction",
-      "label": "t:settings.motion_direction",
-      "options": [
-        {
-          "value": "reverse",
-          "label": "t:options.forward"
-        },
-        {
-          "value": "normal",
-          "label": "t:options.reverse"
-        }
-      ],
-      "default": "normal"
+      "type": "header",
+      "content": "Colors"
     },
     {
-      "type": "color_scheme",
-      "id": "color_scheme",
-      "label": "t:settings.color_scheme",
-      "default": "scheme-1"
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#1A1710" 
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#F5F0E8"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Divider Color (Diamond)",
+      "default": "#C8420A"
     },
     {
       "type": "header",
-      "content": "t:content.padding"
+      "content": "Animation"
     },
     {
       "type": "range",
-      "id": "padding-block-start",
-      "label": "t:settings.top",
-      "min": 0,
-      "max": 100,
-      "step": 1,
-      "unit": "px",
-      "default": 24
+      "id": "speed",
+      "label": "Scroll Speed",
+      "min": 10,
+      "max": 60,
+      "step": 2,
+      "unit": "s",
+      "default": 30,
+      "info": "Lower number is faster."
     },
     {
-      "type": "range",
-      "id": "padding-block-end",
-      "label": "t:settings.bottom",
-      "min": 0,
-      "max": 100,
-      "step": 1,
-      "unit": "px",
-      "default": 24
-    },
+      "type": "select",
+      "id": "direction",
+      "label": "Direction",
+      "options": [
+        { "value": "normal", "label": "Right to Left" },
+        { "value": "reverse", "label": "Left to Right" }
+      ],
+      "default": "normal"
+    }
+  ],
+  "blocks": [
     {
-      "type": "range",
-      "id": "gap_between_elements",
-      "label": "t:settings.gap",
-      "min": 0,
-      "max": 100,
-      "step": 1,
-      "unit": "px",
-      "default": 24
+      "type": "text",
+      "name": "Marquee Text",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text",
+          "default": "BRAND NAME"
+        }
+      ]
     }
   ],
   "presets": [
     {
-      "name": "t:names.marquee_section",
-      "category": "t:categories.text",
-      "blocks": {
-        "text": {
-          "type": "text",
-          "settings": {
-            "text": "t:html_defaults.make_things_better",
-            "type_preset": "custom",
-            "font": "var(--font-body--family)",
-            "font_size": "var(--font-size--h2)",
-            "line_height": "tight",
-            "letter_spacing": "tight",
-            "case": "none",
-            "wrap": "nowrap",
-            "width": "fit-content"
-          }
-        }
-      },
-      "block_order": ["text"]
+      "name": "Scrolling Marquee",
+      "blocks": [
+        { "type": "text", "settings": { "text": "YAMAHA" } },
+        { "type": "text", "settings": { "text": "FENDER" } },
+        { "type": "text", "settings": { "text": "ROLAND" } },
+        { "type": "text", "settings": { "text": "GIBSON" } },
+        { "type": "text", "settings": { "text": "SHURE" } },
+        { "type": "text", "settings": { "text": "KORG" } }
+      ]
     }
   ]
 }
