@@ -504,6 +504,38 @@
         "button_link": ""
       }
     },
+    "shop_the_setup_jLrpwg": {
+      "type": "shop-the-setup",
+      "blocks": {
+        "hotspot_dLtzVr": {
+          "type": "hotspot",
+          "settings": {
+            "product": "",
+            "pos_x": 30,
+            "pos_y": 40
+          }
+        },
+        "hotspot_UdBVCP": {
+          "type": "hotspot",
+          "settings": {
+            "product": "",
+            "pos_x": 70,
+            "pos_y": 60
+          }
+        }
+      },
+      "block_order": [
+        "hotspot_dLtzVr",
+        "hotspot_UdBVCP"
+      ],
+      "name": "Shop the Setup",
+      "settings": {
+        "bg_color": "#ffffff",
+        "eyebrow": "CURATED KITS",
+        "heading": "Shop the |Setup|",
+        "subtext": "Hover over the dots to explore the gear used to create this professional home studio."
+      }
+    },
     "gear_guides_tLPfPr": {
       "type": "gear-guides",
       "name": "Gear Guides Grid",
@@ -1061,6 +1093,7 @@
     "top_brands_zJNmPf",
     "trust_perks_biA49t",
     "featured_video_split_LKtnFF",
+    "shop_the_setup_jLrpwg",
     "gear_guides_tLPfPr",
     "product_list_EDUBdR",
     "media_with_content_LfPdEJ",
