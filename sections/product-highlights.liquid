@@ -262,49 +262,42 @@
 <script>
   document.addEventListener('DOMContentLoaded', () => {
     const section = document.querySelector('#ph-{{ section.id }}');
+    if (!section) return;
     
-    // --- Tab Logic ---
+    // --- Tab & Arrow Logic (Unchanged & Stable) ---
     section.querySelectorAll('.ph-tab-btn').forEach(tab => {
       tab.addEventListener('click', () => {
         const target = tab.getAttribute('data-tab');
-        section.querySelectorAll('.ph-tab-btn').forEach(t => t.classList.remove('active'));
-        section.querySelectorAll('.ph-tab-panel').forEach(p => p.classList.remove('active'));
+        section.querySelectorAll('.ph-tab-btn, .ph-tab-panel').forEach(el => el.classList.remove('active'));
         tab.classList.add('active');
         section.querySelector(`#${target}`).classList.add('active');
       });
     });
 
-    // --- Arrow Logic ---
     const nextBtn = section.querySelector('.ph-arrow.next');
     const prevBtn = section.querySelector('.ph-arrow.prev');
-
     if(nextBtn && prevBtn) {
       nextBtn.addEventListener('click', () => {
         const activeGrid = section.querySelector('.ph-tab-panel.active .ph-grid-carousel');
-        const itemWidth = activeGrid.firstElementChild ? activeGrid.firstElementChild.offsetWidth : 300;
-        activeGrid.scrollBy({ left: itemWidth + 30, behavior: 'smooth' });
+        activeGrid.scrollBy({ left: (activeGrid.firstElementChild?.offsetWidth || 300) + 30, behavior: 'smooth' });
       });
       prevBtn.addEventListener('click', () => {
         const activeGrid = section.querySelector('.ph-tab-panel.active .ph-grid-carousel');
-        const itemWidth = activeGrid.firstElementChild ? activeGrid.firstElementChild.offsetWidth : 300;
-        activeGrid.scrollBy({ left: -(itemWidth + 30), behavior: 'smooth' });
+        activeGrid.scrollBy({ left: -((activeGrid.firstElementChild?.offsetWidth || 300) + 30), behavior: 'smooth' });
       });
     }
 
-    // --- Modal click-outside-to-close logic ---
     const dialogs = section.querySelectorAll('.pcs-quickview-modal');
     dialogs.forEach(dialog => {
       dialog.addEventListener('click', (e) => {
         const rect = dialog.getBoundingClientRect();
-        const isInDialog = (rect.top <= e.clientY && e.clientY <= rect.top + rect.height &&
-                            rect.left <= e.clientX && e.clientX <= rect.left + rect.width);
-        if (!isInDialog) {
+        if (!(rect.top <= e.clientY && e.clientY <= rect.top + rect.height && rect.left <= e.clientX && e.clientX <= rect.left + rect.width)) {
           dialog.close();
         }
       });
     });
 
-    // --- OPTIMIZED AJAX Add to Cart Logic ---
+    // --- NEW: Simplified & Bulletproof Add to Cart ---
     const ajaxForms = section.querySelectorAll('.ajax-cart-form');
     
     ajaxForms.forEach(form => {
@@ -312,62 +305,63 @@
         e.preventDefault(); 
         
         const submitBtn = this.querySelector('button[type="submit"]');
-        const btnTextSpan = submitBtn.querySelector('span');
+        const btnTextSpan = submitBtn.querySelector('span'); // Targets the <span> inside your button
         const originalText = btnTextSpan.innerText;
         
-        // 1. Find the global cart bubble (covers 95% of Shopify themes)
-        const cartBubbles = document.querySelectorAll('.cart-count-bubble span, .cart-icon-bubble, .cart-count, #CartCount, .header__cart-count');
+        // 1. Instantly change button state
+        btnTextSpan.innerText = 'Adding...';
+        submitBtn.disabled = true; // Briefly disable to prevent double-submitting the same item
         
-        // Get the quantity to add
-        const qtyInput = this.querySelector('[name="quantity"]');
-        const qtyToAdd = qtyInput ? parseInt(qtyInput.value, 10) : 1;
-
-        // 2. OPTIMISTIC UI: Instantly update the cart bubble everywhere on the page
-        cartBubbles.forEach(bubble => {
-          const currentCount = parseInt(bubble.innerText || '0', 10);
-          bubble.innerText = currentCount + qtyToAdd;
-        });
-
-        // 3. RAPID CLICKING: Change text instantly, DO NOT disable the button
-        btnTextSpan.innerText = 'Added! ✓';
-        submitBtn.disabled = false; // Ensures it can be clicked immediately again
-        
-        // Revert the button text very quickly (600ms) so it feels snappy and ready to click again
-        setTimeout(() => {
-          if (btnTextSpan.innerText === 'Added! ✓') {
-            btnTextSpan.innerText = originalText;
-          }
-        }, 600);
-        
-        // 4. Send the request to Shopify in the background
+        // 2. Prepare data (Forcing exactly 1 item)
         const formData = new FormData(this);
+        formData.set('quantity', '1'); 
+
+        // 3. Send to Shopify Cart API
         fetch(window.Shopify.routes.root + 'cart/add.js', {
           method: 'POST',
           body: formData,
           headers: { 'X-Requested-With': 'XMLHttpRequest' }
         })
         .then(response => {
-          if (!response.ok) throw new Error('Network error or Out of Stock');
-          return response.json();
+          if (!response.ok) throw new Error('Out of stock or network error');
+          // 4. If successful, immediately ask Shopify for the NEW cart total
+          return fetch(window.Shopify.routes.root + 'cart.js');
         })
-        .then(cart => {
-          // Tell the theme to quietly update the cart drawer in the background
-          document.documentElement.dispatchEvent(new CustomEvent('cart:updated', { bubbles: true }));
+        .then(response => response.json())
+        .then(cartData => {
+          // 5. Update the cart bubbles with the REAL number from the server
+          // Added [data-cart-count] and others to cast a wider net for your theme
+          const cartCounters = document.querySelectorAll('.cart-count-bubble span, .cart-icon-bubble, .cart-count, #CartCount, .header__cart-count, [data-cart-count]');
+          
+          cartCounters.forEach(counter => {
+            counter.innerText = cartData.item_count;
+            // Un-hide the bubble if your theme hides it when empty
+            counter.classList.remove('hidden', 'd-none'); 
+            if (counter.parentElement) counter.parentElement.classList.remove('hidden', 'd-none');
+          });
+
+          // 6. Show "Added" state
+          btnTextSpan.innerText = 'Added! ✓';
+          
+          // Trigger theme-specific cart drawer updates
+          document.documentElement.dispatchEvent(new CustomEvent('cart:updated', { bubbles: true, detail: { cart: cartData } }));
           document.documentElement.dispatchEvent(new CustomEvent('cart:build', { bubbles: true }));
-          document.documentElement.dispatchEvent(new CustomEvent('cart:refresh', { bubbles: true }));
+
+          // 7. RELIABLY reset the button after 1.5 seconds so it doesn't get stuck
+          setTimeout(() => {
+            btnTextSpan.innerText = originalText;
+            submitBtn.disabled = false;
+          }, 1500);
+
         })
         .catch(error => {
           console.error('Cart Error:', error);
+          btnTextSpan.innerText = 'Sold Out';
           
-          // 5. ROLLBACK: If it fails (e.g., they clicked 5 times but only 3 are in stock)
-          cartBubbles.forEach(bubble => {
-            const currentCount = parseInt(bubble.innerText || '0', 10);
-            bubble.innerText = Math.max(0, currentCount - qtyToAdd); // Remove the optimistically added number
-          });
-          
-          // Show error on button briefly
-          btnTextSpan.innerText = 'Out of Stock';
-          setTimeout(() => { btnTextSpan.innerText = originalText; }, 2000);
+          setTimeout(() => {
+            btnTextSpan.innerText = originalText;
+            submitBtn.disabled = false;
+          }, 2000);
         });
       });
     });
