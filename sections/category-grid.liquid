@@ -1,10 +1,11 @@
 {%- comment -%}
-  Stringer Music - Category Grid Section
-  Features: Responsive CSS Grid, Stringer Brand Colors/Typography, Interactive Hover States.
+  Stringer Music - Category Cards Grid
+  Features: Card-based layout, Eyebrow lines, Italic Accent Headings, Hover States.
 {%- endcomment -%}
 
 <section 
   class="category-grid-section" 
+  id="cg-{{ section.id }}"
   style="
     --grid-cols-desktop: {{ section.settings.desktop_columns }};
     --grid-cols-mobile: {{ section.settings.mobile_columns }};
@@ -12,29 +13,49 @@
   "
 >
   <div class="cg-container">
-    {%- if section.settings.heading != blank -%}
-      <h2 class="cg-heading">{{ section.settings.heading }}</h2>
-    {%- endif -%}
+    
+    <div class="cg-header">
+      {%- if section.settings.eyebrow != blank -%}
+        <p class="cg-eyebrow">{{ section.settings.eyebrow }}</p>
+      {%- endif -%}
+
+      {%- if section.settings.heading != blank -%}
+        <h2 class="cg-heading">
+          {%- assign parts = section.settings.heading | split: '|' -%}
+          {%- for part in parts -%}
+            {%- if forloop.index == 2 -%}<em>{{ part }}</em>{%- else -%}{{ part }}{%- endif -%}
+          {%- endfor -%}
+        </h2>
+      {%- endif -%}
+    </div>
 
     <div class="cg-grid">
       {%- for block in section.blocks -%}
         {%- assign s = block.settings -%}
         <a href="{{ s.link | default: '#' }}" class="cg-card" {{ block.shopify_attributes }}>
-          <div class="cg-card__image-wrapper cg-card__image-wrapper--{{ section.settings.image_style }}">
+          
+          <div class="cg-card__icon">
             {%- if s.image != blank -%}
-              {{ s.image | image_url: width: 150 | image_tag: 
-                class: 'cg-card__image', 
+              {{ s.image | image_url: width: 100 | image_tag: 
                 loading: 'lazy', 
                 alt: s.title 
               }}
             {%- else -%}
-              {{ 'collection-1' | placeholder_svg_tag: 'cg-card__placeholder' }}
+              {{ 'image' | placeholder_svg_tag: 'cg-card__placeholder' }}
             {%- endif -%}
           </div>
-          <span class="cg-card__title">{{ s.title | default: 'Category Name' }}</span>
+          
+          <div class="cg-card__content">
+            <h3 class="cg-card__title">{{ s.title | default: 'Category Name' }}</h3>
+            {%- if s.subtitle != blank -%}
+              <p class="cg-card__subtitle">{{ s.subtitle }}</p>
+            {%- endif -%}
+          </div>
+
         </a>
       {%- endfor -%}
     </div>
+    
   </div>
 </section>
 
@@ -52,7 +73,7 @@
     --font-body: var(--type_body_font, 'DM Sans', sans-serif);
 
     background-color: var(--bg-color, var(--brand-cream));
-    padding: 60px 5%;
+    padding: 80px 5%;
   }
 
   .cg-container {
@@ -61,16 +82,50 @@
   }
 
   /* ════════════════════════════════════════════
-     TYPOGRAPHY
+     HEADER & TYPOGRAPHY
   ════════════════════════════════════════════ */
+  .cg-header {
+    margin-bottom: 48px;
+    text-align: left;
+  }
+
+  .cg-eyebrow {
+    font-family: var(--font-body);
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: rgba(var(--brand-ink-rgb), 0.55);
+    margin: 0 0 16px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  /* The little line next to the eyebrow text */
+  .cg-eyebrow::before {
+    content: '';
+    display: block;
+    width: 32px;
+    height: 1px;
+    background-color: rgba(var(--brand-ink-rgb), 0.4);
+  }
+
   .cg-heading {
     font-family: var(--font-heading);
     color: var(--brand-ink);
-    font-size: clamp(32px, 4vw, 48px);
-    font-weight: 700;
-    text-align: center;
-    margin: 0 0 48px;
+    font-size: clamp(36px, 5vw, 64px);
+    font-weight: 900;
+    margin: 0;
     letter-spacing: -0.025em;
+    line-height: 1.1;
+  }
+
+  /* Accented Italic word inside the heading */
+  .cg-heading em {
+    font-style: italic;
+    font-weight: 700;
+    color: var(--brand-rust);
   }
 
   /* ════════════════════════════════════════════
@@ -78,135 +133,124 @@
   ════════════════════════════════════════════ */
   .cg-grid {
     display: grid;
-    grid-template-columns: repeat(var(--grid-cols-desktop, 3), 1fr);
-    column-gap: 48px;
-    row-gap: 0; /* Row gap is handled by the card padding/borders */
+    grid-template-columns: repeat(var(--grid-cols-desktop, 5), 1fr);
+    gap: 24px;
   }
 
   /* ════════════════════════════════════════════
-     CATEGORY CARD (Interactive Row)
+     CATEGORY CARDS
   ════════════════════════════════════════════ */
   .cg-card {
     display: flex;
-    align-items: center;
-    gap: 20px;
-    padding: 24px 8px;
-    text-decoration: none;
-    border-bottom: 1px solid rgba(var(--brand-ink-rgb), 0.12); /* Stringer semi-transparent Ink */
-    transition: border-color 0.3s ease;
-    group: card;
-  }
-
-  /* Remove bottom border from the last few items depending on column count so it looks clean */
-  .cg-card:nth-last-child(-n+3) {
-    border-bottom: none;
-  }
-
-  .cg-card__image-wrapper {
-    flex-shrink: 0;
-    width: 64px;
-    height: 64px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-  }
-
-  /* Image Style Options */
-  .cg-card__image-wrapper--circle {
-    border-radius: 50%;
-    background-color: #FFFFFF;
-    border: 1px solid rgba(var(--brand-ink-rgb), 0.08);
-  }
-  .cg-card__image-wrapper--square {
+    flex-direction: column;
+    padding: 32px 24px;
+    background-color: transparent; /* Allows section BG to show through */
+    border: 1px solid rgba(var(--brand-ink-rgb), 0.12); /* Stringer standard border */
     border-radius: 8px;
-    background-color: #FFFFFF;
-    border: 1px solid rgba(var(--brand-ink-rgb), 0.08);
+    text-decoration: none;
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    height: 100%; /* Keeps cards even if text wraps */
   }
 
-  .cg-card__image {
-    width: 100%;
-    height: 100%;
-    object-fit: contain; /* Ensures product isn't cropped */
-    transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  .cg-card__icon {
+    width: 44px;
+    height: 44px;
+    margin-bottom: 40px;
+    display: flex;
+    align-items: flex-end;
+  }
+
+  .cg-card__icon img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
   }
 
   .cg-card__placeholder {
-    width: 100%;
-    height: 100%;
     fill: rgba(var(--brand-ink-rgb), 0.2);
     background: rgba(var(--brand-ink-rgb), 0.05);
+    border-radius: 4px;
+    width: 100%; height: 100%;
+  }
+
+  .cg-card__content {
+    margin-top: auto; /* Pushes text to the bottom if cards are different heights */
   }
 
   .cg-card__title {
-    font-family: var(--font-body);
-    font-size: 16px;
-    font-weight: 500;
+    font-family: var(--font-heading);
+    font-size: 20px;
+    font-weight: 700;
     color: var(--brand-ink);
-    line-height: 1.4;
-    transition: color 0.2s ease, transform 0.2s ease;
+    margin: 0 0 6px 0;
+    line-height: 1.2;
+    transition: color 0.3s ease;
+  }
+
+  .cg-card__subtitle {
+    font-family: var(--font-body);
+    font-size: 13px;
+    color: rgba(var(--brand-ink-rgb), 0.55);
+    margin: 0;
+    font-weight: 400;
   }
 
   /* ════════════════════════════════════════════
      HOVER STATES
   ════════════════════════════════════════════ */
   .cg-card:hover {
-    border-bottom-color: rgba(var(--brand-ink-rgb), 0.3);
-  }
-
-  .cg-card:hover .cg-card__title {
-    color: var(--brand-rust); /* Shifts to brand accent color */
-    transform: translateX(4px); /* Subtle nudge */
-  }
-
-  .cg-card:hover .cg-card__image {
-    transform: scale(1.1); /* Slight pop on the image */
+    border-color: var(--brand-rust);
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(var(--brand-ink-rgb), 0.06);
+    background-color: #FFFFFF; /* Gives it a solid pop against the Cream BG on hover */
   }
 
   /* ════════════════════════════════════════════
      RESPONSIVE DESIGN
   ════════════════════════════════════════════ */
-  @media screen and (max-width: 990px) {
-    .category-grid-section { padding: 48px 5%; }
-    .cg-grid { 
-      grid-template-columns: repeat(2, 1fr); 
-      column-gap: 32px;
-    }
-    /* Reset bottom borders for 2 columns */
-    .cg-card { border-bottom: 1px solid rgba(var(--brand-ink-rgb), 0.12) !important; }
-    .cg-card:nth-last-child(-n+2) { border-bottom: none !important; }
+  @media screen and (max-width: 1024px) {
+    .cg-grid { grid-template-columns: repeat(3, 1fr); }
   }
 
   @media screen and (max-width: 749px) {
-    .category-grid-section { padding: 40px 5%; }
-    .cg-heading { font-size: 28px; margin-bottom: 32px; }
+    .category-grid-section { padding: 60px 5%; }
+    .cg-header { margin-bottom: 32px; }
     .cg-grid { 
-      grid-template-columns: repeat(var(--grid-cols-mobile, 1), 1fr); 
-      column-gap: 16px;
+      grid-template-columns: repeat(var(--grid-cols-mobile, 2), 1fr); 
+      gap: 16px;
     }
-    .cg-card { padding: 16px 4px; }
-    .cg-card__image-wrapper { width: 56px; height: 56px; }
-    /* Reset bottom borders for mobile */
-    .cg-card { border-bottom: 1px solid rgba(var(--brand-ink-rgb), 0.12) !important; }
-    .cg-card:last-child { border-bottom: none !important; }
+    .cg-card { padding: 24px 16px; }
+    .cg-card__icon { margin-bottom: 24px; width: 36px; height: 36px; }
+    .cg-card__title { font-size: 18px; }
   }
 {% endstylesheet %}
 
 {% schema %}
 {
-  "name": "Category Grid",
+  "name": "Category Cards Grid",
   "settings": [
-    {
-      "type": "text",
-      "id": "heading",
-      "label": "Heading",
-      "default": "Our Categories"
-    },
     {
       "type": "color",
       "id": "bg_color",
       "label": "Background Color",
       "default": "#F5F0E8"
+    },
+    {
+      "type": "header",
+      "content": "Text Content"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "BROWSE BY INSTRUMENT"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "What do you |play?|",
+      "info": "Use | to wrap the word you want italicized and Rust colored."
     },
     {
       "type": "header",
@@ -216,10 +260,10 @@
       "type": "range",
       "id": "desktop_columns",
       "label": "Columns on Desktop",
-      "min": 2,
-      "max": 4,
+      "min": 3,
+      "max": 6,
       "step": 1,
-      "default": 3
+      "default": 5
     },
     {
       "type": "select",
@@ -229,36 +273,32 @@
         { "value": "1", "label": "1 Column" },
         { "value": "2", "label": "2 Columns" }
       ],
-      "default": "1"
-    },
-    {
-      "type": "select",
-      "id": "image_style",
-      "label": "Image Wrapper Style",
-      "options": [
-        { "value": "transparent", "label": "Transparent (Native)" },
-        { "value": "square", "label": "White Square with Border" },
-        { "value": "circle", "label": "White Circle with Border" }
-      ],
-      "default": "transparent"
+      "default": "2"
     }
   ],
   "blocks": [
     {
       "type": "category",
-      "name": "Category",
+      "name": "Category Card",
       "settings": [
         {
           "type": "image_picker",
           "id": "image",
-          "label": "Category Image",
-          "info": "Transparent PNGs work best."
+          "label": "Category Icon",
+          "info": "Small, transparent PNGs work best."
         },
         {
           "type": "text",
           "id": "title",
           "label": "Category Name",
-          "default": "Guitars and Basses"
+          "default": "Guitars"
+        },
+        {
+          "type": "text",
+          "id": "subtitle",
+          "label": "Subtitle",
+          "default": "1,240 items",
+          "info": "Leave blank to hide."
         },
         {
           "type": "url",
@@ -270,14 +310,13 @@
   ],
   "presets": [
     {
-      "name": "Category Grid",
+      "name": "Category Cards Grid",
       "blocks": [
-        { "type": "category", "settings": { "title": "Guitars and Basses" } },
-        { "type": "category", "settings": { "title": "Drums and Percussion" } },
-        { "type": "category", "settings": { "title": "Keys" } },
-        { "type": "category", "settings": { "title": "Studio and Recording" } },
-        { "type": "category", "settings": { "title": "Software" } },
-        { "type": "category", "settings": { "title": "PA Equipment" } }
+        { "type": "category", "settings": { "title": "Guitars", "subtitle": "1,240 items" } },
+        { "type": "category", "settings": { "title": "Keys & Synths", "subtitle": "480 items" } },
+        { "type": "category", "settings": { "title": "Drums", "subtitle": "360 items" } },
+        { "type": "category", "settings": { "title": "Wind & Brass", "subtitle": "290 items" } },
+        { "type": "category", "settings": { "title": "Strings", "subtitle": "210 items" } }
       ]
     }
   ]
