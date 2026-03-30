@@ -1,6 +1,6 @@
 {%- comment -%}
   Stringer Music - Category Cards Grid
-  Features: Card-based layout, Eyebrow lines, Italic Accent Headings, Hover States.
+  Features: Dynamic Product Counts, Eyebrow lines, Italic Accent Headings, Hover States.
 {%- endcomment -%}
 
 <section 
@@ -32,23 +32,37 @@
     <div class="cg-grid">
       {%- for block in section.blocks -%}
         {%- assign s = block.settings -%}
-        <a href="{{ s.link | default: '#' }}" class="cg-card" {{ block.shopify_attributes }}>
+        {%- assign collection = s.collection -%}
+
+        {%- comment -%} Intelligent Fallbacks {%- endcomment -%}
+        {%- assign card_link = collection.url | default: s.link | default: '#' -%}
+        {%- assign card_title = s.title | default: collection.title | default: 'Category Name' -%}
+        {%- assign card_image = s.image | default: collection.featured_image -%}
+        
+        {%- comment -%} Dynamic Subtitle Logic {%- endcomment -%}
+        {%- if collection != blank -%}
+          {%- assign card_subtitle = collection.all_products_count | append: ' items' -%}
+        {%- else -%}
+          {%- assign card_subtitle = s.subtitle -%}
+        {%- endif -%}
+
+        <a href="{{ card_link }}" class="cg-card" {{ block.shopify_attributes }}>
           
           <div class="cg-card__icon">
-            {%- if s.image != blank -%}
-              {{ s.image | image_url: width: 100 | image_tag: 
+            {%- if card_image != blank -%}
+              {{ card_image | image_url: width: 100 | image_tag: 
                 loading: 'lazy', 
-                alt: s.title 
+                alt: card_title 
               }}
             {%- else -%}
-              {{ 'image' | placeholder_svg_tag: 'cg-card__placeholder' }}
+              {{ 'collection-1' | placeholder_svg_tag: 'cg-card__placeholder' }}
             {%- endif -%}
           </div>
           
           <div class="cg-card__content">
-            <h3 class="cg-card__title">{{ s.title | default: 'Category Name' }}</h3>
-            {%- if s.subtitle != blank -%}
-              <p class="cg-card__subtitle">{{ s.subtitle }}</p>
+            <h3 class="cg-card__title">{{ card_title }}</h3>
+            {%- if card_subtitle != blank -%}
+              <p class="cg-card__subtitle">{{ card_subtitle }}</p>
             {%- endif -%}
           </div>
 
@@ -102,7 +116,6 @@
     gap: 16px;
   }
 
-  /* The little line next to the eyebrow text */
   .cg-eyebrow::before {
     content: '';
     display: block;
@@ -121,7 +134,6 @@
     line-height: 1.1;
   }
 
-  /* Accented Italic word inside the heading */
   .cg-heading em {
     font-style: italic;
     font-weight: 700;
@@ -144,12 +156,12 @@
     display: flex;
     flex-direction: column;
     padding: 32px 24px;
-    background-color: transparent; /* Allows section BG to show through */
-    border: 1px solid rgba(var(--brand-ink-rgb), 0.12); /* Stringer standard border */
+    background-color: transparent;
+    border: 1px solid rgba(var(--brand-ink-rgb), 0.12);
     border-radius: 8px;
     text-decoration: none;
     transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    height: 100%; /* Keeps cards even if text wraps */
+    height: 100%;
   }
 
   .cg-card__icon {
@@ -174,7 +186,7 @@
   }
 
   .cg-card__content {
-    margin-top: auto; /* Pushes text to the bottom if cards are different heights */
+    margin-top: auto;
   }
 
   .cg-card__title {
@@ -202,7 +214,7 @@
     border-color: var(--brand-rust);
     transform: translateY(-4px);
     box-shadow: 0 8px 24px rgba(var(--brand-ink-rgb), 0.06);
-    background-color: #FFFFFF; /* Gives it a solid pop against the Cream BG on hover */
+    background-color: #FFFFFF;
   }
 
   /* ════════════════════════════════════════════
@@ -282,28 +294,39 @@
       "name": "Category Card",
       "settings": [
         {
+          "type": "collection",
+          "id": "collection",
+          "label": "Select Collection",
+          "info": "This will automatically pull the product count (e.g., '1,240 items') and the collection link."
+        },
+        {
+          "type": "header",
+          "content": "Overrides"
+        },
+        {
           "type": "image_picker",
           "id": "image",
-          "label": "Category Icon",
-          "info": "Small, transparent PNGs work best."
+          "label": "Category Icon Override",
+          "info": "Leave blank to use the collection's default image."
         },
         {
           "type": "text",
           "id": "title",
-          "label": "Category Name",
-          "default": "Guitars"
+          "label": "Category Name Override",
+          "info": "Leave blank to use the collection's title. (e.g., Change 'Acoustic Guitars' to just 'Guitars')"
         },
         {
           "type": "text",
           "id": "subtitle",
-          "label": "Subtitle",
-          "default": "1,240 items",
-          "info": "Leave blank to hide."
+          "label": "Fallback Subtitle",
+          "default": "Explore collection",
+          "info": "Only shows if NO collection is selected above."
         },
         {
           "type": "url",
           "id": "link",
-          "label": "Category Link"
+          "label": "Fallback Link",
+          "info": "Only used if NO collection is selected above."
         }
       ]
     }
@@ -312,11 +335,11 @@
     {
       "name": "Category Cards Grid",
       "blocks": [
-        { "type": "category", "settings": { "title": "Guitars", "subtitle": "1,240 items" } },
-        { "type": "category", "settings": { "title": "Keys & Synths", "subtitle": "480 items" } },
-        { "type": "category", "settings": { "title": "Drums", "subtitle": "360 items" } },
-        { "type": "category", "settings": { "title": "Wind & Brass", "subtitle": "290 items" } },
-        { "type": "category", "settings": { "title": "Strings", "subtitle": "210 items" } }
+        { "type": "category", "settings": { "title": "Guitars" } },
+        { "type": "category", "settings": { "title": "Keys & Synths" } },
+        { "type": "category", "settings": { "title": "Drums" } },
+        { "type": "category", "settings": { "title": "Wind & Brass" } },
+        { "type": "category", "settings": { "title": "Strings" } }
       ]
     }
   ]
