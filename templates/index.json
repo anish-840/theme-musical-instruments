@@ -254,8 +254,7 @@
         "category_rwhV6Y": {
           "type": "category",
           "settings": {
-            "collection": "",
-            "image": "shopify://shop_images/gi.webp",
+            "collection": "guitar-and-basses",
             "title": "Guitars and Basses",
             "subtitle": "1,240 items",
             "link": ""
