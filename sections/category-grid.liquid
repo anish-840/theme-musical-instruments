@@ -1,6 +1,6 @@
 {%- comment -%}
   Stringer Music - Category Cards Grid
-  Features: Dynamic Product Counts, Eyebrow lines, Italic Accent Headings, Hover States.
+  Features: Dynamic Product Counts, Eyebrow lines, Italic Accent Headings, Hover States, Bulletproof BG Color.
 {%- endcomment -%}
 
 <section 
@@ -9,7 +9,7 @@
   style="
     --grid-cols-desktop: {{ section.settings.desktop_columns }};
     --grid-cols-mobile: {{ section.settings.mobile_columns }};
-    --bg-color: {{ section.settings.bg_color }};
+    background-color: {{ section.settings.bg_color | default: '#FFFFFF' }};
   "
 >
   <div class="cg-container">
@@ -82,13 +82,11 @@
     --brand-ink: #1A1710;
     --brand-ink-rgb: 26, 23, 16;
     --brand-rust: #C8420A;
-    --brand-white: #FFFFFF;
     
     --font-heading: var(--type_header_font, 'Playfair Display', serif);
     --font-body: var(--type_body_font, 'DM Sans', sans-serif);
 
-    /* Changed fallback to White instead of Cream */
-    background-color: var(--bg-color, var(--brand-white));
+    /* Background color is handled directly by the inline HTML style above! */
     padding: 80px 5%;
   }
 
