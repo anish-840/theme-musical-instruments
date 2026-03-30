@@ -385,7 +385,7 @@
       ],
       "name": "Top Brands Grid",
       "settings": {
-        "bg_color": "#FFFFFF",
+        "bg_color": "#ffffff",
         "heading": "Top Brands",
         "show_underline": true,
         "desktop_columns": 5,
@@ -608,6 +608,7 @@
           ]
         }
       },
+      "disabled": true,
       "name": "Featured collection",
       "settings": {
         "collection": "all",
@@ -750,6 +751,7 @@
           ]
         }
       },
+      "disabled": true,
       "name": "t:names.media_with_text",
       "settings": {
         "media_position": "left",
@@ -903,6 +905,7 @@
       "block_order": [
         "group_mfTd9p"
       ],
+      "disabled": true,
       "name": "Collection list",
       "settings": {
         "collection_list": [],
