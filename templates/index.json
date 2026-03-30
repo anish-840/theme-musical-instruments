@@ -254,6 +254,7 @@
         "category_rwhV6Y": {
           "type": "category",
           "settings": {
+            "collection": "",
             "image": "shopify://shop_images/gi.webp",
             "title": "Guitars and Basses",
             "subtitle": "1,240 items",
@@ -263,6 +264,8 @@
         "category_7BJVgQ": {
           "type": "category",
           "settings": {
+            "collection": "",
+            "image": "shopify://shop_images/Untitled_design_5_-Picsart-AiImageEnhancer.png",
             "title": "Drums and Percussion",
             "subtitle": "1,240 items",
             "link": ""
@@ -271,6 +274,7 @@
         "category_VwcH6A": {
           "type": "category",
           "settings": {
+            "collection": "",
             "title": "Keys",
             "subtitle": "1,240 items",
             "link": ""
@@ -279,6 +283,7 @@
         "category_bMkzP7": {
           "type": "category",
           "settings": {
+            "collection": "",
             "title": "Studio and Recording",
             "subtitle": "1,240 items",
             "link": ""
@@ -287,6 +292,7 @@
         "category_Q8nzEQ": {
           "type": "category",
           "settings": {
+            "collection": "",
             "title": "Software",
             "subtitle": "1,240 items",
             "link": ""
@@ -295,6 +301,7 @@
         "category_rqbjAW": {
           "type": "category",
           "settings": {
+            "collection": "",
             "title": "PA Equipment",
             "subtitle": "1,240 items",
             "link": ""
