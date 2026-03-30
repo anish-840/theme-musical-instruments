@@ -1,7 +1,7 @@
 {%- comment -%}
   Stringer Music - Product Highlights Carousel
   Clean tabbed interface with hover-state floating arrows, 
-  built-in AJAX Add to Cart, and Quick View Modals.
+  built-in Add to Cart, and Quick View Modals.
 {%- endcomment -%}
 
 <section class="ph-section" id="ph-{{ section.id }}" style="--bg-color: {{ section.settings.bg_color }};">
@@ -49,10 +49,10 @@
                     
                     <div class="pcs-actions">
                       <button class="pcs-action-btn" onclick="document.getElementById('qv-trend-{{ section.id }}-{{ product.id }}').showModal()">Quick View</button>
-                      {%- form 'product', product, class: 'pcs-form ajax-cart-form' -%}
+                      {%- form 'product', product, class: 'pcs-form' -%}
                         <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
                         <button type="submit" class="pcs-action-btn pcs-action-btn--primary" {% unless product.available %}disabled{% endunless %}>
-                          <span>{% if product.available %}Add to Cart{% else %}Sold Out{% endif %}</span>
+                          {% if product.available %}Add to Cart{% else %}Sold Out{% endif %}
                         </button>
                       {%- endform -%}
                     </div>
@@ -85,10 +85,10 @@
                               Experience the unmatched quality and tone of this incredible instrument.
                             {%- endif -%}
                           </div>
-                          {%- form 'product', product, class: 'ajax-cart-form' -%}
+                          {%- form 'product', product -%}
                             <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
                             <button type="submit" class="pcs-modal-atc" {% unless product.available %}disabled{% endunless %}>
-                               <span>{% if product.available %}Add to Cart — {{ product.price | money }}{% else %}Out of Stock{% endif %}</span>
+                               {% if product.available %}Add to Cart — {{ product.price | money }}{% else %}Out of Stock{% endif %}
                             </button>
                           {%- endform -%}
                           <a href="{{ product.url }}" class="pcs-modal-link">View Full Details</a>
@@ -122,10 +122,10 @@
                     
                     <div class="pcs-actions">
                       <button class="pcs-action-btn" onclick="document.getElementById('qv-top-{{ section.id }}-{{ product.id }}').showModal()">Quick View</button>
-                      {%- form 'product', product, class: 'pcs-form ajax-cart-form' -%}
+                      {%- form 'product', product, class: 'pcs-form' -%}
                         <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
                         <button type="submit" class="pcs-action-btn pcs-action-btn--primary" {% unless product.available %}disabled{% endunless %}>
-                          <span>{% if product.available %}Add to Cart{% else %}Sold Out{% endif %}</span>
+                          {% if product.available %}Add to Cart{% else %}Sold Out{% endif %}
                         </button>
                       {%- endform -%}
                     </div>
@@ -157,10 +157,10 @@
                               Experience the unmatched quality and tone of this incredible instrument.
                             {%- endif -%}
                           </div>
-                          {%- form 'product', product, class: 'ajax-cart-form' -%}
+                          {%- form 'product', product -%}
                             <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
                             <button type="submit" class="pcs-modal-atc" {% unless product.available %}disabled{% endunless %}>
-                               <span>{% if product.available %}Add to Cart — {{ product.price | money }}{% else %}Out of Stock{% endif %}</span>
+                               {% if product.available %}Add to Cart — {{ product.price | money }}{% else %}Out of Stock{% endif %}
                             </button>
                           {%- endform -%}
                           <a href="{{ product.url }}" class="pcs-modal-link">View Full Details</a>
@@ -262,110 +262,47 @@
 <script>
   document.addEventListener('DOMContentLoaded', () => {
     const section = document.querySelector('#ph-{{ section.id }}');
-    if (!section) return;
     
-    // --- Tab & Arrow Logic (Unchanged & Stable) ---
+    // Tab Logic
     section.querySelectorAll('.ph-tab-btn').forEach(tab => {
       tab.addEventListener('click', () => {
         const target = tab.getAttribute('data-tab');
-        section.querySelectorAll('.ph-tab-btn, .ph-tab-panel').forEach(el => el.classList.remove('active'));
+        section.querySelectorAll('.ph-tab-btn').forEach(t => t.classList.remove('active'));
+        section.querySelectorAll('.ph-tab-panel').forEach(p => p.classList.remove('active'));
         tab.classList.add('active');
         section.querySelector(`#${target}`).classList.add('active');
       });
     });
 
+    // Arrow Logic
     const nextBtn = section.querySelector('.ph-arrow.next');
     const prevBtn = section.querySelector('.ph-arrow.prev');
+
     if(nextBtn && prevBtn) {
       nextBtn.addEventListener('click', () => {
         const activeGrid = section.querySelector('.ph-tab-panel.active .ph-grid-carousel');
-        activeGrid.scrollBy({ left: (activeGrid.firstElementChild?.offsetWidth || 300) + 30, behavior: 'smooth' });
+        const itemWidth = activeGrid.firstElementChild ? activeGrid.firstElementChild.offsetWidth : 300;
+        activeGrid.scrollBy({ left: itemWidth + 30, behavior: 'smooth' });
       });
       prevBtn.addEventListener('click', () => {
         const activeGrid = section.querySelector('.ph-tab-panel.active .ph-grid-carousel');
-        activeGrid.scrollBy({ left: -((activeGrid.firstElementChild?.offsetWidth || 300) + 30), behavior: 'smooth' });
+        const itemWidth = activeGrid.firstElementChild ? activeGrid.firstElementChild.offsetWidth : 300;
+        activeGrid.scrollBy({ left: -(itemWidth + 30), behavior: 'smooth' });
       });
     }
 
+    // Modal click-outside-to-close logic
     const dialogs = section.querySelectorAll('.pcs-quickview-modal');
     dialogs.forEach(dialog => {
       dialog.addEventListener('click', (e) => {
         const rect = dialog.getBoundingClientRect();
-        if (!(rect.top <= e.clientY && e.clientY <= rect.top + rect.height && rect.left <= e.clientX && e.clientX <= rect.left + rect.width)) {
+        const isInDialog = (rect.top <= e.clientY && e.clientY <= rect.top + rect.height &&
+                            rect.left <= e.clientX && e.clientX <= rect.left + rect.width);
+        if (!isInDialog) {
           dialog.close();
         }
       });
     });
-
-    // --- NEW: Simplified & Bulletproof Add to Cart ---
-    const ajaxForms = section.querySelectorAll('.ajax-cart-form');
-    
-    ajaxForms.forEach(form => {
-      form.addEventListener('submit', function(e) {
-        e.preventDefault(); 
-        
-        const submitBtn = this.querySelector('button[type="submit"]');
-        const btnTextSpan = submitBtn.querySelector('span'); // Targets the <span> inside your button
-        const originalText = btnTextSpan.innerText;
-        
-        // 1. Instantly change button state
-        btnTextSpan.innerText = 'Adding...';
-        submitBtn.disabled = true; // Briefly disable to prevent double-submitting the same item
-        
-        // 2. Prepare data (Forcing exactly 1 item)
-        const formData = new FormData(this);
-        formData.set('quantity', '1'); 
-
-        // 3. Send to Shopify Cart API
-        fetch(window.Shopify.routes.root + 'cart/add.js', {
-          method: 'POST',
-          body: formData,
-          headers: { 'X-Requested-With': 'XMLHttpRequest' }
-        })
-        .then(response => {
-          if (!response.ok) throw new Error('Out of stock or network error');
-          // 4. If successful, immediately ask Shopify for the NEW cart total
-          return fetch(window.Shopify.routes.root + 'cart.js');
-        })
-        .then(response => response.json())
-        .then(cartData => {
-          // 5. Update the cart bubbles with the REAL number from the server
-          // Added [data-cart-count] and others to cast a wider net for your theme
-          const cartCounters = document.querySelectorAll('.cart-count-bubble span, .cart-icon-bubble, .cart-count, #CartCount, .header__cart-count, [data-cart-count]');
-          
-          cartCounters.forEach(counter => {
-            counter.innerText = cartData.item_count;
-            // Un-hide the bubble if your theme hides it when empty
-            counter.classList.remove('hidden', 'd-none'); 
-            if (counter.parentElement) counter.parentElement.classList.remove('hidden', 'd-none');
-          });
-
-          // 6. Show "Added" state
-          btnTextSpan.innerText = 'Added! ✓';
-          
-          // Trigger theme-specific cart drawer updates
-          document.documentElement.dispatchEvent(new CustomEvent('cart:updated', { bubbles: true, detail: { cart: cartData } }));
-          document.documentElement.dispatchEvent(new CustomEvent('cart:build', { bubbles: true }));
-
-          // 7. RELIABLY reset the button after 1.5 seconds so it doesn't get stuck
-          setTimeout(() => {
-            btnTextSpan.innerText = originalText;
-            submitBtn.disabled = false;
-          }, 1500);
-
-        })
-        .catch(error => {
-          console.error('Cart Error:', error);
-          btnTextSpan.innerText = 'Sold Out';
-          
-          setTimeout(() => {
-            btnTextSpan.innerText = originalText;
-            submitBtn.disabled = false;
-          }, 2000);
-        });
-      });
-    });
-
   });
 </script>
 
