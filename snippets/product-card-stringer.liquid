@@ -1,6 +1,7 @@
 {% comment %}
   Stringer Music - Custom Product Card
   Matches the screenshot: Gray BG, Bold Playfair Headings. (No Ratings)
+  Center-aligned text for better visual balance.
 {% endcomment %}
 
 <div class="product-card-stringer">
@@ -61,6 +62,10 @@
     transition: transform 0.5s ease;
   }
 
+  .pcs__info {
+    text-align: center; /* Center-align the entire content area */
+  }
+
   .pcs__title {
     font-family: var(--type_header_font, 'Playfair Display', serif);
     font-size: 15px;
@@ -73,6 +78,7 @@
     -webkit-box-orient: vertical;
     overflow: hidden;
     min-height: 42px;
+    text-align: center; /* Ensure the text itself is centered within its block */
   }
 
   .pcs__price {
@@ -81,6 +87,7 @@
     font-weight: 900;
     color: #1A1710;
     letter-spacing: -0.02em;
+    text-align: center; /* Ensure the text itself is centered within its block */
   }
 
   /* Hover Effects */
