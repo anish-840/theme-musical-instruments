@@ -504,6 +504,19 @@
         "button_link": ""
       }
     },
+    "brand_ethos_fQpHXU": {
+      "type": "brand-ethos",
+      "name": "Brand Ethos Parallax",
+      "settings": {
+        "image": "shopify://shop_images/rod-long-YLtf9KqA4h0-unsplash.jpg",
+        "overlay_color": "#1A1710",
+        "overlay_opacity": 40,
+        "quote": "Tools for the |Modern| Soundscape.",
+        "author": "STRINGER MUSIC CO.",
+        "text_color": "#F5F0E8",
+        "accent_color": "#C8420A"
+      }
+    },
     "shop_the_setup_jLrpwg": {
       "type": "shop-the-setup",
       "blocks": {
@@ -1094,6 +1107,7 @@
     "top_brands_zJNmPf",
     "trust_perks_biA49t",
     "featured_video_split_LKtnFF",
+    "brand_ethos_fQpHXU",
     "shop_the_setup_jLrpwg",
     "gear_guides_tLPfPr",
     "product_list_EDUBdR",
