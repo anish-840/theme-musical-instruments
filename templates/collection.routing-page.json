@@ -175,7 +175,7 @@
         "text_zjNxdC": {
           "type": "text",
           "settings": {
-            "text": "<h2>Guitars and Basses</h2>",
+            "text": "<h2>{{ closest.collection.title }}</h2>",
             "width": "fit-content",
             "max_width": "none",
             "alignment": "left",
@@ -208,7 +208,6 @@
       "name": "t:names.hero",
       "settings": {
         "media_type_1": "image",
-        "image_1": "shopify://shop_images/evgeny-ndn-ueS3qhnlwDU-unsplash.jpg",
         "media_type_2": "image",
         "stack_media_on_mobile": false,
         "custom_mobile_media": false,
