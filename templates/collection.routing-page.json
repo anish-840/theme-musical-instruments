@@ -69,6 +69,7 @@
             "overlay_color": "#00000026",
             "overlay_style": "solid",
             "gradient_direction": "to top",
+            "link": "",
             "open_in_new_tab": false,
             "placeholder": "",
             "padding-block-start": 0,
@@ -83,6 +84,7 @@
               "disabled": true,
               "settings": {
                 "image": "{{ closest.collection.image }}",
+                "link": "",
                 "image_ratio": "adapt",
                 "width": "fill",
                 "custom_width": 100,
@@ -165,6 +167,11 @@
         "padding-block-start": 32,
         "padding-block-end": 32
       }
+    },
+    "subcategory_grid_VUWp3g": {
+      "type": "subcategory-grid",
+      "name": "Subcategory Grid",
+      "settings": {}
     },
     "main": {
       "type": "main-collection",
@@ -254,6 +261,7 @@
                 "overlay_color": "#00000026",
                 "overlay_style": "solid",
                 "gradient_direction": "to top",
+                "link": "",
                 "open_in_new_tab": false,
                 "padding-block-start": 24,
                 "padding-block-end": 24,
@@ -336,11 +344,13 @@
           ]
         }
       },
+      "disabled": true,
       "settings": {
         "layout_type": "grid",
         "product_card_size": "medium",
         "mobile_product_card_size": "small",
         "enable_infinite_scroll": false,
+        "products_per_page": 24,
         "product_grid_width": "centered",
         "full_width_on_mobile": false,
         "columns_gap_horizontal": 16,
@@ -355,6 +365,7 @@
   },
   "order": [
     "section",
+    "subcategory_grid_VUWp3g",
     "main"
   ]
 }
