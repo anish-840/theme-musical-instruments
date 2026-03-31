@@ -177,7 +177,7 @@
           "settings": {
             "text": "<h2>New arrivals</h2>",
             "width": "fit-content",
-            "max_width": "narrow",
+            "max_width": "none",
             "alignment": "left",
             "type_preset": "h1",
             "font": "var(--font-body--family)",
@@ -196,52 +196,14 @@
             "padding-inline-end": 0
           },
           "blocks": {}
-        },
-        "text_hQFnzx": {
-          "type": "text",
-          "settings": {
-            "text": "<p>Made with care and unconditionally loved by our customers.</p>",
-            "width": "fit-content",
-            "max_width": "narrow",
-            "alignment": "left",
-            "type_preset": "rte",
-            "font": "var(--font-body--family)",
-            "font_size": "1rem",
-            "line_height": "normal",
-            "letter_spacing": "normal",
-            "case": "none",
-            "wrap": "pretty",
-            "color": "var(--color-foreground)",
-            "background": false,
-            "background_color": "#00000026",
-            "corner_radius": 0,
-            "padding-block-start": 0,
-            "padding-block-end": 32,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
-          },
-          "blocks": {}
-        },
-        "button_73jgCL": {
-          "type": "button",
-          "name": "t:names.button",
-          "settings": {
-            "label": "Shop now",
-            "link": "shopify://collections/all",
-            "open_in_new_tab": false,
-            "style_class": "button",
-            "width": "fit-content",
-            "custom_width": 100,
-            "width_mobile": "fit-content",
-            "custom_width_mobile": 100
-          },
-          "blocks": {}
         }
       },
       "block_order": [
-        "text_zjNxdC",
-        "text_hQFnzx",
-        "button_73jgCL"
+        "text_zjNxdC"
+      ],
+      "custom_css": [
+        ".hero__content-wrapper {align-items: flex-start !important; text-align: left !important;}",
+        ".hero__content-wrapper * {text-align: left !important;}"
       ],
       "name": "t:names.hero",
       "settings": {
@@ -263,7 +225,7 @@
         "vertical_alignment_flex_direction_column": "center",
         "gap": 16,
         "section_width": "page-width",
-        "section_height": "auto",
+        "section_height": "small",
         "section_height_custom": 50,
         "color_scheme": "scheme-5",
         "toggle_overlay": true,
