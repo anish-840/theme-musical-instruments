@@ -1,6 +1,7 @@
 {%- comment -%}
   This section looks for a navigation menu with the exact same handle as the current collection.
   If it finds one, it displays the links as a visual grid of sub-categories.
+  New Feature: Dedicated, full-width routing header before the grid.
 {%- endcomment -%}
 
 {%- assign menu_handle = collection.handle -%}
@@ -8,6 +9,44 @@
 
 {%- if sub_links.size > 0 -%}
   <section class="subcategory-section">
+    
+    {%- comment -%} --- INJECTING THE ROUTING HEADER --- {%- endcomment -%}
+    {%- comment -%} This main div forces the colors set in the schema settings to the entire header {%- endcomment -%}
+    <div 
+      class="subcategory-header image--{{ section.settings.image_position }}" 
+      style="
+        background-color: {{ section.settings.header_bg_color }};
+        color: {{ section.settings.header_text_color }};
+      "
+    >
+      <div class="subcategory-header-container">
+        
+        {%- comment -%} Text Area (Positioned Left or Right based on setting) {%- endcomment -%}
+        <div class="subcategory-header-text">
+          <nav class="subcategory-breadcrumb" aria-label="Breadcrumb">
+            <ol>
+              <li><a href="/">Home</a></li>
+              <li aria-current="page">{{ collection.title }}</li>
+            </ol>
+          </nav>
+          
+          <h1 class="subcategory-main-title">{{ collection.title }}</h1>
+        </div>
+
+        {%- comment -%} Media Area (The instruments peeking out) {%- endcomment -%}
+        <div class="subcategory-header-media">
+          {%- if collection.image -%}
+            {{ collection.image | image_url: width: 1200 | image_tag: loading: 'lazy', class: 'subcategory-header-img' }}
+          {%- else -%}
+            {{ 'collection-1' | placeholder_svg_tag: 'subcategory-header-img placeholder' }}
+          {%- endif -%}
+        </div>
+
+      </div>
+    </div>
+    {%- comment -%} --- END HEADER INJECTION --- {%- endcomment -%}
+
+    {%- comment -%} The Grid Container (Contained to normal max-width) {%- endcomment -%}
     <div class="subcategory-container">
       
       <div class="subcategory-grid">
@@ -36,10 +75,82 @@
   </section>
 
   <style>
-    .subcategory-section { padding: 40px 0; background: #fff; }
+    /* ════════════════════════════════════════════
+       FULL-WIDTH HEADER STYLING
+    ════════════════════════════════════════════ */
+    .subcategory-header {
+      width: 100%;
+      height: 400px; /* Fixed height for the header */
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 50px; /* Space between header and grid */
+    }
+
+    .subcategory-header-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 5%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    /* Standard Breadcrumb Styling */
+    .subcategory-breadcrumb { margin-bottom: 20px; font-size: 14px; }
+    .subcategory-breadcrumb ol { list-style: none; padding: 0; margin: 0; display: flex; gap: 8px; }
+    .subcategory-breadcrumb li a { text-decoration: none; color: inherit; opacity: 0.6; }
+    .subcategory-breadcrumb li a:hover { text-decoration: underline; }
+    .subcategory-breadcrumb li[aria-current="page"] { color: inherit; opacity: 0.4; }
+
+    /* Main Title Styling */
+    .subcategory-main-title {
+      font-family: var(--type_header_font, 'Playfair Display', serif);
+      font-size: clamp(40px, 6vw, 72px); /* Responsive font size */
+      color: inherit; /* Inherits from parent, set by schema */
+      margin: 0;
+      font-weight: 900;
+      letter-spacing: -0.025em;
+    }
+
+    /* Image Area Styling */
+    .subcategory-header-media {
+      position: absolute;
+      top: 0;
+      height: 100%;
+      width: 65%; /* Image area takes up 65% width */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .subcategory-header-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover; /* Important: fills the area without distortion */
+    }
+    .subcategory-header-img.placeholder { fill: rgba(26,23,16,0.1); background: #f4f4f4;}
+
+    /* ════════════════════════════════════════════
+       IMAGE POSITION LOGIC (DESKTOP)
+    ════════════════════════════════════════════ */
+    /* IMAGE RIGHT (DEFAULT, matches screenshot) */
+    .image--right .subcategory-header-text { flex: 0 0 45%; text-align: left; }
+    .image--right .subcategory-header-media { right: 0; }
+    .image--right .subcategory-header-img { object-position: center right; }
+
+    /* IMAGE LEFT (ALTERNATIVE) */
+    .image--left .subcategory-header-text { flex: 0 0 45%; text-align: right; order: 2; /* Moves text to the right */}
+    .image--left .subcategory-header-media { left: 0; order: 1; /* Moves image to the left */}
+    .image--left .subcategory-header-img { object-position: center left; }
+
+    /* ════════════════════════════════════════════
+       THE REST OF YOUR GRID STYLING
+       (KEPT EXACTLY FROM PREVIOUS TURN)
+    ════════════════════════════════════════════ */
+    .subcategory-section { padding: 0px 0 60px 0; background: #fff; } /* Removed top padding due to header margin */
     .subcategory-container { max-width: 1400px; margin: 0 auto; padding: 0 5%; }
     
-    /* 1. INCREASED GRID BASE SIZE from 200px to 260px */
     .subcategory-grid { 
       display: grid; 
       grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); 
@@ -47,49 +158,25 @@
       row-gap: 60px;
     }
     
-    .subcategory-card { 
-      text-decoration: none; 
-      text-align: center; 
-      display: flex; 
-      flex-direction: column; 
-      align-items: center;
-      transition: transform 0.2s ease;
-    }
+    .subcategory-card { text-decoration: none; text-align: center; display: flex; flex-direction: column; align-items: center; transition: transform 0.2s ease; }
     .subcategory-card:hover { transform: translateY(-6px); }
     
-    /* 2. INCREASED IMAGE WRAPPER from 150px to 220px */
-    .subcategory-image-wrapper {
-      width: 220px;
-      height: 220px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 20px;
-    }
-    
-    .subcategory-img {
-      max-width: 100%;
-      max-height: 100%;
-      object-fit: contain;
-    }
+    .subcategory-image-wrapper { width: 220px; height: 220px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; }
+    .subcategory-img { max-width: 100%; max-height: 100%; object-fit: contain; }
     .subcategory-img.placeholder { background: #f4f4f4; border-radius: 8px; }
     
-    /* 3. BUMPED UP TITLE FONT from 18px to 22px */
-    .subcategory-title {
-      font-family: var(--type_heading_font, 'Playfair Display', serif);
-      font-size: 22px;
-      color: #1A1710;
-      margin: 0;
-      font-weight: 700;
-      transition: color 0.3s ease;
-    }
+    .subcategory-title { font-family: var(--type_heading_font, 'Playfair Display', serif); font-size: 22px; color: #1A1710; margin: 0; font-weight: 700; transition: color 0.3s ease; }
     .subcategory-card:hover .subcategory-title { color: #C8420A; }
     
-    /* 4. INCREASED MOBILE SIZES PROPORTIONALLY */
     @media (max-width: 768px) {
+      .subcategory-header { height: 300px; margin-bottom: 30px;}
+      .subcategory-main-title { font-size: 32px; }
+      .subcategory-header-text { flex: 0 0 100%; text-align: center; }
+      .subcategory-header-media { display: none; } /* Hide image on mobile for clean text layout */
+
       .subcategory-grid { grid-template-columns: repeat(2, 1fr); gap: 20px; row-gap: 40px; }
       .subcategory-image-wrapper { width: 160px; height: 160px; margin-bottom: 15px; }
-      .subcategory-title { font-size: 18px; }
+      .subcategory-title { font-size: 16px; }
     }
   </style>
 {%- endif -%}
@@ -97,7 +184,34 @@
 {% schema %}
 {
   "name": "Subcategory Grid",
-  "settings": [],
+  "settings": [
+    {
+      "type": "header",
+      "content": "Header Styling"
+    },
+    {
+      "type": "color",
+      "id": "header_bg_color",
+      "label": "Header Background Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "header_text_color",
+      "label": "Header Text Color",
+      "default": "#1A1710"
+    },
+    {
+      "type": "select",
+      "id": "image_position",
+      "label": "Image Position (Desktop)",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "right"
+    }
+  ],
   "presets": [
     {
       "name": "Subcategory Grid"
