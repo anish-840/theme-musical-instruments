@@ -1309,41 +1309,40 @@
     position: absolute;
   }
 /* ════════════════════════════════════════════
-     PREMIUM MUSIC STORE FILTER OVERRIDES (BLOCK STYLE)
+     MINIMALIST FLAT BOX FILTER OVERRIDES
   ════════════════════════════════════════════ */
   
-  /* 1. Remove the solid background so the blocks can float */
+  /* 1. Remove default sidebar styling */
   .facets-block-wrapper--vertical {
     background: transparent !important;
     padding: 0 !important;
     border: none !important;
   }
 
-  /* 2. Turn Each Filter Category into a Floating Block */
+  /* 2. The Flat, Crisp Box (Matches your image exactly) */
   .facets__filters-wrapper > * {
-    background: #FFFFFF;
-    border: 1px solid rgba(26,23,16,0.1); /* Subtle dark border */
-    border-radius: 12px; /* Rounded corners */
-    padding: 20px; /* Internal padding */
-    margin-bottom: 20px; /* Space between the blocks */
-    box-shadow: 0 4px 12px rgba(26,23,16,0.03); /* Very soft shadow */
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    background: #FFFFFF !important;
+    border: 1px solid rgba(26, 23, 16, 0.2) !important; /* Crisp, visible thin border */
+    border-radius: 2px !important; /* Very sharp corners, almost square */
+    padding: 16px 20px !important; /* Tighter padding for a boxed look */
+    margin-bottom: 16px !important; 
+    box-shadow: none !important; /* Completely flat, absolutely zero shadow */
+    transition: border-color 0.2s ease;
   }
   
-  /* Slight glow effect when hovering over the block */
+  /* Sharp hover effect: border darkens slightly */
   .facets__filters-wrapper > *:hover {
-    border-color: rgba(200,66,10,0.2); 
-    box-shadow: 0 6px 16px rgba(26,23,16,0.06);
+    border-color: #1A1710 !important; 
   }
 
-  /* 3. Filter Group Headers (The titles inside the blocks) */
+  /* 3. Filter Headers (Inside the box) */
   .facets__summary {
     font-family: var(--type_heading_font, 'Playfair Display', serif);
-    font-weight: 700;
+    font-weight: 600;
     color: #1A1710;
-    font-size: 18px;
-    padding-bottom: 16px; 
-    border-bottom: 1px solid rgba(26,23,16,0.06); /* Divider line */
+    font-size: 16px;
+    padding-bottom: 12px; 
+    border-bottom: 1px solid rgba(26,23,16,0.1); 
     margin-bottom: 16px; 
     transition: color 0.2s ease;
   }
@@ -1351,37 +1350,36 @@
     color: #C8420A;
   }
 
-  /* 4. Filter List Items (The Checkboxes) */
+  /* 4. Checkbox List Items */
   .facets__item {
     margin-bottom: 12px;
   }
   .facets__label {
-    transition: all 0.2s ease;
+    transition: color 0.2s ease;
     font-family: var(--type_body_font, 'DM Sans', sans-serif);
-    font-size: 15px;
+    font-size: 14px;
     color: rgba(26,23,16,0.8);
     display: flex;
     align-items: center;
     cursor: pointer;
   }
   
-  /* Text slides right and turns orange on hover */
   .facets__label:hover {
     color: #C8420A !important;
-    transform: translateX(4px); 
   }
 
-  /* 5. Modernizing the Checkbox Inputs */
+  /* 5. Minimalist Checkboxes */
   .facets__item input[type='checkbox'] {
     accent-color: #C8420A; 
-    width: 18px;
-    height: 18px;
+    width: 16px;
+    height: 16px;
     cursor: pointer;
     margin-right: 12px;
     flex-shrink: 0;
+    border-radius: 2px; /* Matches the sharp corners of the main box */
   }
 
-  /* 6. Utility Buttons (Clear All) */
+  /* 6. Utility Buttons */
   .facets__clear-all-link, 
   .facets__clear-all {
     color: #C8420A !important;
