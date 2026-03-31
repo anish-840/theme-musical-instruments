@@ -48,6 +48,7 @@
         "heading",
         "page-content"
       ],
+      "disabled": true,
       "settings": {
         "content_direction": "column",
         "gap": 32,
@@ -55,9 +56,38 @@
         "padding-block-start": 40,
         "padding-block-end": 80
       }
+    },
+    "all_categories_directory_6q4iKf": {
+      "type": "all-categories-directory",
+      "blocks": {
+        "category_row_hKr48W": {
+          "type": "category_row",
+          "settings": {
+            "collection": "guitar-and-basses",
+            "menu": "guitar-and-basses"
+          }
+        },
+        "category_row_maQErt": {
+          "type": "category_row",
+          "settings": {
+            "collection": "drums-and-percussion",
+            "menu": "drums-and-percussion"
+          }
+        }
+      },
+      "block_order": [
+        "category_row_hKr48W",
+        "category_row_maQErt"
+      ],
+      "name": "Categories Directory",
+      "settings": {
+        "bg_color": "#FFFFFF",
+        "subtitle": "Browse our complete catalog of instruments and accessories."
+      }
     }
   },
   "order": [
-    "main"
+    "main",
+    "all_categories_directory_6q4iKf"
   ]
 }
