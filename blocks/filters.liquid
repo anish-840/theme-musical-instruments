@@ -1309,34 +1309,51 @@
     position: absolute;
   }
 /* ════════════════════════════════════════════
-     PREMIUM MUSIC STORE FILTER OVERRIDES
+     PREMIUM MUSIC STORE FILTER OVERRIDES (BLOCK STYLE)
   ════════════════════════════════════════════ */
   
-  /* 1. Sidebar Card Styling (Vertical Mode Only) */
+  /* 1. Remove the solid background so the blocks can float */
   .facets-block-wrapper--vertical {
-    background: #FAFAFA; /* Very subtle light grey to separate from white products */
-    padding: 24px;
-    border-radius: 12px;
-    border: 1px solid rgba(26,23,16,0.05);
+    background: transparent !important;
+    padding: 0 !important;
+    border: none !important;
   }
 
-  /* 2. Filter Group Headers */
+  /* 2. Turn Each Filter Category into a Floating Block */
+  .facets__filters-wrapper > * {
+    background: #FFFFFF;
+    border: 1px solid rgba(26,23,16,0.1); /* Subtle dark border */
+    border-radius: 12px; /* Rounded corners */
+    padding: 20px; /* Internal padding */
+    margin-bottom: 20px; /* Space between the blocks */
+    box-shadow: 0 4px 12px rgba(26,23,16,0.03); /* Very soft shadow */
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  /* Slight glow effect when hovering over the block */
+  .facets__filters-wrapper > *:hover {
+    border-color: rgba(200,66,10,0.2); 
+    box-shadow: 0 6px 16px rgba(26,23,16,0.06);
+  }
+
+  /* 3. Filter Group Headers (The titles inside the blocks) */
   .facets__summary {
     font-family: var(--type_heading_font, 'Playfair Display', serif);
     font-weight: 700;
     color: #1A1710;
     font-size: 18px;
-    padding-block: 16px;
-    border-bottom: 1px solid rgba(26,23,16,0.05);
+    padding-bottom: 16px; 
+    border-bottom: 1px solid rgba(26,23,16,0.06); /* Divider line */
+    margin-bottom: 16px; 
     transition: color 0.2s ease;
   }
   .facets__summary:hover {
-    color: #C8420A; /* Orange on hover */
+    color: #C8420A;
   }
 
-  /* 3. Filter List Items & Hover Effects */
+  /* 4. Filter List Items (The Checkboxes) */
   .facets__item {
-    margin-bottom: 8px;
+    margin-bottom: 12px;
   }
   .facets__label {
     transition: all 0.2s ease;
@@ -1345,24 +1362,26 @@
     color: rgba(26,23,16,0.8);
     display: flex;
     align-items: center;
+    cursor: pointer;
   }
   
-  /* The "Slide right" animation on hover */
+  /* Text slides right and turns orange on hover */
   .facets__label:hover {
     color: #C8420A !important;
     transform: translateX(4px); 
   }
 
-  /* 4. Modernizing the Checkboxes */
+  /* 5. Modernizing the Checkbox Inputs */
   .facets__item input[type='checkbox'] {
-    accent-color: #C8420A; /* Brand orange for the checkmark box */
+    accent-color: #C8420A; 
     width: 18px;
     height: 18px;
     cursor: pointer;
     margin-right: 12px;
+    flex-shrink: 0;
   }
 
-  /* 5. Clear All & Utility Buttons */
+  /* 6. Utility Buttons (Clear All) */
   .facets__clear-all-link, 
   .facets__clear-all {
     color: #C8420A !important;
@@ -1377,7 +1396,7 @@
     color: #1A1710 !important;
   }
 
-  /* 6. Active Filter Pill Bubble (Mobile & Headers) */
+  /* 7. Active Filter Pill Bubble */
   .filter-count-bubble__background {
     background-color: #C8420A !important;
   }
@@ -1385,7 +1404,6 @@
     color: #FFFFFF !important;
     font-weight: bold;
   }
-
 {% endstylesheet %}
 
 {% schema %}
