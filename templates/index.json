@@ -227,7 +227,7 @@
           "settings": {
             "image": "shopify://shop_images/Untitled_design_1.png",
             "mobile_image": "shopify://shop_images/Untitled_design_61.png",
-            "bg_color": "#f5f0e8",
+            "bg_color": "#ffffff",
             "content_position": "right",
             "vertical_align": "middle",
             "eyebrow": "",
