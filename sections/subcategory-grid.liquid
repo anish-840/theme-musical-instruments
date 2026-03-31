@@ -1,0 +1,98 @@
+{%- comment -%}
+  This section looks for a navigation menu with the exact same handle as the current collection.
+  If it finds one, it displays the links as a visual grid of sub-categories.
+{%- endcomment -%}
+
+{%- assign menu_handle = collection.handle -%}
+{%- assign sub_links = linklists[menu_handle].links -%}
+
+{%- if sub_links.size > 0 -%}
+  <section class="subcategory-section">
+    <div class="subcategory-container">
+      
+      <div class="subcategory-grid">
+        {%- for link in sub_links -%}
+          {%- if link.type == 'collection_link' -%}
+            {%- assign sub_collection = link.object -%}
+            
+            <a href="{{ sub_collection.url }}" class="subcategory-card">
+              <div class="subcategory-image-wrapper">
+                {%- if sub_collection.image -%}
+                  {{ sub_collection.image | image_url: width: 400 | image_tag: loading: 'lazy', class: 'subcategory-img' }}
+                {%- elsif sub_collection.products.first.featured_image -%}
+                  {{ sub_collection.products.first.featured_image | image_url: width: 400 | image_tag: loading: 'lazy', class: 'subcategory-img' }}
+                {%- else -%}
+                  {{ 'collection-1' | placeholder_svg_tag: 'subcategory-img placeholder' }}
+                {%- endif -%}
+              </div>
+              <h3 class="subcategory-title">{{ sub_collection.title }}</h3>
+            </a>
+            
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+
+    </div>
+  </section>
+
+  <style>
+    .subcategory-section { padding: 40px 0; background: #fff; }
+    .subcategory-container { max-width: 1400px; margin: 0 auto; padding: 0 5%; }
+    .subcategory-grid { 
+      display: grid; 
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); 
+      gap: 30px; 
+      row-gap: 50px;
+    }
+    .subcategory-card { 
+      text-decoration: none; 
+      text-align: center; 
+      display: flex; 
+      flex-direction: column; 
+      align-items: center;
+      transition: transform 0.2s ease;
+    }
+    .subcategory-card:hover { transform: translateY(-5px); }
+    .subcategory-image-wrapper {
+      width: 150px;
+      height: 150px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 15px;
+    }
+    .subcategory-img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+    }
+    .subcategory-img.placeholder { background: #f4f4f4; border-radius: 8px; }
+    .subcategory-title {
+      font-family: var(--type_heading_font, 'Playfair Display', serif);
+      font-size: 18px;
+      color: #1A1710;
+      margin: 0;
+      font-weight: 700;
+      transition: color 0.3s ease;
+    }
+    .subcategory-card:hover .subcategory-title { color: #C8420A; }
+    
+    @media (max-width: 768px) {
+      .subcategory-grid { grid-template-columns: repeat(2, 1fr); gap: 20px; row-gap: 30px; }
+      .subcategory-image-wrapper { width: 120px; height: 120px; }
+      .subcategory-title { font-size: 16px; }
+    }
+  </style>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Subcategory Grid",
+  "settings": [],
+  "presets": [
+    {
+      "name": "Subcategory Grid"
+    }
+  ]
+}
+{% endschema %}
