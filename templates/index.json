@@ -226,6 +226,7 @@
           "type": "slide_basic",
           "settings": {
             "image": "shopify://shop_images/Untitled_design_1.png",
+            "mobile_image": "shopify://shop_images/Untitled_design_61.png",
             "bg_color": "#f5f0e8",
             "content_position": "right",
             "vertical_align": "middle",
@@ -509,12 +510,12 @@
       "name": "Brand Ethos Parallax",
       "settings": {
         "image": "shopify://shop_images/rod-long-YLtf9KqA4h0-unsplash.jpg",
-        "overlay_color": "#1A1710",
+        "overlay_color": "#1a1710",
         "overlay_opacity": 40,
         "quote": "Tools for the |Modern| Soundscape.",
         "author": "STRINGER MUSIC CO.",
-        "text_color": "#F5F0E8",
-        "accent_color": "#C8420A"
+        "text_color": "#f5f0e8",
+        "accent_color": "#c8420a"
       }
     },
     "shop_the_setup_jLrpwg": {
