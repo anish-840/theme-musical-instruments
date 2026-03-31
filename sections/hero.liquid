@@ -594,6 +594,72 @@
       align-items: var(--vertical-alignment);
     }
   }
+  /* ════════════════════════════════════════════
+     CHEVRON BREADCRUMBS (ABSOLUTE TOP LEFT)
+  ════════════════════════════════════════════ */
+  .hero__breadcrumb-wrapper {
+    position: absolute;
+    top: 32px; /* Distance from top of banner */
+    left: max(5vw, calc((100vw - 1400px) / 2)); /* Aligns with standard page-width */
+    z-index: 20; /* Ensures it sits above media and overlays */
+    pointer-events: auto; /* Ensures links are clickable */
+  }
+
+  .chevron-breadcrumb { margin: 0; }
+  .chevron-breadcrumb ol {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 0;
+  }
+
+  .chevron-block a {
+    display: flex;
+    align-items: center;
+    height: 34px;
+    color: #FFFFFF;
+    text-decoration: none;
+    font-size: 13px;
+    font-family: var(--type_body_font, sans-serif);
+    transition: background 0.2s;
+  }
+
+  /* Home Block */
+  .chevron-home a {
+    background: #222222; 
+    padding: 0 16px 0 12px;
+    border-radius: 4px 0 0 4px;
+    clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 50%, calc(100% - 10px) 100%, 0 100%);
+  }
+  .chevron-home a:hover { background: #444444; }
+  .home-icon { width: 14px; height: 14px; margin-top: -2px; }
+
+  /* Middle Block */
+  .chevron-middle a {
+    background: #333333; 
+    padding: 0 16px 0 24px;
+    margin-left: -10px;
+    clip-path: polygon(10px 50%, 0 0, calc(100% - 10px) 0, 100% 50%, calc(100% - 10px) 100%, 0 100%);
+  }
+  .chevron-middle a:hover { background: #555555; }
+
+  /* Current Page Block */
+  .chevron-current {
+    padding-left: 16px;
+    font-size: 14px;
+    font-family: var(--type_body_font, sans-serif);
+    color: #F2994A; /* Highlight Orange */
+    font-weight: 500;
+  }
+
+  @media screen and (max-width: 749px) {
+    .hero__breadcrumb-wrapper {
+      top: 20px;
+      left: 20px;
+    }
+  }
 
   .hero__content-wrapper.page-width {
     grid-column: 2 / 3;
