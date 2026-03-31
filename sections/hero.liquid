@@ -522,6 +522,27 @@
       %}
       {{ media }}
     </div>
+    {%- comment -%} INJECTED CHEVRON BREADCRUMBS {%- endcomment -%}
+    {%- if template.name == 'collection' and collection.handle != blank -%}
+      <div class="hero__breadcrumb-wrapper">
+        <nav class="chevron-breadcrumb" aria-label="Breadcrumb">
+          <ol>
+            <li class="chevron-block chevron-home">
+              <a href="/" aria-label="Home">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="home-icon"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+              </a>
+            </li>
+            <li class="chevron-block chevron-middle">
+              <a href="/collections/all">All Categories</a>
+            </li>
+            <li class="chevron-current">
+              <span aria-current="page">{{ collection.title }}</span>
+            </li>
+          </ol>
+        </nav>
+      </div>
+    {%- endif -%}
+    {%- comment -%} END BREADCRUMBS {%- endcomment -%}
     <div
       class="
         hero__content-wrapper
