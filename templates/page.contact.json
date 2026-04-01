@@ -181,6 +181,46 @@
         "form_subheading": "Looking for advice on your next setup? Fill out the form below and a gear expert will get back to you."
       }
     },
+    "faq_accordion_aetaCJ": {
+      "type": "faq-accordion",
+      "blocks": {
+        "faq_item_GPtQhT": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Do you offer international shipping?",
+            "answer": "<p>We offer a 30-day satisfaction guarantee on most instruments. Items must be in original condition with all packaging.</p>"
+          }
+        },
+        "faq_item_qVPKdn": {
+          "type": "faq_item",
+          "settings": {
+            "question": "How do I track my order?",
+            "answer": "<p>We offer a 30-day satisfaction guarantee on most instruments. Items must be in original condition with all packaging.</p>"
+          }
+        },
+        "faq_item_8EYF46": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Are your instruments professionally set up?",
+            "answer": "<p>We offer a 30-day satisfaction guarantee on most instruments. Items must be in original condition with all packaging.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "faq_item_GPtQhT",
+        "faq_item_qVPKdn",
+        "faq_item_8EYF46"
+      ],
+      "name": "FAQ Accordion",
+      "settings": {
+        "heading": "Common Questions",
+        "subheading": "Everything you need to know about our instruments and policies.",
+        "bg_color": "#FFFFFF",
+        "footer_text": "Don't see your question?",
+        "footer_link_label": "Contact Support",
+        "footer_link": ""
+      }
+    },
     "featured_blog_posts_r7ce8r": {
       "type": "featured-blog-posts",
       "blocks": {
@@ -328,6 +368,7 @@
     "section",
     "contact_info_grid_TVgdhB",
     "premium_contact_form_8zQkGX",
+    "faq_accordion_aetaCJ",
     "featured_blog_posts_r7ce8r"
   ]
 }
