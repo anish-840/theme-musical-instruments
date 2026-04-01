@@ -15,9 +15,9 @@
       "type": "custom-newsletter-banner",
       "name": "Custom Newsletter Banner",
       "settings": {
-        "bg_color": "#c8420a",
+        "bg_color": "#1a1710",
         "text_color": "#FFFFFF",
-        "button_bg_color": "#1A1710",
+        "button_bg_color": "#c8420a",
         "button_text_color": "#FFFFFF",
         "heading": "Stay in tune with us",
         "subheading": "New arrivals, exclusive deals, and event announcements — straight to your inbox. No spam, ever.",
