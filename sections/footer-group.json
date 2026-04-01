@@ -11,6 +11,20 @@
   "type": "footer",
   "name": "Footer",
   "sections": {
+    "custom_newsletter_banner_JWCWqk": {
+      "type": "custom-newsletter-banner",
+      "name": "Custom Newsletter Banner",
+      "settings": {
+        "bg_color": "#D1310C",
+        "text_color": "#FFFFFF",
+        "button_bg_color": "#1A1710",
+        "button_text_color": "#FFFFFF",
+        "heading": "Stay in tune with us",
+        "subheading": "New arrivals, exclusive deals, and event announcements — straight to your inbox. No spam, ever.",
+        "placeholder_text": "Your email address",
+        "button_label": "Subscribe"
+      }
+    },
     "media_with_content_RqxiU3": {
       "type": "media-with-content",
       "blocks": {
@@ -95,6 +109,7 @@
           ]
         }
       },
+      "disabled": true,
       "name": "t:names.media_with_text",
       "settings": {
         "media_position": "left",
@@ -314,6 +329,7 @@
     }
   },
   "order": [
+    "custom_newsletter_banner_JWCWqk",
     "media_with_content_RqxiU3",
     "footer",
     "utilities"
