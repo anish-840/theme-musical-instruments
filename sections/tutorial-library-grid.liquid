@@ -1,0 +1,123 @@
+{%- comment -%}
+  Stringer Music - Tutorial Library Grid
+  Flat, minimalist cards with grayscale-to-color hover effects.
+{%- endcomment -%}
+
+<section class="tlg-section">
+  <div class="tlg-container">
+    
+    <div class="tlg-header">
+      <h1 class="tlg-heading">{{ section.settings.heading }}</h1>
+      {%- if section.settings.subheading != blank -%}
+        <p class="tlg-subheading">{{ section.settings.subheading }}</p>
+      {%- endif -%}
+    </div>
+
+    <div class="tlg-grid">
+      {%- for block in section.blocks -%}
+        <a href="{{ block.settings.link | default: '#' }}" class="tlg-card" {{ block.shopify_attributes }}>
+          <div class="tlg-image-wrapper">
+            {%- if block.settings.image != blank -%}
+              {{ block.settings.image | image_url: width: 600 | image_tag: loading: 'lazy', class: 'tlg-img', alt: block.settings.title }}
+            {%- else -%}
+              <div class="tlg-placeholder">{{ 'lifestyle-1' | placeholder_svg_tag: 'tlg-placeholder-svg' }}</div>
+            {%- endif -%}
+            {%- if block.settings.category != blank -%}
+              <span class="tlg-category">{{ block.settings.category }}</span>
+            {%- endif -%}
+          </div>
+          <div class="tlg-content">
+            <h3 class="tlg-card-title">{{ block.settings.title }}</h3>
+            <p class="tlg-card-text">{{ block.settings.text }}</p>
+            <span class="tlg-card-link">View Guide <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></span>
+          </div>
+        </a>
+      {%- endfor -%}
+    </div>
+
+  </div>
+</section>
+
+<style>
+  .tlg-section { padding: 80px 0; background-color: #FFFFFF; --brand-ink: #1A1710; --brand-rust: #C8420A; }
+  .tlg-container { max-width: 1400px; margin: 0 auto; padding: 0 5%; }
+  
+  .tlg-header { text-align: center; margin-bottom: 60px; }
+  .tlg-heading { font-family: var(--type_header_font, 'Playfair Display', serif); font-size: clamp(36px, 5vw, 56px); font-weight: 900; color: var(--brand-ink); margin: 0 0 12px 0; letter-spacing: -0.015em; }
+  .tlg-subheading { font-family: var(--type_body_font, 'DM Sans', sans-serif); font-size: 16px; color: rgba(26,23,16,0.6); margin: 0; max-width: 600px; margin: 0 auto; }
+
+  .tlg-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; }
+  
+  .tlg-card {
+    background: #FFFFFF;
+    border: 1px solid rgba(26, 23, 16, 0.15); /* Flat, crisp border */
+    border-radius: 2px; /* Sharp corners */
+    text-decoration: none; overflow: hidden; display: flex; flex-direction: column;
+    transition: border-color 0.2s ease, transform 0.2s ease;
+  }
+  .tlg-card:hover { border-color: var(--brand-ink); transform: translateY(-4px); }
+
+  /* Grayscale-to-Color Image */
+  .tlg-image-wrapper { width: 100%; aspect-ratio: 16/9; position: relative; overflow: hidden; border-bottom: 1px solid rgba(26,23,16,0.1); }
+  .tlg-img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(100%); transition: filter 0.4s ease, transform 0.4s ease; }
+  .tlg-card:hover .tlg-img { filter: grayscale(0%); transform: scale(1.03); }
+  
+  .tlg-placeholder { width: 100%; height: 100%; background: #f4f4f4; display: flex; align-items: center; justify-content: center; }
+  .tlg-placeholder-svg { width: 60px; height: 60px; fill: rgba(26,23,16,0.1); }
+
+  .tlg-category {
+    position: absolute; top: 12px; left: 12px;
+    background: #FFFFFF; color: var(--brand-ink);
+    font-family: var(--type_body_font, 'DM Sans', sans-serif);
+    font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;
+    padding: 6px 12px; border-radius: 2px;
+  }
+
+  .tlg-content { padding: 24px; flex-grow: 1; display: flex; flex-direction: column; }
+  
+  .tlg-card-title { font-family: var(--type_header_font, 'Playfair Display', serif); font-size: 20px; font-weight: 700; color: var(--brand-ink); margin: 0 0 10px 0; }
+  .tlg-card-text { font-family: var(--type_body_font, 'DM Sans', sans-serif); font-size: 14px; color: rgba(26,23,16,0.7); line-height: 1.6; margin: 0 0 20px 0; flex-grow: 1; }
+  
+  .tlg-card-link {
+    display: flex; align-items: center; gap: 8px;
+    font-family: var(--type_body_font, 'DM Sans', sans-serif);
+    font-size: 14px; font-weight: 700; color: var(--brand-rust); text-decoration: none;
+    text-transform: uppercase; letter-spacing: 0.5px;
+    transition: color 0.2s ease;
+  }
+  .tlg-card-link svg { width: 16px; height: 16px; transition: transform 0.2s ease; }
+  .tlg-card:hover .tlg-card-link svg { transform: translateX(3px); }
+</style>
+
+{% schema %}
+{
+  "name": "Tutorial Library Grid",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Knowledge Hub" },
+    { "type": "textarea", "id": "subheading", "label": "Subheading", "default": "Setup guides, maintenance tips, and gear advice from our experts." }
+  ],
+  "blocks": [
+    {
+      "type": "tutorial_card",
+      "name": "Tutorial Card",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Thumbnail Image" },
+        { "type": "text", "id": "category", "label": "Category Tag", "default": "Guitars" },
+        { "type": "text", "id": "title", "label": "Guide Title", "default": "How to tune an Electric Guitar" },
+        { "type": "textarea", "id": "text", "label": "Guide Summary", "default": "A beginner's guide to using a chromatic tuner and tuning by ear." },
+        { "type": "url", "id": "link", "label": "Link to Guide" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Tutorial Library Grid",
+      "blocks": [
+        { "type": "tutorial_card", "settings": { "category": "Guitars", "title": "Setup your Stratocaster" } },
+        { "type": "tutorial_card", "settings": { "category": "Drums", "title": "Tuning Acoustic Drums" } },
+        { "type": "tutorial_card", "settings": { "category": "Tech", "title": "Electronic Kit Setup" } }
+      ]
+    }
+  ]
+}
+{% endschema %}
