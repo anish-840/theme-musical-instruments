@@ -1,6 +1,7 @@
 {%- comment -%}
   Stringer Music - Top Brands Grid
-  Matches screenshot layout: Boxed logos with grayscale-to-color hover states.
+  Updated: Dynamically fetches Collection data (Image, Link, Title) with manual overrides.
+  Updated: Reduced card padding for larger logo appearance.
 {%- endcomment -%}
 
 <section 
@@ -32,17 +33,23 @@
       {%- for block in section.blocks -%}
         {%- assign s = block.settings -%}
         
-        <a href="{{ s.link | default: '#' }}" class="tb-card" {{ block.shopify_attributes }} aria-label="{{ s.title | default: 'Brand link' }}">
-          {%- if s.image != blank -%}
-            {{ s.image | image_url: width: 300 | image_tag: 
+        {%- comment -%} DYNAMIC DATA LOGIC: Use manual setting if it exists, otherwise pull from Collection {%- endcomment -%}
+        {%- assign brand_collection = s.collection -%}
+        {%- assign brand_link = s.link | default: brand_collection.url | default: '#' -%}
+        {%- assign brand_title = s.title | default: brand_collection.title | default: 'Brand' -%}
+        {%- assign brand_image = s.image | default: brand_collection.image | default: brand_collection.featured_image -%}
+
+        <a href="{{ brand_link }}" class="tb-card" {{ block.shopify_attributes }} aria-label="{{ brand_title }}">
+          {%- if brand_image != blank -%}
+            {{ brand_image | image_url: width: 400 | image_tag: 
               loading: 'lazy', 
               class: 'tb-logo',
-              alt: s.title 
+              alt: brand_title 
             }}
           {%- else -%}
             <div class="tb-placeholder-logo">
               {{ 'image' | placeholder_svg_tag: 'tb-placeholder-svg' }}
-              <span class="tb-placeholder-text">{{ s.title | default: 'Brand' }}</span>
+              <span class="tb-placeholder-text">{{ brand_title }}</span>
             </div>
           {%- endif -%}
         </a>
@@ -118,7 +125,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 24px;
+    padding: 12px; /* REDUCED FROM 24px: Makes the logo appear much larger */
     background-color: #FFFFFF;
     border: 1px solid rgba(var(--brand-ink-rgb), 0.12);
     border-radius: 4px;
@@ -129,8 +136,8 @@
   }
 
   .tb-logo {
-    max-width: 100%;
-    max-height: 100%;
+    width: 100%; /* FORCED WIDTH: Maximizes image size inside the card */
+    height: 100%; /* FORCED HEIGHT: Maximizes image size inside the card */
     object-fit: contain;
     transition: transform 0.4s ease;
     filter: grayscale(100%) opacity(0.8);
@@ -178,7 +185,6 @@
     .tb-grid::-webkit-scrollbar { display: none; }
     
     .tb-card {
-      /* Uses the new mobile_columns setting to dictate width */
       flex: 0 0 calc((100% / var(--grid-cols-mobile, 2)) - 12px); 
       scroll-snap-align: start;
     }
@@ -243,22 +249,30 @@
       "name": "Brand Logo",
       "settings": [
         {
+          "type": "collection",
+          "id": "collection",
+          "label": "Brand Collection",
+          "info": "Automatically pulls the collection image, link, and title."
+        },
+        {
+          "type": "header",
+          "content": "Manual Overrides",
+          "info": "Only use these if you want to override the collection data above."
+        },
+        {
           "type": "image_picker",
           "id": "image",
-          "label": "Brand Logo",
-          "info": "Upload a transparent PNG or SVG."
+          "label": "Image Override"
         },
         {
           "type": "text",
           "id": "title",
-          "label": "Brand Name",
-          "info": "Used for accessibility and if image fails to load."
+          "label": "Brand Name Override"
         },
         {
           "type": "url",
           "id": "link",
-          "label": "Brand Link",
-          "info": "Link to the brand's filtered collection page."
+          "label": "Link Override"
         }
       ]
     }
@@ -267,11 +281,11 @@
     {
       "name": "Top Brands Grid",
       "blocks": [
-        { "type": "brand", "settings": { "title": "Yamaha" } },
-        { "type": "brand", "settings": { "title": "Fender" } },
-        { "type": "brand", "settings": { "title": "Roland" } },
-        { "type": "brand", "settings": { "title": "Gibson" } },
-        { "type": "brand", "settings": { "title": "Shure" } }
+        { "type": "brand" },
+        { "type": "brand" },
+        { "type": "brand" },
+        { "type": "brand" },
+        { "type": "brand" }
       ]
     }
   ]
