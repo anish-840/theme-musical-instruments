@@ -1,0 +1,107 @@
+{%- comment -%}
+  Stringer Music - Core Values Grid
+  Flat, minimalist boxes highlighting store guarantees and trust signals.
+{%- endcomment -%}
+
+<section class="avg-section">
+  <div class="avg-container">
+    
+    <div class="avg-header">
+      <h2 class="avg-heading">{{ section.settings.heading }}</h2>
+      {%- if section.settings.subheading != blank -%}
+        <p class="avg-subheading">{{ section.settings.subheading }}</p>
+      {%- endif -%}
+    </div>
+
+    <div class="avg-grid">
+      {%- for block in section.blocks -%}
+        <div class="avg-card" {{ block.shopify_attributes }}>
+          <div class="avg-icon-wrapper">
+            {%- case block.settings.icon -%}
+              {%- when 'shield' -%}
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+              {%- when 'truck' -%}
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
+              {%- when 'settings' -%}
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+              {%- when 'star' -%}
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+            {%- endcase -%}
+          </div>
+          <h3 class="avg-card-title">{{ block.settings.title }}</h3>
+          <p class="avg-card-text">{{ block.settings.text }}</p>
+        </div>
+      {%- endfor -%}
+    </div>
+
+  </div>
+</section>
+
+<style>
+  .avg-section { padding: 40px 0 80px 0; background-color: #FFFFFF; --brand-ink: #1A1710; --brand-rust: #C8420A; }
+  .avg-container { max-width: 1400px; margin: 0 auto; padding: 0 5%; }
+  
+  .avg-header { text-align: center; margin-bottom: 50px; }
+  .avg-heading { font-family: var(--type_header_font, 'Playfair Display', serif); font-size: clamp(32px, 4vw, 48px); font-weight: 900; color: var(--brand-ink); margin: 0 0 12px 0; letter-spacing: -0.015em; }
+  .avg-subheading { font-family: var(--type_body_font, 'DM Sans', sans-serif); font-size: 16px; color: rgba(26,23,16,0.6); margin: 0; max-width: 600px; margin: 0 auto; }
+
+  .avg-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 24px; }
+  
+  .avg-card {
+    background: #FFFFFF;
+    border: 1px solid rgba(26, 23, 16, 0.2); /* Flat, crisp border */
+    border-radius: 2px; /* Sharp corners */
+    padding: 32px 24px;
+    text-align: left;
+    transition: border-color 0.2s ease;
+  }
+  .avg-card:hover { border-color: var(--brand-ink); }
+
+  .avg-icon-wrapper { margin-bottom: 20px; color: var(--brand-rust); }
+  .avg-icon-wrapper svg { width: 32px; height: 32px; }
+
+  .avg-card-title { font-family: var(--type_header_font, 'Playfair Display', serif); font-size: 20px; font-weight: 700; color: var(--brand-ink); margin: 0 0 12px 0; }
+  .avg-card-text { font-family: var(--type_body_font, 'DM Sans', sans-serif); font-size: 15px; color: rgba(26,23,16,0.7); line-height: 1.6; margin: 0; }
+</style>
+
+{% schema %}
+{
+  "name": "Core Values Grid",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "The Stringer Difference" },
+    { "type": "textarea", "id": "subheading", "label": "Subheading", "default": "Why thousands of musicians trust us with their tone." }
+  ],
+  "blocks": [
+    {
+      "type": "value_card",
+      "name": "Value Card",
+      "limit": 4,
+      "settings": [
+        {
+          "type": "select", "id": "icon", "label": "Icon",
+          "options": [
+            { "value": "settings", "label": "Gears/Setup" },
+            { "value": "shield", "label": "Shield/Warranty" },
+            { "value": "truck", "label": "Truck/Shipping" },
+            { "value": "star", "label": "Star/Expertise" }
+          ],
+          "default": "settings"
+        },
+        { "type": "text", "id": "title", "label": "Title", "default": "55-Point Inspection" },
+        { "type": "textarea", "id": "text", "label": "Text", "default": "Every guitar over $299 gets a massive 55-point evaluation by our expert guitar techs before it ships." }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Core Values Grid",
+      "blocks": [
+        { "type": "value_card", "settings": { "icon": "settings", "title": "55-Point Inspection", "text": "Every instrument over $299 gets a massive 55-point evaluation by our expert techs before it ships." } },
+        { "type": "value_card", "settings": { "icon": "truck", "title": "Free, Fast Shipping", "text": "Almost every order ships free. We operate a massive logistics center to get your gear to you in days." } },
+        { "type": "value_card", "settings": { "icon": "shield", "title": "Free 2-Year Warranty", "text": "We stand by what we sell. Enjoy an extended warranty on almost every product in our catalog for free." } },
+        { "type": "value_card", "settings": { "icon": "star", "title": "Real Gear Experts", "text": "When you call us, you speak to an actively gigging musician who actually uses the gear they sell." } }
+      ]
+    }
+  ]
+}
+{% endschema %}
