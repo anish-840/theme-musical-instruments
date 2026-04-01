@@ -67,10 +67,59 @@
         "button_label": "Shop All Gear",
         "button_link": "shopify://collections/all"
       }
+    },
+    "about_values_grid_aB3bb3": {
+      "type": "about-values-grid",
+      "blocks": {
+        "value_card_8z7XBb": {
+          "type": "value_card",
+          "settings": {
+            "icon": "settings",
+            "title": "55-Point Inspection",
+            "text": "Every instrument over Rs.5000 gets a massive 55-point evaluation by our expert techs before it ships."
+          }
+        },
+        "value_card_TReRzj": {
+          "type": "value_card",
+          "settings": {
+            "icon": "truck",
+            "title": "Free, Fast Shipping",
+            "text": "Almost every order ships free. We operate a massive logistics center to get your gear to you in days."
+          }
+        },
+        "value_card_jqHqVt": {
+          "type": "value_card",
+          "settings": {
+            "icon": "shield",
+            "title": "Free 2-Year Warranty",
+            "text": "We stand by what we sell. Enjoy an extended warranty on almost every product in our catalog for free."
+          }
+        },
+        "value_card_AyFwiR": {
+          "type": "value_card",
+          "settings": {
+            "icon": "star",
+            "title": "Real Gear Experts",
+            "text": "When you call us, you speak to an actively gigging musician who actually uses the gear they sell."
+          }
+        }
+      },
+      "block_order": [
+        "value_card_8z7XBb",
+        "value_card_TReRzj",
+        "value_card_jqHqVt",
+        "value_card_AyFwiR"
+      ],
+      "name": "Core Values Grid",
+      "settings": {
+        "heading": "The Stringer Difference",
+        "subheading": "Why thousands of musicians trust us with their tone."
+      }
     }
   },
   "order": [
     "main",
-    "about_heritage_split_UmDeQE"
+    "about_heritage_split_UmDeQE",
+    "about_values_grid_aB3bb3"
   ]
 }
