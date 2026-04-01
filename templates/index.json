@@ -404,6 +404,7 @@
         "brand_wnyhkd": {
           "type": "brand",
           "settings": {
+            "image": "shopify://shop_images/roland.png",
             "title": "Roland",
             "link": ""
           }
