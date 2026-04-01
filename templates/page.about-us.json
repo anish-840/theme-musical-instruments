@@ -61,6 +61,7 @@
       "name": "About Heritage Split",
       "settings": {
         "image_position": "left",
+        "image": "shopify://shop_images/mario-la-pergola-uxV3wDMyccM-unsplash.jpg",
         "badge": "Established 2010",
         "heading": "Music is in our DNA.",
         "content": "<p>We started with a simple mission: to provide musicians with the best gear, backed by honest advice. Today, we house over 100,000 instruments in our climate-controlled facility.</p><p>Every guitar is inspected, every drum kit is verified, and every customer is treated like a bandmate.</p>",
