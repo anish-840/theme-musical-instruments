@@ -178,7 +178,8 @@
       "name": "Premium Contact Form",
       "settings": {
         "form_heading": "Send us a message",
-        "form_subheading": "Looking for advice on your next setup? Fill out the form below and a gear expert will get back to you."
+        "form_subheading": "Looking for advice on your next setup? Fill out the form below and a gear expert will get back to you.",
+        "side_image": "shopify://shop_images/denise-jans-2U6ehkuWZio-unsplash.jpg"
       }
     },
     "faq_accordion_aetaCJ": {
@@ -215,7 +216,7 @@
       "settings": {
         "heading": "Common Questions",
         "subheading": "Everything you need to know about our instruments and policies.",
-        "bg_color": "#FFFFFF",
+        "bg_color": "#ffffff",
         "footer_text": "Don't see your question?",
         "footer_link_label": "Contact Support",
         "footer_link": ""
