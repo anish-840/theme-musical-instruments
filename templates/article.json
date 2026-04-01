@@ -59,7 +59,7 @@
           "static": true,
           "settings": {
             "image_ratio": "landscape",
-            "width": "fill",
+            "width": "custom",
             "custom_width": 100,
             "width_mobile": "fill",
             "custom_width_mobile": 100,

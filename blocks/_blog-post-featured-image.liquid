@@ -1,5 +1,3 @@
-
-
 {%- doc -%}
   Renders the blog post featured image block.
 {%- enddoc -%}
@@ -10,7 +8,7 @@
 %}
 
 <div
-  class="blog-post-featured-image blog-post-featured-image--{{ block.id }} blog-post-featured-image--height-{{ block_settings.height }} spacing-style size-style"
+  class="blog-post-featured-image blog-post-featured-image--{{ block.id }} blog-post-featured-image--height-{{ block_settings.height }} blog-post-featured-image--align-{{ block_settings.alignment }} spacing-style size-style"
   style="
     --ratio: {% case block_settings.image_ratio %}
       {% when 'landscape' %}16 / 9
@@ -53,6 +51,22 @@
     width: var(--width);
   }
 
+  /* Alignment Classes */
+  .blog-post-featured-image--align-left {
+    margin-right: auto;
+    margin-left: 0;
+  }
+
+  .blog-post-featured-image--align-center {
+    margin-right: auto;
+    margin-left: auto;
+  }
+
+  .blog-post-featured-image--align-right {
+    margin-left: auto;
+    margin-right: 0;
+  }
+
   .blog-post-featured-image.size-style {
     --width: var(--size-style-width, 100%);
   }
@@ -93,6 +107,27 @@
     {
       "type": "header",
       "content": "t:content.size"
+    },
+    {
+      "type": "select",
+      "id": "alignment",
+      "label": "Image alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "center",
+      "info": "Alignment is visible when image width is less than 100%."
     },
     {
       "type": "select",
