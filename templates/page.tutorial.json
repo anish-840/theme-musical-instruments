@@ -85,10 +85,11 @@
         "tutorial_card_n4CNQz": {
           "type": "tutorial_card",
           "settings": {
+            "image": "shopify://shop_images/michel-andrade-U4l5fpZCSu4-unsplash.jpg",
             "category": "Tech",
             "title": "Electronic Kit Setup",
             "text": "A beginner's guide to using a chromatic tuner and tuning by ear.",
-            "link": ""
+            "link": "shopify://pages/electronic-kit-setup"
           }
         }
       },
