@@ -1105,9 +1105,9 @@
         "bg_color": "#ffffff",
         "show_nav": true,
         "tab_1_label": "Trends",
-        "collection_1": "",
+        "collection_1": "trends",
         "tab_2_label": "Top Sellers",
-        "collection_2": "",
+        "collection_2": "top-sellers",
         "products_to_show": 8
       }
     }
