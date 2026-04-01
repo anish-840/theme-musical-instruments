@@ -195,14 +195,14 @@
           "type": "faq_item",
           "settings": {
             "question": "How do I track my order?",
-            "answer": "<p>We offer a 30-day satisfaction guarantee on most instruments. Items must be in original condition with all packaging.</p>"
+            "answer": "<p>You can your order on the website or by using the tracking id provided in the orders section.</p>"
           }
         },
         "faq_item_8EYF46": {
           "type": "faq_item",
           "settings": {
             "question": "Are your instruments professionally set up?",
-            "answer": "<p>We offer a 30-day satisfaction guarantee on most instruments. Items must be in original condition with all packaging.</p>"
+            "answer": "<p>Yes</p>"
           }
         }
       },
