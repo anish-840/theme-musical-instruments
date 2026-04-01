@@ -1,0 +1,150 @@
+{%- comment -%}
+  Stringer Music - Minimalist FAQ Accordion
+  Flat design with sharp corners and brand-specific accenting.
+{%- endcomment -%}
+
+<section class="faq-section" style="background-color: {{ section.settings.bg_color }};">
+  <div class="faq-container">
+    
+    <div class="faq-header">
+      <h2 class="faq-heading">{{ section.settings.heading }}</h2>
+      {%- if section.settings.subheading != blank -%}
+        <p class="faq-subheading">{{ section.settings.subheading }}</p>
+      {%- endif -%}
+    </div>
+
+    <div class="faq-list">
+      {%- for block in section.blocks -%}
+        <div class="faq-item" {{ block.shopify_attributes }}>
+          <button class="faq-question" aria-expanded="false">
+            <span class="faq-question-text">{{ block.settings.question }}</span>
+            <span class="faq-icon">
+              <svg class="icon-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+            </span>
+          </button>
+          <div class="faq-answer" hidden>
+            <div class="faq-answer-inner">
+              {{ block.settings.answer }}
+            </div>
+          </div>
+        </div>
+      {%- endfor -%}
+    </div>
+
+    {%- if section.settings.footer_text != blank -%}
+      <div class="faq-footer">
+        <p>{{ section.settings.footer_text }} <a href="{{ section.settings.footer_link }}">{{ section.settings.footer_link_label }}</a></p>
+      </div>
+    {%- endif -%}
+
+  </div>
+</section>
+
+<style>
+  .faq-section { padding: 80px 0; --brand-ink: #1A1710; --brand-rust: #C8420A; }
+  .faq-container { max-width: 800px; margin: 0 auto; padding: 0 5%; }
+  
+  .faq-header { text-align: center; margin-bottom: 50px; }
+  .faq-heading { font-family: var(--type_header_font, 'Playfair Display', serif); font-size: clamp(32px, 4vw, 44px); font-weight: 900; color: var(--brand-ink); margin: 0 0 12px 0; }
+  .faq-subheading { font-family: var(--type_body_font, 'DM Sans', sans-serif); font-size: 16px; color: rgba(26,23,16,0.6); margin: 0; }
+
+  .faq-list { border-top: 1px solid rgba(26,23,16,0.1); }
+  
+  .faq-item { border-bottom: 1px solid rgba(26,23,16,0.1); transition: background-color 0.2s ease; }
+  
+  .faq-question {
+    width: 100%; display: flex; align-items: center; justify-content: space-between;
+    padding: 24px 0; background: none; border: none; cursor: pointer; text-align: left;
+    transition: color 0.3s ease;
+  }
+  
+  .faq-question-text { font-family: var(--type_body_font, 'DM Sans', sans-serif); font-size: 18px; font-weight: 700; color: var(--brand-ink); }
+  
+  .faq-icon { color: rgba(26,23,16,0.3); transition: transform 0.3s ease, color 0.3s ease; }
+  .faq-icon svg { width: 20px; height: 20px; }
+
+  /* Hover & Active States */
+  .faq-question:hover .faq-question-text { color: var(--brand-rust); }
+  .faq-item.active .faq-question-text { color: var(--brand-rust); }
+  .faq-item.active .faq-icon { transform: rotate(45deg); color: var(--brand-rust); }
+
+  .faq-answer { overflow: hidden; transition: max-height 0.3s ease-out; }
+  .faq-answer-inner { 
+    padding: 0 0 24px 0; font-family: var(--type_body_font, 'DM Sans', sans-serif); 
+    font-size: 16px; line-height: 1.6; color: rgba(26,23,16,0.7); 
+  }
+  .faq-answer-inner a { color: var(--brand-rust); text-decoration: none; border-bottom: 1px solid transparent; }
+  .faq-answer-inner a:hover { border-bottom-color: var(--brand-rust); }
+
+  .faq-footer { text-align: center; margin-top: 40px; font-family: var(--type_body_font, 'DM Sans', sans-serif); font-size: 14px; color: rgba(26,23,16,0.5); }
+  .faq-footer a { color: var(--brand-ink); font-weight: 700; text-decoration: none; border-bottom: 1px solid rgba(26,23,16,0.2); }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const faqItems = document.querySelectorAll('.faq-item');
+    
+    faqItems.forEach(item => {
+      const question = item.querySelector('.faq-question');
+      const answer = item.querySelector('.faq-answer');
+
+      question.addEventListener('click', () => {
+        const isActive = item.classList.contains('active');
+        
+        // Optional: Close other items when one is opened
+        faqItems.forEach(otherItem => {
+          if (otherItem !== item) {
+            otherItem.classList.remove('active');
+            otherItem.querySelector('.faq-answer').style.maxHeight = null;
+            otherItem.querySelector('.faq-answer').setAttribute('hidden', '');
+          }
+        });
+
+        item.classList.toggle('active');
+        
+        if (!isActive) {
+          answer.removeAttribute('hidden');
+          answer.style.maxHeight = answer.scrollHeight + "px";
+        } else {
+          answer.style.maxHeight = null;
+          setTimeout(() => answer.setAttribute('hidden', ''), 300);
+        }
+      });
+    });
+  });
+</script>
+
+{% schema %}
+{
+  "name": "FAQ Accordion",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Common Questions" },
+    { "type": "textarea", "id": "subheading", "label": "Subheading", "default": "Everything you need to know about our instruments and policies." },
+    { "type": "color", "id": "bg_color", "label": "Background Color", "default": "#FFFFFF" },
+    { "type": "header", "content": "Footer Support" },
+    { "type": "text", "id": "footer_text", "label": "Footer Text", "default": "Don't see your question?" },
+    { "type": "text", "id": "footer_link_label", "label": "Link Label", "default": "Contact Support" },
+    { "type": "url", "id": "footer_link", "label": "Footer Link" }
+  ],
+  "blocks": [
+    {
+      "type": "faq_item",
+      "name": "FAQ Item",
+      "settings": [
+        { "type": "text", "id": "question", "label": "Question", "default": "What is your return policy?" },
+        { "type": "richtext", "id": "answer", "label": "Answer", "default": "<p>We offer a 30-day satisfaction guarantee on most instruments. Items must be in original condition with all packaging.</p>" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "FAQ Accordion",
+      "blocks": [
+        { "type": "faq_item", "settings": { "question": "Do you offer international shipping?" } },
+        { "type": "faq_item", "settings": { "question": "How do I track my order?" } },
+        { "type": "faq_item", "settings": { "question": "Are your instruments professionally set up?" } }
+      ]
+    }
+  ]
+}
+{% endschema %}
