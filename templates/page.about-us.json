@@ -55,9 +55,22 @@
         "padding-block-start": 40,
         "padding-block-end": 80
       }
+    },
+    "about_heritage_split_UmDeQE": {
+      "type": "about-heritage-split",
+      "name": "About Heritage Split",
+      "settings": {
+        "image_position": "left",
+        "badge": "Established 2010",
+        "heading": "Music is in our DNA.",
+        "content": "<p>We started with a simple mission: to provide musicians with the best gear, backed by honest advice. Today, we house over 100,000 instruments in our climate-controlled facility.</p><p>Every guitar is inspected, every drum kit is verified, and every customer is treated like a bandmate.</p>",
+        "button_label": "Shop All Gear",
+        "button_link": "shopify://collections/all"
+      }
     }
   },
   "order": [
-    "main"
+    "main",
+    "about_heritage_split_UmDeQE"
   ]
 }
