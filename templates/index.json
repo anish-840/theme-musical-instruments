@@ -422,8 +422,8 @@
         "brand_MEKNTX": {
           "type": "brand",
           "settings": {
-            "collection": "",
-            "title": "Shure",
+            "collection": "yamaha",
+            "title": "Yamaha",
             "link": ""
           }
         }
