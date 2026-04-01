@@ -1,8 +1,13 @@
-
-
 {% liquid
-  assign section_collections = collections
-  assign max_items = 20
+  # Prioritize the hand-picked collections from the Theme Editor. 
+  # If none are selected, fall back to showing all collections.
+  if section.settings.collection_list != blank
+    assign section_collections = section.settings.collection_list
+  else
+    assign section_collections = collections
+  endif
+  
+  assign max_items = section.settings.max_items | default: 20
 %}
 
 <div class="section-background color-{{ section.settings.color_scheme }}"></div>
@@ -25,7 +30,7 @@
     {%- content_for 'blocks' -%}
   </div>
 
-  {% if section_collections == null %}
+  {% if section_collections == null or section_collections == empty %}
     {% for i in (1..max_items) %}
       {% assign section_collections = section_collections | append: ', ' %}
     {% endfor %}
@@ -39,14 +44,13 @@
         {% content_for 'block', type: '_collection-card', id: 'static-collection-card', closest.collection: collection %}
       </div>
       {% unless forloop.last %}
-        <!--@list/split-->
-      {% endunless %}
+        {% endunless %}
     {% endfor %}
   {% endcapture %}
 
   {% liquid
     # Create an array from the list items to be used for different layout types
-    assign list_items_array = list_items | strip | split: '<!--@list/split-->'
+    assign list_items_array = list_items | strip | split: ''
   %}
 
   {% render 'resource-list',
@@ -103,6 +107,21 @@
     {
       "type": "header",
       "content": "t:content.cards_layout"
+    },
+    {
+      "type": "collection_list",
+      "id": "collection_list",
+      "label": "Select Collections",
+      "info": "Choose the exact collections you want to display."
+    },
+    {
+      "type": "range",
+      "id": "max_items",
+      "label": "Maximum items to show",
+      "min": 4,
+      "max": 40,
+      "step": 1,
+      "default": 20
     },
     {
       "type": "select",
