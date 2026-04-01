@@ -1,0 +1,108 @@
+{%- comment -%}
+  Stringer Music - About Heritage Split
+  Editorial 50/50 layout for brand story and mission.
+{%- endcomment -%}
+
+<section class="ahs-section">
+  <div class="ahs-container">
+    <div class="ahs-grid {% if section.settings.image_position == 'right' %}ahs-grid--reverse{% endif %}">
+      
+      <div class="ahs-image-col">
+        {%- if section.settings.image != blank -%}
+          {{ section.settings.image | image_url: width: 1000 | image_tag: loading: 'lazy', class: 'ahs-img', alt: section.settings.heading }}
+        {%- else -%}
+          <div class="ahs-placeholder">
+            {{ 'lifestyle-2' | placeholder_svg_tag: 'ahs-placeholder-svg' }}
+          </div>
+        {%- endif -%}
+      </div>
+
+      <div class="ahs-text-col">
+        {%- if section.settings.badge != blank -%}
+          <div class="ahs-badge">{{ section.settings.badge }}</div>
+        {%- endif -%}
+        
+        <h2 class="ahs-heading">{{ section.settings.heading }}</h2>
+        
+        <div class="ahs-content">
+          {{ section.settings.content }}
+        </div>
+
+        {%- if section.settings.button_label != blank -%}
+          <a href="{{ section.settings.button_link }}" class="ahs-btn">
+            {{ section.settings.button_label }}
+          </a>
+        {%- endif -%}
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<style>
+  .ahs-section { padding: 80px 0; background-color: #FFFFFF; --brand-ink: #1A1710; --brand-rust: #C8420A; }
+  .ahs-container { max-width: 1400px; margin: 0 auto; padding: 0 5%; }
+  
+  .ahs-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+  .ahs-grid--reverse { direction: rtl; }
+  .ahs-grid--reverse > * { direction: ltr; }
+
+  /* Image Side */
+  .ahs-image-col { width: 100%; border-radius: 2px; overflow: hidden; }
+  .ahs-img { width: 100%; height: auto; object-fit: cover; aspect-ratio: 4/5; display: block; }
+  .ahs-placeholder { width: 100%; aspect-ratio: 4/5; background: #f4f4f4; display: flex; align-items: center; justify-content: center; }
+  .ahs-placeholder-svg { width: 120px; height: 120px; fill: rgba(26,23,16,0.1); }
+
+  /* Text Side */
+  .ahs-text-col { max-width: 600px; }
+  
+  .ahs-badge { 
+    display: inline-block; font-family: var(--type_body_font, 'DM Sans', sans-serif); 
+    font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; 
+    color: var(--brand-rust); margin-bottom: 20px; border-bottom: 2px solid var(--brand-rust); padding-bottom: 4px;
+  }
+  
+  .ahs-heading { 
+    font-family: var(--type_header_font, 'Playfair Display', serif); 
+    font-size: clamp(36px, 4vw, 56px); font-weight: 900; color: var(--brand-ink); 
+    margin: 0 0 30px 0; line-height: 1.1; letter-spacing: -0.015em;
+  }
+  
+  .ahs-content { 
+    font-family: var(--type_body_font, 'DM Sans', sans-serif); 
+    font-size: 17px; color: rgba(26,23,16,0.75); line-height: 1.7; margin-bottom: 40px; 
+  }
+  .ahs-content p { margin: 0 0 20px 0; }
+  .ahs-content p:last-child { margin: 0; }
+
+  .ahs-btn {
+    display: inline-block; background-color: var(--brand-ink); color: #FFFFFF;
+    font-family: var(--type_body_font, 'DM Sans', sans-serif); font-size: 15px; font-weight: 700;
+    text-decoration: none; padding: 18px 36px; border-radius: 2px; transition: background-color 0.2s ease;
+  }
+  .ahs-btn:hover { background-color: var(--brand-rust); }
+
+  @media (max-width: 990px) {
+    .ahs-grid { grid-template-columns: 1fr; gap: 50px; }
+    .ahs-grid--reverse { direction: ltr; }
+    .ahs-text-col { max-width: 100%; }
+    .ahs-img { aspect-ratio: 16/9; }
+    .ahs-placeholder { aspect-ratio: 16/9; }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "About Heritage Split",
+  "settings": [
+    { "type": "select", "id": "image_position", "label": "Image Position (Desktop)", "options": [ { "value": "left", "label": "Left" }, { "value": "right", "label": "Right" } ], "default": "left" },
+    { "type": "image_picker", "id": "image", "label": "Store/Team Image" },
+    { "type": "text", "id": "badge", "label": "Accent Badge", "default": "Established 2010" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Music is in our DNA." },
+    { "type": "richtext", "id": "content", "label": "Story Content", "default": "<p>We started with a simple mission: to provide musicians with the best gear, backed by honest advice. Today, we house over 100,000 instruments in our climate-controlled facility.</p><p>Every guitar is inspected, every drum kit is verified, and every customer is treated like a bandmate.</p>" },
+    { "type": "text", "id": "button_label", "label": "Button Label", "default": "Shop All Gear" },
+    { "type": "url", "id": "button_link", "label": "Button Link", "default": "/collections/all" }
+  ],
+  "presets": [ { "name": "About Heritage Split" } ]
+}
+{% endschema %}
