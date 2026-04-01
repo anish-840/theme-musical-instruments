@@ -1,4 +1,3 @@
-
 {%- doc -%}
   Renders a header menu block.
 
@@ -127,6 +126,26 @@
                       content_aspect_ratio: ratio,
                       image_border_radius: image_border_radius
                     %}
+
+                    {%- comment -%} 
+                      CUSTOM MEGA MENU IMAGES
+                      Checks if the current top-level link matches the one typed into the Theme Editor.
+                    {%- endcomment -%}
+                    {%- if block_settings.mega_menu_target != blank and block_settings.mega_menu_target == link.title -%}
+                      <div class="custom-mega-menu-images" style="grid-column: span 2; display: flex; flex-direction: column; gap: 15px;">
+                        {%- if block_settings.mega_image_1 != blank -%}
+                          <a href="{{ block_settings.mega_link_1 }}" class="custom-mega-image-link">
+                            {{ block_settings.mega_image_1 | image_url: width: 400 | image_tag: style: 'width: 100%; height: auto; border-radius: 4px; object-fit: cover; aspect-ratio: 16/9;', loading: 'lazy' }}
+                          </a>
+                        {%- endif -%}
+                        {%- if block_settings.mega_image_2 != blank -%}
+                          <a href="{{ block_settings.mega_link_2 }}" class="custom-mega-image-link">
+                            {{ block_settings.mega_image_2 | image_url: width: 400 | image_tag: style: 'width: 100%; height: auto; border-radius: 4px; object-fit: cover; aspect-ratio: 16/9;', loading: 'lazy' }}
+                          </a>
+                        {%- endif -%}
+                      </div>
+                    {%- endif -%}
+                    
                   </div>
                 </div>
               </div>
@@ -184,6 +203,14 @@
 {% style %}
   .header__underlay {
     --color-submenu: rgb({{ block_settings.color_scheme.settings.background.rgba }});
+  }
+  .custom-mega-image-link {
+    display: block;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+  }
+  .custom-mega-image-link:hover {
+    transform: translateY(-2px);
+    opacity: 0.9;
   }
 {% endstyle %}
 {% stylesheet %}
@@ -692,6 +719,36 @@
       "id": "menu",
       "label": "t:settings.menu",
       "default": "main-menu"
+    },
+    {
+      "type": "header",
+      "content": "Mega Menu Images"
+    },
+    {
+      "type": "text",
+      "id": "mega_menu_target",
+      "label": "Menu Item Title",
+      "info": "Type the exact name of the menu item (e.g., 'Guitars') where these images should appear."
+    },
+    {
+      "type": "image_picker",
+      "id": "mega_image_1",
+      "label": "Image 1"
+    },
+    {
+      "type": "url",
+      "id": "mega_link_1",
+      "label": "Image 1 Link"
+    },
+    {
+      "type": "image_picker",
+      "id": "mega_image_2",
+      "label": "Image 2"
+    },
+    {
+      "type": "url",
+      "id": "mega_link_2",
+      "label": "Image 2 Link"
     },
     {
       "type": "color_scheme",
