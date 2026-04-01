@@ -29,6 +29,10 @@
           "static": true,
           "settings": {
             "menu": "main-menu",
+            "mega_menu_target": "",
+            "mega_image_1": "shopify://shop_images/mg1.webp",
+            "mega_link_1": "",
+            "mega_link_2": "",
             "color_scheme": "",
             "type_font_primary_size": "var(--font-size--body-md)",
             "menu_font_style": "inverse",
