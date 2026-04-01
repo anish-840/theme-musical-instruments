@@ -376,7 +376,7 @@
       "settings": {
         "heading": "Product Highlights",
         "bg_color": "#ffffff",
-        "show_nav": true,
+        "show_nav": false,
         "tab_1_label": "Trends",
         "collection_1": "trends",
         "tab_2_label": "Top Sellers",
