@@ -99,16 +99,10 @@
         "heading": "Knowledge Hub",
         "subheading": "Setup guides, maintenance tips, and gear advice from our experts."
       }
-    },
-    "tutorial_step_builder_qahLqC": {
-      "type": "tutorial-step-builder",
-      "name": "Master Tutorial Builder",
-      "settings": {}
     }
   },
   "order": [
     "main",
-    "tutorial_library_grid_xEM4hn",
-    "tutorial_step_builder_qahLqC"
+    "tutorial_library_grid_xEM4hn"
   ]
 }
