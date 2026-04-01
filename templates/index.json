@@ -390,6 +390,7 @@
         "brand_CKhqxR": {
           "type": "brand",
           "settings": {
+            "collection": "",
             "title": "Yamaha",
             "link": ""
           }
@@ -397,6 +398,7 @@
         "brand_W3GjHp": {
           "type": "brand",
           "settings": {
+            "collection": "",
             "title": "Fender",
             "link": ""
           }
@@ -404,7 +406,7 @@
         "brand_wnyhkd": {
           "type": "brand",
           "settings": {
-            "image": "shopify://shop_images/roland.png",
+            "collection": "roland",
             "title": "Roland",
             "link": ""
           }
@@ -412,6 +414,7 @@
         "brand_6QkFXb": {
           "type": "brand",
           "settings": {
+            "collection": "",
             "title": "Gibson",
             "link": ""
           }
@@ -419,6 +422,7 @@
         "brand_MEKNTX": {
           "type": "brand",
           "settings": {
+            "collection": "",
             "title": "Shure",
             "link": ""
           }
