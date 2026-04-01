@@ -399,7 +399,7 @@
           "type": "brand",
           "settings": {
             "collection": "esp",
-            "title": "Fender",
+            "title": "ESP",
             "link": ""
           }
         },
@@ -414,8 +414,8 @@
         "brand_6QkFXb": {
           "type": "brand",
           "settings": {
-            "collection": "",
-            "title": "Gibson",
+            "collection": "millenium",
+            "title": "Millenium",
             "link": ""
           }
         },
