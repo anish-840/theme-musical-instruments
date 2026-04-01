@@ -127,9 +127,55 @@
         "padding-block-start": 48,
         "padding-block-end": 48
       }
+    },
+    "contact_info_grid_TVgdhB": {
+      "type": "contact-info-grid",
+      "blocks": {
+        "info_card_nUxKg6": {
+          "type": "info_card",
+          "settings": {
+            "icon": "phone",
+            "title": "Sales & Support",
+            "text": "<p>1-800-555-0199</p><p>Mon-Fri: 9am - 6pm EST</p>",
+            "link_label": "Call Now",
+            "link_url": ""
+          }
+        },
+        "info_card_g7Fn3L": {
+          "type": "info_card",
+          "settings": {
+            "icon": "mail",
+            "title": "Email Us",
+            "text": "<p>1-800-555-0199</p><p>Mon-Fri: 9am - 6pm EST</p>",
+            "link_label": "Send Email",
+            "link_url": ""
+          }
+        },
+        "info_card_WehmEa": {
+          "type": "info_card",
+          "settings": {
+            "icon": "map-pin",
+            "title": "Visit the Store",
+            "text": "<p>1-800-555-0199</p><p>Mon-Fri: 9am - 6pm EST</p>",
+            "link_label": "Get Directions",
+            "link_url": ""
+          }
+        }
+      },
+      "block_order": [
+        "info_card_nUxKg6",
+        "info_card_g7Fn3L",
+        "info_card_WehmEa"
+      ],
+      "name": "Contact Info Grid",
+      "settings": {
+        "heading": "We're here to help.",
+        "subheading": "Our team of gear experts is ready to answer your questions."
+      }
     }
   },
   "order": [
-    "section"
+    "section",
+    "contact_info_grid_TVgdhB"
   ]
 }
