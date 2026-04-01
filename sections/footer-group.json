@@ -15,7 +15,7 @@
       "type": "custom-newsletter-banner",
       "name": "Custom Newsletter Banner",
       "settings": {
-        "bg_color": "#D1310C",
+        "bg_color": "#c8420a",
         "text_color": "#FFFFFF",
         "button_bg_color": "#1A1710",
         "button_text_color": "#FFFFFF",
