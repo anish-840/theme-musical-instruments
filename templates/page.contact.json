@@ -136,7 +136,7 @@
           "settings": {
             "icon": "phone",
             "title": "Sales & Support",
-            "text": "<p>1-800-555-0199</p><p>Mon-Fri: 9am - 6pm EST</p>",
+            "text": "<p>1-800-555-0199</p><p>Mon-Fri: 9am - 6pm IST</p>",
             "link_label": "Call Now",
             "link_url": ""
           }
@@ -146,7 +146,7 @@
           "settings": {
             "icon": "mail",
             "title": "Email Us",
-            "text": "<p>1-800-555-0199</p><p>Mon-Fri: 9am - 6pm EST</p>",
+            "text": "<p>1-800-555-0199</p><p>Mon-Fri: 9am - 6pm IST</p>",
             "link_label": "Send Email",
             "link_url": ""
           }
@@ -156,7 +156,7 @@
           "settings": {
             "icon": "map-pin",
             "title": "Visit the Store",
-            "text": "<p>1-800-555-0199</p><p>Mon-Fri: 9am - 6pm EST</p>",
+            "text": "<p>1-800-555-0199</p><p>Mon-Fri: 9am - 6pm IST</p>",
             "link_label": "Get Directions",
             "link_url": ""
           }
