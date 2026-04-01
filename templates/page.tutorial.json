@@ -19,7 +19,7 @@
             "text": "<h1>{{ closest.page.title }}</h1>",
             "width": "100%",
             "max_width": "normal",
-            "alignment": "left",
+            "alignment": "center",
             "type_preset": "h2",
             "font": "var(--font-body--family)",
             "font_size": "1rem",
@@ -40,6 +40,7 @@
         },
         "page-content": {
           "type": "page-content",
+          "disabled": true,
           "settings": {},
           "blocks": {}
         }
@@ -55,9 +56,58 @@
         "padding-block-start": 40,
         "padding-block-end": 80
       }
+    },
+    "tutorial_library_grid_xEM4hn": {
+      "type": "tutorial-library-grid",
+      "blocks": {
+        "tutorial_card_pVpWtU": {
+          "type": "tutorial_card",
+          "settings": {
+            "category": "Guitars",
+            "title": "Setup your Stratocaster",
+            "text": "A beginner's guide to using a chromatic tuner and tuning by ear.",
+            "link": ""
+          }
+        },
+        "tutorial_card_3pbK4x": {
+          "type": "tutorial_card",
+          "settings": {
+            "category": "Drums",
+            "title": "Tuning Acoustic Drums",
+            "text": "A beginner's guide to using a chromatic tuner and tuning by ear.",
+            "link": ""
+          }
+        },
+        "tutorial_card_n4CNQz": {
+          "type": "tutorial_card",
+          "settings": {
+            "category": "Tech",
+            "title": "Electronic Kit Setup",
+            "text": "A beginner's guide to using a chromatic tuner and tuning by ear.",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "tutorial_card_pVpWtU",
+        "tutorial_card_3pbK4x",
+        "tutorial_card_n4CNQz"
+      ],
+      "name": "Tutorial Library Grid",
+      "settings": {
+        "heading": "Knowledge Hub",
+        "subheading": "Setup guides, maintenance tips, and gear advice from our experts."
+      }
+    },
+    "tutorial_step_builder_qahLqC": {
+      "type": "tutorial-step-builder",
+      "name": "Master Tutorial Builder",
+      "settings": {}
     }
   },
   "order": [
-    "main"
+    "main",
+    "tutorial_library_grid_xEM4hn",
+    "tutorial_step_builder_qahLqC"
   ]
 }
