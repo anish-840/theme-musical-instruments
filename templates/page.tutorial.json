@@ -75,6 +75,7 @@
         "tutorial_card_3pbK4x": {
           "type": "tutorial_card",
           "settings": {
+            "image": "shopify://shop_images/pearl-drums-qf_wDzPbKGU-unsplash.jpg",
             "category": "Drums",
             "title": "Tuning Acoustic Drums",
             "text": "A beginner's guide to using a chromatic tuner and tuning by ear.",
