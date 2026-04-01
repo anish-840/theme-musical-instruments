@@ -247,7 +247,7 @@
           "settings": {
             "enable_filtering": true,
             "filter_style": "horizontal",
-            "filter_width": "full-width",
+            "filter_width": "centered",
             "text_label_case": "default",
             "show_swatch_label": false,
             "show_filter_label": false,
@@ -425,11 +425,24 @@
         "padding-block-start": 32,
         "padding-block-end": 32
       }
+    },
+    "gear_guides_VfbMeB": {
+      "type": "gear-guides",
+      "name": "Gear Guides Grid",
+      "settings": {
+        "bg_color": "#ffffff",
+        "eyebrow": "EDITORIAL & GUIDES",
+        "heading": "Read the |Manual|",
+        "blog": "",
+        "post_limit": 3,
+        "show_view_all": true
+      }
     }
   },
   "order": [
     "section",
     "hero_Gatymd",
-    "main"
+    "main",
+    "gear_guides_VfbMeB"
   ]
 }
