@@ -16,12 +16,12 @@
           "type": "group",
           "name": "t:names.group",
           "settings": {
-            "content_direction": "row",
+            "content_direction": "column",
             "vertical_on_mobile": true,
             "horizontal_alignment": "flex-start",
             "vertical_alignment": "flex-end",
             "align_baseline": true,
-            "horizontal_alignment_flex_direction_column": "flex-start",
+            "horizontal_alignment_flex_direction_column": "center",
             "vertical_alignment_flex_direction_column": "center",
             "gap": 12,
             "width": "fill",
@@ -52,6 +52,21 @@
             "padding-inline-end": 0
           },
           "blocks": {
+            "button_xTR94X": {
+              "type": "button",
+              "name": "t:names.button",
+              "settings": {
+                "label": "Shop now",
+                "link": "shopify://collections/all",
+                "open_in_new_tab": false,
+                "style_class": "button",
+                "width": "fit-content",
+                "custom_width": 100,
+                "width_mobile": "fit-content",
+                "custom_width_mobile": 100
+              },
+              "blocks": {}
+            },
             "group_U86Qji": {
               "type": "group",
               "name": "t:names.group",
@@ -153,7 +168,7 @@
               "type": "text",
               "name": "Text",
               "settings": {
-                "text": "<p>Bring order to the chaos. When all your tech essentials have a dedicated spot on your desk, you don’t have to waste any time searching for them. </p>",
+                "text": "",
                 "width": "fit-content",
                 "max_width": "none",
                 "alignment": "left",
@@ -177,6 +192,7 @@
             }
           },
           "block_order": [
+            "button_xTR94X",
             "group_U86Qji",
             "text_ebNxhf"
           ]
@@ -185,11 +201,10 @@
       "block_order": [
         "group_mATTUY"
       ],
-      "disabled": true,
       "name": "t:names.hero",
       "settings": {
         "media_type_1": "image",
-        "image_1": "shopify://shop_images/Untitled_design_1.png",
+        "image_1": "shopify://shop_images/Untitled_design_4_-Picsart-AiImageEnhancer.png",
         "media_type_2": "image",
         "stack_media_on_mobile": false,
         "custom_mobile_media": false,
@@ -206,7 +221,7 @@
         "vertical_alignment_flex_direction_column": "flex-end",
         "gap": 16,
         "section_width": "page-width",
-        "section_height": "large",
+        "section_height": "full-screen",
         "section_height_custom": 50,
         "color_scheme": "scheme-5",
         "toggle_overlay": true,
@@ -243,6 +258,7 @@
       "block_order": [
         "slide_basic_jYmVA4"
       ],
+      "disabled": true,
       "name": "Hero Slideshow",
       "settings": {
         "slide_duration": 5,
